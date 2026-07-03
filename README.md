@@ -33,3 +33,27 @@ npm run start
 
 * Backend only: `cd backend` and `python src/main.py` 
 * Frontend only: `cd frontend` and `npm run dev`
+
+# Push to Repository
+Create new branches to keep commit history clean.
+
+## Branch Names 
+Use lowercase and hyphens `yourname/feature-name`
+Example: `kevin/login-registration`
+
+## Example Workflow
+1. Pull updates from repository:
+git switch main
+git pull
+
+2. Create and switch to your branch:
+git switch -c yourname/feature-name
+
+3. Commit and save as needed.
+git add .
+git commit -m "description "
+
+4. Push branch to repository:
+git push origin yourname/feature-name
+
+5. Open pull request on GitHub.
