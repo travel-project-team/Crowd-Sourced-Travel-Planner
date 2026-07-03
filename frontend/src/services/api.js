@@ -1,0 +1,1 @@
+// Dedicated HTTP request configuration
