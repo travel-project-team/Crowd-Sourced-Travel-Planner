@@ -7,7 +7,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    // API Proxy to connect with backend
+    port: 9000,
+    // Proxy to forward frontend API requests to backend Python server
     proxy: {
       '/api': 'http://localhost:8000'
     }
