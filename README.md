@@ -57,3 +57,5 @@ git commit -m "description "
 git push origin yourname/feature-name
 
 5. Open pull request on GitHub.
+
+6. One review will be required by any team member prior to PR being merged into main.
