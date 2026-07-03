@@ -1,9 +1,11 @@
-# Backend Virtual Environment
+# Backend Virtual Environment & Python Cache
 backend/venv/
+**/__pycache__/
+*.pyc
 
 # Credentials & Secrets
-.backend/.env
+backend/.env
 
-# Frontend Node Packages
+# Frontend Node Packages & Build
 frontend/node_modules/
 frontend/dist/
