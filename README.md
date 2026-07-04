@@ -1,47 +1,51 @@
-# Initial App Setup Guide
+## Installation Guide
 Run the following commands in IDE terminal. 
 
-## Backend  
-1. Navigate to folder:
+### Backend  
+Create virtual environment.
+```bash
 cd backend
 
-2. Create and activate virtual environment:
 python -m venv venv
 
 * Windows: .\venv\Scripts\activate
 * Mac/Linux: source venv/bin/activate
+```
 
-3. Install dependencies:
+Add dependencies.
+```bash
 pip install -r requirements.txt
 
-4. Create .env file from template:
 cp .env.example .env
+```
 
-## Frontend  
-1. Navigate to folder:
+### Frontend  
+Add dependencies.
+```bash
 cd ../frontend 
-
-2. Install dependencies:
 npm install
+```
 
-## How to Run Project
-1. Must navigate to frontend (split terminal for easier use):
+### How to Run Project
+Must navigate to frontend (split terminal for easier use):
+```bash
 cd frontend
-
-2. Starts both frontend and backend concurrently:
 npm run start
-
+```
 * Backend only: `cd backend` and `python src/main.py` 
 * Frontend only: `cd frontend` and `npm run dev`
 
-# Push to Repository
+## Pull Request Workflow
 Create new branches to keep commit history clean.
 
-## Branch Names 
-Use lowercase and hyphens `yourname/feature-name`
-Example: `kevin/login-registration`
+### Branch Names 
+Use lowercase and hyphens 
 
-## Example Workflow
+Use issue numbers when relevant: `issue-#/feature-name`
+
+Example: `kevin/initial-files` `issue-9/frontend-implementation`
+
+### Example 
 1. Pull updates from repository:
 git switch main
 git pull

@@ -16,7 +16,7 @@ app.include_router(experiences_router)
 # Connection test. 
 @app.get("/api/test")
 def api_test():
-    return {"status": "success", "message": "Backend connection via proxy"}
+    return {"status": "SUCCESS", "message": "Backend connection via proxy detected"}
 
 if __name__ == "__main__":
     # Enable hot reloading development server
