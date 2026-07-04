@@ -1,29 +1,104 @@
 // Dedicated HTTP request file for all backend communication
 
-const API_ROUTE = "/api";
+// Vite proxy -- Development 
+const API_BASE_URL = "/api";
 
-/* ----------------------------------------------
-Each function represents one backend API endpoint 
-------------------------------------------------*/
+// HTTP request engine with error handling
+async function request(endpoint, options = {}) {
+  const url = `${API_BASE_URL}${endpoint}`;
 
-// Connection test
-export async function connectionTest() {
-  const res = await fetch(`${API_ROUTE}/test`);
-  return res.json();
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      ...options,
+    });
+
+    if (!response.ok) {
+      let errorMessage = `Request failed with status ${response.status}`;
+      try {
+        const errorBody = await response.json();
+        errorMessage = errorBody.message || errorBody.detail || errorMessage;
+      } catch {
+        // Response body wasn't JSON, fall back to default message
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await response.json();
+  } catch (err) {
+    if (err instanceof TypeError) {
+      throw new Error(
+        "Unable to connect to the server. Please check your connection or try again later."
+      );
+    }
+    throw err;
+  }
 }
+
+// HTTP method wrapper 
+const api = {
+  get: (endpoint) => request(endpoint, { method: "GET" }),
+  post: (endpoint, body) =>
+    request(endpoint, { method: "POST", body: JSON.stringify(body) }),
+  put: (endpoint, body) =>
+    request(endpoint, { method: "PUT", body: JSON.stringify(body) }),
+  delete: (endpoint) => request(endpoint, { method: "DELETE" }),
+};
+
+// Feature APIs 
+
+/* =========================
+   CONNECTION HEALTH CHECK - Development only
+   Remove for Production 
+========================= */
+export const healthApi = {
+  check: () => api.get("/test"),
+};
 
 /* =========================
    USERS
 ========================= */
+export const usersApi = {
+  getAll: () => api.get("/users"),
 
+  getById: (id) => api.get(`/users/${id}`),
 
+  create: (data) => api.post("/users", data),
+
+  update: (id, data) => api.put(`/users/${id}`, data),
+
+  remove: (id) => api.delete(`/users/${id}`),
+};
 
 /* =========================
    TRIPS
 ========================= */
+export const tripsApi = {
+  getAll: () => api.get("/trips"),
 
+  getById: (id) => api.get(`/trips/${id}`),
 
+  create: (data) => api.post("/trips", data),
+
+  update: (id, data) => api.put(`/trips/${id}`, data),
+
+  remove: (id) => api.delete(`/trips/${id}`),
+};
 
 /* =========================
    EXPERIENCES
 ========================= */
+export const experiencesApi = {
+  getAll: () => api.get("/experiences"),
+
+  getById: (id) => api.get(`/experiences/${id}`),
+
+  create: (data) => api.post("/experiences", data),
+
+  update: (id, data) => api.put(`/experiences/${id}`, data),
+
+  remove: (id) => api.delete(`/experiences/${id}`),
+};

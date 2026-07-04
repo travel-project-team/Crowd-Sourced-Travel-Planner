@@ -1,12 +1,22 @@
 // React router + global layout wrapper
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import { healthApi } from './services/api'
+
 
 function App() {
   const [count, setCount] = useState(0)
+
+  // CONNECTION HEALTH CHECK - Development only
+  // Remove for Production 
+  useEffect(() => {
+    healthApi.check()
+      .then((res) => console.log("Backend OK:", res))
+      .catch((err) => console.error("Backend ERROR:", err));
+  }, []);
 
   return (
     <>
