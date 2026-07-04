@@ -1,6 +1,12 @@
 ## Installation Guide
 Run the following commands in IDE terminal. 
 
+### Root
+Add dependencies.
+```bash
+npm install
+```
+
 ### Backend  
 Create virtual environment.
 ```bash

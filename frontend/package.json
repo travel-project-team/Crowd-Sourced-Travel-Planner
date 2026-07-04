@@ -5,11 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:backend": "node scripts/start-backend.js",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "start": "concurrently \"npm run dev\" \"npm run dev:backend\""
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^19.2.7",
@@ -20,7 +18,6 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
-    "concurrently": "^8.2.2",
     "eslint": "^9.20.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react-hooks": "^7.1.1",

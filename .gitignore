@@ -9,3 +9,6 @@ backend/.env
 # Frontend Node Packages & Build
 frontend/node_modules/
 frontend/dist/
+
+# Root Node Package
+node_modules/
