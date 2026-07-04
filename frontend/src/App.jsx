@@ -4,22 +4,16 @@ import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
-import { healthApi } from './services/api'
-
+import ServerHealth from "./components/ServerHealth";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  // CONNECTION HEALTH CHECK - Development only
-  // Remove for Production 
-  useEffect(() => {
-    healthApi.check()
-      .then((res) => console.log("Backend OK:", res))
-      .catch((err) => console.error("Backend ERROR:", err));
-  }, []);
+  const [count, setCount] = useState(0);
 
   return (
     <>
+    {/* Component: ServerHealth */}
+    <ServerHealth />
+
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />

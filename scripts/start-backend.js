@@ -9,7 +9,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const backendDir = path.resolve(__dirname, "../../backend");
+const backendDir = path.resolve(__dirname, "../backend");
 
 // Determine Window or Mac/Linux OS
 const pythonPath =

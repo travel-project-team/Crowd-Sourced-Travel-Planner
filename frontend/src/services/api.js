@@ -48,19 +48,15 @@ const api = {
   delete: (endpoint) => request(endpoint, { method: "DELETE" }),
 };
 
-// Feature APIs 
-
-/* =========================
-   CONNECTION HEALTH CHECK - Development only
-   Remove for Production 
-========================= */
-export const healthApi = {
-  check: () => api.get("/test"),
+// Backend-Frontend server health 
+export const serverHealthApi = {
+  check: () => api.get("/server-health"),
 };
 
-/* =========================
-   USERS
-========================= */
+// Feature APIs 
+/* =============
+   Users
+================ */
 export const usersApi = {
   getAll: () => api.get("/users"),
 
@@ -73,9 +69,9 @@ export const usersApi = {
   remove: (id) => api.delete(`/users/${id}`),
 };
 
-/* =========================
-   TRIPS
-========================= */
+/* =============
+   Trips
+================ */
 export const tripsApi = {
   getAll: () => api.get("/trips"),
 
@@ -88,9 +84,9 @@ export const tripsApi = {
   remove: (id) => api.delete(`/trips/${id}`),
 };
 
-/* =========================
-   EXPERIENCES
-========================= */
+/* =============
+   Experiences
+================ */
 export const experiencesApi = {
   getAll: () => api.get("/experiences"),
 

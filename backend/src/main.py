@@ -31,7 +31,7 @@ app.include_router(users_router)
 app.include_router(experiences_router)
 
 # Connection test. 
-@app.get("/api/test")
+@app.get("/api/server-health")
 def api_test():
     return {"status": "SUCCESS", "message": "Backend connected successfully!"}
 
