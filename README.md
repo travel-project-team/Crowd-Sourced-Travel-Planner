@@ -1,8 +1,9 @@
 ## Installation Guide
-Run the following commands in IDE terminal. 
+Clone repository. Open IDE terminal.
+
+Run the following commands in order. 
 
 ### Root
-Add dependencies.
 ```bash
 npm install
 ```
@@ -18,7 +19,7 @@ python -m venv venv
 * Mac/Linux: source venv/bin/activate
 ```
 
-Add dependencies.
+Add Dependencies
 ```bash
 pip install -r requirements.txt
 
@@ -26,17 +27,17 @@ cp .env.example .env
 ```
 
 ### Frontend  
-Add dependencies.
 ```bash
 cd ../frontend 
 npm install
 ```
 
 ### How to Run Project
+From root directory:
 ```bash
 npm run start
 ```
-* Frontend only: ``npm run dev:frontend`
+* Frontend only: `npm run dev:frontend`
 * Backend only: `npm run dev:backend`
 
 ## Pull Request Workflow
