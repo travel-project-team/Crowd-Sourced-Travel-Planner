@@ -1,15 +1,31 @@
 // React router + global layout wrapper
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import { api } from './services/api'
+
 
 function App() {
   const [count, setCount] = useState(0)
 
+  // Michael: Just a connection test. I will remove this.
+  const [backendStatus, setBackendStatus] = useState('Checking backend...')
+
+  useEffect(() => {
+    api.get('/')
+      .then((data) => setBackendStatus(`Totally working my dude ${data.message}`))
+      .catch((err) => setBackendStatus(`Something is wrong my dude  ${err.message}`))
+  }, [])
+
   return (
     <>
+      {/* Connection test banner.*/}
+      <div style={{ padding: '1rem', textAlign: 'center', fontFamily: 'monospace' }}>
+        {backendStatus}
+      </div>
+
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
