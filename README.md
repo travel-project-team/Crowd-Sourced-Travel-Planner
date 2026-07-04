@@ -33,13 +33,11 @@ npm install
 ```
 
 ### How to Run Project
-Must navigate to frontend (split terminal for easier use):
 ```bash
-cd frontend
 npm run start
 ```
-* Backend only: `cd backend` and `python src/main.py` 
-* Frontend only: `cd frontend` and `npm run dev`
+* Frontend only: ``npm run dev:frontend`
+* Backend only: `npm run dev:backend`
 
 ## Pull Request Workflow
 Create new branches to keep commit history clean.
@@ -57,14 +55,14 @@ git switch main
 git pull
 
 2. Create and switch to your branch:
-git switch -c yourname/feature-name
+git switch -c issue-#/feature-name
 
 3. Commit and save as needed.
 git add .
 git commit -m "description "
 
 4. Push branch to repository:
-git push origin yourname/feature-name
+git push origin issue-#/feature-name
 
 5. Open pull request on GitHub.
 
