@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-      "dev": "vite",
-      "build": "vite build",
-      "lint": "eslint .",
-      "preview": "vite preview",
-      "dev:backend": "cd ../backend && ./venv/Scripts/python src/main.py || cd ../backend && ./venv/bin/python src/main.py",
-      "start": "concurrently \"npm run dev\" \"npm run dev:backend\""
-    },
+    "dev": "vite",
+    "dev:backend": "node scripts/start-backend-venv.js",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "start": "concurrently \"npm run dev\" \"npm run dev:backend\""
+  },
   "dependencies": {
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
