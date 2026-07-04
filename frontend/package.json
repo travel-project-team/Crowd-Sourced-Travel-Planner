@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:backend": "node scripts/start-backend-venv.js",
+    "dev:backend": "node scripts/start-backend.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
