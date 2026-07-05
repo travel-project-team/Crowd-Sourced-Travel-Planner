@@ -18,12 +18,12 @@ function AuthenticatedLayout() {
 
 
 function App() {
-   const isLoggedIn = false;
+   const isLoggedIn = true;
 
   return (
     <Router>
       {/* Component: ServerHealth */}
-      <ServerHealth />
+      {/*<ServerHealth />*/}
       <Routes>
           <Route path="/login" element={<LoginPage />} />
 
