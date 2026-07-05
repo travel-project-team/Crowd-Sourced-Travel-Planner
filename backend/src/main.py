@@ -3,12 +3,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from contextlib import asynccontextmanager
+from config import client, connect_db, close_db
 
 from routes.trips import router as trips_router
 from routes.users import router as users_router
 from routes.experiences import router as experiences_router
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Runs on server start
+    connect_db()
+    yield
+    # Runs on server shutdown
+    close_db()
+
+app = FastAPI(lifespan=lifespan)
 
 # CORS configuration --Currently bypassed by Vite Proxy in development 
 # Keep for production deployment
