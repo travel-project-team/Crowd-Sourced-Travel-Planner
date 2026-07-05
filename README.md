@@ -1,60 +1,69 @@
-# Initial App Setup Guide
-Run the following commands in IDE terminal. 
+## Installation Guide
+Clone repository. Open IDE terminal.
 
-## Backend  
-1. Navigate to folder:
+Run the following commands in order. 
+
+### Root
+```bash
+npm install
+```
+
+### Backend  
+Create virtual environment.
+```bash
 cd backend
 
-2. Create and activate virtual environment:
 python -m venv venv
 
 * Windows: .\venv\Scripts\activate
 * Mac/Linux: source venv/bin/activate
+```
 
-3. Install dependencies:
+Add Dependencies
+```bash
 pip install -r requirements.txt
 
-4. Create .env file from template:
 cp .env.example .env
+```
 
-## Frontend  
-1. Navigate to folder:
+### Frontend  
+```bash
 cd ../frontend 
-
-2. Install dependencies:
 npm install
+```
 
-## How to Run Project
-1. Must navigate to frontend (split terminal for easier use):
-cd frontend
-
-2. Starts both frontend and backend concurrently:
+### How to Run Project
+From root directory:
+```bash
 npm run start
+```
+* Frontend only: `npm run dev:frontend`
+* Backend only: `npm run dev:backend`
 
-* Backend only: `cd backend` and `python src/main.py` 
-* Frontend only: `cd frontend` and `npm run dev`
-
-# Push to Repository
+## Pull Request Workflow
 Create new branches to keep commit history clean.
 
-## Branch Names 
-Use lowercase and hyphens `yourname/feature-name`
-Example: `kevin/login-registration`
+### Branch Names 
+Use lowercase and hyphens 
 
-## Example Workflow
+Use issue numbers when relevant: `issue-#/feature-name`
+
+Example: `kevin/initial-files` `issue-9/frontend-implementation`
+
+### Example 
 1. Pull updates from repository:
 git switch main
 git pull
 
 2. Create and switch to your branch:
-git switch -c yourname/feature-name
+git switch -c issue-#/feature-name
 
 3. Commit and save as needed.
 git add .
 git commit -m "description "
 
 4. Push branch to repository:
-git push origin yourname/feature-name
+git push origin issue-#/feature-name
 
 5. Open pull request on GitHub.
 

@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 9000,
-    // Proxy to forward frontend API requests to backend Python server
+    // Proxy to frontend API requests to backend Python server
     proxy: {
       '/api': 'http://localhost:8000'
     }

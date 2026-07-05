@@ -1,0 +1,14 @@
+{
+  "name": "travel-planner",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "node scripts/start-backend.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

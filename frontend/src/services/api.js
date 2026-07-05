@@ -1,7 +1,9 @@
-// Dedicated HTTP request configuration
+// Dedicated HTTP request file for all backend communication
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+// Vite proxy -- Development 
+const API_BASE_URL = "/api";
 
+// HTTP request engine with error handling
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
 
@@ -36,11 +38,63 @@ async function request(endpoint, options = {}) {
   }
 }
 
-export const api = {
+// HTTP method wrapper 
+const api = {
   get: (endpoint) => request(endpoint, { method: "GET" }),
   post: (endpoint, body) =>
     request(endpoint, { method: "POST", body: JSON.stringify(body) }),
   put: (endpoint, body) =>
     request(endpoint, { method: "PUT", body: JSON.stringify(body) }),
   delete: (endpoint) => request(endpoint, { method: "DELETE" }),
+};
+
+// Backend-Frontend server health 
+export const serverHealthApi = {
+  check: () => api.get("/server-health"),
+};
+
+// Feature APIs 
+/* =============
+   Users
+================ */
+export const usersApi = {
+  getAll: () => api.get("/users"),
+
+  getById: (id) => api.get(`/users/${id}`),
+
+  create: (data) => api.post("/users", data),
+
+  update: (id, data) => api.put(`/users/${id}`, data),
+
+  remove: (id) => api.delete(`/users/${id}`),
+};
+
+/* =============
+   Trips
+================ */
+export const tripsApi = {
+  getAll: () => api.get("/trips"),
+
+  getById: (id) => api.get(`/trips/${id}`),
+
+  create: (data) => api.post("/trips", data),
+
+  update: (id, data) => api.put(`/trips/${id}`, data),
+
+  remove: (id) => api.delete(`/trips/${id}`),
+};
+
+/* =============
+   Experiences
+================ */
+export const experiencesApi = {
+  getAll: () => api.get("/experiences"),
+
+  getById: (id) => api.get(`/experiences/${id}`),
+
+  create: (data) => api.post("/experiences", data),
+
+  update: (id, data) => api.put(`/experiences/${id}`, data),
+
+  remove: (id) => api.delete(`/experiences/${id}`),
 };
