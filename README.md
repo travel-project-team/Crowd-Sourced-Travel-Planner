@@ -13,7 +13,8 @@ Create virtual environment.
 ```bash
 cd backend
 
-python -m venv venv
+* Windows: python -m venv venv
+* Mac/Linux: python3 -m venv venv
 
 * Windows: .\venv\Scripts\activate
 * Mac/Linux: source venv/bin/activate
@@ -25,6 +26,15 @@ pip install -r requirements.txt
 
 cp .env.example .env
 ```
+
+Configure VSCode Python Interpreter:
+
+1. Open Command Palette
+2. Python: Select Interpreter
+
+* Windows: venv > Scripts > python.exe
+* Mac/Linux: venv > bin > python
+
 
 ### Frontend  
 ```bash
