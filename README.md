@@ -13,11 +13,13 @@ Create virtual environment.
 ```bash
 cd backend
 
-* Windows: python -m venv venv
-* Mac/Linux: python3 -m venv venv
+* Windows: 
+python -m venv venv
+.\venv\Scripts\activate
 
-* Windows: .\venv\Scripts\activate
-* Mac/Linux: source venv/bin/activate
+* Mac: 
+python3 -m venv venv
+source venv/bin/activate
 ```
 
 Add Dependencies
@@ -33,14 +35,12 @@ Configure VSCode Python Interpreter:
 2. Python: Select Interpreter
 
 * Windows: venv > Scripts > python.exe
-* Mac/Linux: venv > bin > python
-
+* Mac: venv > bin > python
 
 ### Frontend
 ```bash
 cd ../frontend
 npm install
-npm install react-router-dom
 ```
 
 ### How to Run Project
