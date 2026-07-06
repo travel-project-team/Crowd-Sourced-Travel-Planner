@@ -21,6 +21,11 @@ def connect_db():
     global client, db
     try:
         client = MongoClient(MONGODB_URL)
+
+        # Database connection test
+        client.admin.command('ping')
+
+        # Log connection message to console
         db = client.travel_planner
         logger.info("Connected to MongoDB successfully!")
     except Exception as e:
