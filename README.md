@@ -1,14 +1,14 @@
 ## Installation Guide
 Clone repository. Open IDE terminal.
 
-Run the following commands in order. 
+Run the following commands in order.
 
 ### Root
 ```bash
 npm install
 ```
 
-### Backend  
+### Backend
 Create virtual environment.
 ```bash
 cd backend
@@ -36,10 +36,11 @@ Configure VSCode Python Interpreter:
 * Mac/Linux: venv > bin > python
 
 
-### Frontend  
+### Frontend
 ```bash
-cd ../frontend 
+cd ../frontend
 npm install
+npm install react-router-dom
 ```
 
 ### How to Run Project
@@ -53,14 +54,14 @@ npm run start
 ## Pull Request Workflow
 Create new branches to keep commit history clean.
 
-### Branch Names 
-Use lowercase and hyphens 
+### Branch Names
+Use lowercase and hyphens
 
 Use issue numbers when relevant: `issue-#/feature-name`
 
 Example: `kevin/initial-files` `issue-9/frontend-implementation`
 
-### Example 
+### Example
 1. Pull updates from repository:
 git switch main
 git pull
