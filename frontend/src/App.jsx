@@ -23,7 +23,7 @@ function App() {
   return (
     <Router>
       {/* Component: ServerHealth */}
-      {/*<ServerHealth />*/}
+      <ServerHealth />
       <Routes>
           <Route path="/login" element={<LoginPage />} />
 
