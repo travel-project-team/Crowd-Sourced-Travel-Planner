@@ -16,7 +16,7 @@ logger = logging.getLogger("uvicorn.error")
 client = None
 db = None
 
-# Connection manager - called in main.py
+# Connection manager -called in main.py
 def connect_db():
     global client, db
     try:

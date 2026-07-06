@@ -37,12 +37,10 @@ Configure VSCode Python Interpreter:
 * Windows: venv > Scripts > python.exe
 * Mac: venv > bin > python
 
-
 ### Frontend
 ```bash
 cd ../frontend
 npm install
-npm install react-router-dom
 ```
 
 ### How to Run Project
