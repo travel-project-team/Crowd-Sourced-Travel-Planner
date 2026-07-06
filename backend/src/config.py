@@ -16,7 +16,7 @@ logger = logging.getLogger("uvicorn.error")
 client = None
 db = None
 
-# Called in main.py
+# Connection manager - called in main.py
 def connect_db():
     global client, db
     try:
@@ -25,8 +25,10 @@ def connect_db():
         # Database connection test
         client.admin.command('ping')
 
-        # Log connection message to console
+        # Select database from MongoDB cluster
         db = client.travel_planner
+        
+        # Logs connection status to console
         logger.info("Connected to MongoDB successfully!")
     except Exception as e:
         logger.error(f"Error connecting to MongoDB: {str(e)}")
@@ -35,4 +37,4 @@ def close_db():
     global client
     if client:
         client.close()
-        print("MongoDB connection closed.")
+        logger.info("MongoDB connection closed.")

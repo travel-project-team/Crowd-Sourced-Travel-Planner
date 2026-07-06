@@ -1,4 +1,4 @@
-# Port listener and entry point 
+# Port listener and backend entry point 
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,12 +10,14 @@ from routes.trips import router as trips_router
 from routes.users import router as users_router
 from routes.experiences import router as experiences_router
 
+# FastAPI app startup and shutdown lifecycle 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Runs on server start
+    # Startup - database connection
     connect_db()
+
     yield
-    # Runs on server shutdown
+    # Shutdown - database connection
     close_db()
 
 app = FastAPI(lifespan=lifespan)
