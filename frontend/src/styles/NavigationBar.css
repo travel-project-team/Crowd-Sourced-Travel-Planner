@@ -1,4 +1,4 @@
-#navBar {
+/* #navBar {
   position: sticky;
   top: 1rem;
   left: 0;
@@ -55,4 +55,4 @@
 .nav-links a:hover {
   color: var(--accent);
   background: var(--accent-bg);
-}
+} */
