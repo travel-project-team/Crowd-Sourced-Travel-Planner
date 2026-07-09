@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
-from datetime import datetime, timezone
-from pydantic import EmailStr
+from datetime import datetime
 
 # Users Base 
 class UsersBase(BaseModel):
@@ -11,7 +10,7 @@ class UsersBase(BaseModel):
 
 # POST for User Registration 
 class UsersRegister(UsersBase):
-    password: str = Field(..., examples=["billie_password"]) 
+    password: str 
 
 # POST for User Login 
 class UsersLogin(BaseModel):
@@ -21,17 +20,20 @@ class UsersLogin(BaseModel):
 # GET for User Profile 
 class UsersProfile(UsersBase):
     id: str = Field(..., alias="_id")
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime 
 
     model_config = ConfigDict(
         populate_by_name=True,
-        arbitrary_types_allowed=True
     )
 
 # PUT for User Update 
 class UsersUpdate(BaseModel):
-    first_name: str | None = None
-    last_name: str | None = None
-    username: str | None = None
+    first_name: str | None = Field(None, min_length=1)
+    last_name: str | None = Field(None, min_length=1)
+    username: str | None = Field(None, min_length=1)
     email: EmailStr | None = None
-    password: str | None = None
+    password: str | None = Field(None, min_length=1)
+
+# GET for User ID 
+class UsersId(BaseModel):
+    id: str
