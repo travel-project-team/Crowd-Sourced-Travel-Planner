@@ -26,7 +26,7 @@ if (!fs.existsSync(pythonPath)) {
 }
 
 // Start backend server
-const backend = spawn(pythonPath, ["src/main.py"], {
+const backend = spawn(pythonPath, ["-m", "uvicorn", "src.main:app", "--reload"], {
   cwd: backendDir,
   stdio: "inherit",
 });
