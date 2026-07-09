@@ -1,6 +1,5 @@
 # Server side user authentication 
 
-import os
 from datetime import datetime, timedelta, timezone
 
 from passlib.context import CryptContext
@@ -11,7 +10,7 @@ from fastapi.security import HTTPBearer
 from src import config
 from src.utility.mongodb import mongo_objectid
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = config.SECRET_KEY
 ALGORITHM = "HS256"
 EXPIRATION_MINUTES = 60
 
@@ -44,7 +43,9 @@ def create_access_token(data: dict) -> str:
     return jwt_token
 
 
-# Verify JWT access token 
+# Verify JWT token -return entire user profile
+#
+# Pull user id from this!
 def verify_user(credentials = Depends(token_extractor)):
     token = credentials.credentials
     
@@ -60,7 +61,7 @@ def verify_user(credentials = Depends(token_extractor)):
     except JWTError: 
         raise HTTPException(status_code=401, detail="Invalid token")
 
-    # Convert string user ID to MongoDB ObjectId
+    # Convert to MongoDB ObjectId
     user_id = mongo_objectid(user_id)
 
     # Find authenticated user in database

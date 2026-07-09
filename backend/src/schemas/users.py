@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from datetime import datetime
-from pydantic import EmailStr
 
 # Users Base 
 class UsersBase(BaseModel):
@@ -25,13 +24,16 @@ class UsersProfile(UsersBase):
 
     model_config = ConfigDict(
         populate_by_name=True,
-        arbitrary_types_allowed=True
     )
 
 # PUT for User Update 
 class UsersUpdate(BaseModel):
-    first_name: str | None = None
-    last_name: str | None = None
-    username: str | None = None
+    first_name: str | None = Field(None, min_length=1)
+    last_name: str | None = Field(None, min_length=1)
+    username: str | None = Field(None, min_length=1)
     email: EmailStr | None = None
-    password: str | None = None
+    password: str | None = Field(None, min_length=1)
+
+# GET for User ID 
+class UsersId(BaseModel):
+    id: str
