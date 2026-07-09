@@ -4,7 +4,7 @@ from bson import ObjectId
 from fastapi import HTTPException
 
 
-# Validate and convert user ID string to MongoDB ObjectID 
+# Convert user ID string to MongoDB ObjectID 
 #
 # From frontend to database
 def mongo_objectid(id_string: str) -> ObjectId:

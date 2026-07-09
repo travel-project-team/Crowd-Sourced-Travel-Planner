@@ -1,8 +1,10 @@
-// Server side user authentication 
+// Client side user authentication 
 
 import { usersApi } from "./api";
 
-// Manages user JWT access token
+// Manage user JWT access tokens
+//
+// Example user logout call: authentication.logout()
 export const authentication = {
     // Login and save token
     async login(data) {
@@ -13,7 +15,7 @@ export const authentication = {
     return response;
   },
 
-    // Remove token
+    // Remove token 
     logout() {
         localStorage.removeItem("access_token");
     },

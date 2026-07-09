@@ -47,9 +47,9 @@ def create_access_token(data: dict) -> str:
 # Verify JWT access token 
 def verify_user(credentials = Depends(token_extractor)):
     token = credentials.credentials
-
-    try:
-        # Decode and verify JWT token
+    
+    # Decode and verify JWT token
+    try:    
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
         user_id = payload.get("user_id")
@@ -65,7 +65,7 @@ def verify_user(credentials = Depends(token_extractor)):
 
     # Find authenticated user in database
     user = config.db.users.find_one({"_id": user_id})
-    
+
     if user is None: 
         raise HTTPException(status_code=401, detail="User not found")
 
