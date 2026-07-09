@@ -9,10 +9,10 @@ from dotenv import load_dotenv
 # Load .env file for environment variables
 load_dotenv()
 
-from config import connect_db, close_db
-from routes.trips import router as trips_router
-from routes.users import router as users_router
-from routes.experiences import router as experiences_router
+from src.config import connect_db, close_db
+from src.routes.trips import router as trips_router
+from src.routes.users import router as users_router
+from src.routes.experiences import router as experiences_router
 
 # FastAPI app startup and shutdown lifecycle 
 @asynccontextmanager

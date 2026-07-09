@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, status, Depends
 
 from src.config import db  
-from src.schemas.users import UserRegister, UserLogin, UsersProfile, UsersUpdate
+from src.schemas.users import UsersRegister, UsersLogin, UsersProfile, UsersUpdate
 from src.utility.authorization import hash_password, verify_password, create_access_token, verify_user
 from src.utility.mongodb import mongo_objectid
 
@@ -17,7 +17,7 @@ router = APIRouter(prefix="/api/users", tags=["Users"])
 #
 # Frontend Component: usersApi.create(data)
 @router.post("", status_code=status.HTTP_201_CREATED)
-def create_user(user_info: UserRegister):
+def create_user(user_info: UsersRegister):
     '''
     Input: JSON with user information
     Output: JSON with success/error message 
@@ -48,7 +48,7 @@ def create_user(user_info: UserRegister):
 #
 # Frontend Component: usersApi.login(data)
 @router.post("/login")
-def login(form_data: UserLogin):
+def login(form_data: UsersLogin):
     '''
     Input: JSON with email and password
     Output: JSON with JWT token that contains sub=email, user_id:_id, expiration_time:60.
