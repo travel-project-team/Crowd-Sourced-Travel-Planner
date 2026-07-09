@@ -2,11 +2,7 @@
 
 import os
 import logging
-from dotenv import load_dotenv
 from pymongo import MongoClient
-
-# Load environment variables from .env 
-load_dotenv()
 
 MONGODB_URL = os.getenv("MONGODB_URL")
 SECRET_KEY = os.getenv("SECRET_KEY")

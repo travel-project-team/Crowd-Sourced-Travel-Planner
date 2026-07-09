@@ -20,11 +20,10 @@ dnspython==2.8.0
 pymongo==4.17.0
 python-dotenv==1.2.2
 
-# Authentication and Security
+# Authentication 
 bcrypt==4.1.2
 passlib[bcrypt]==1.7.4
-pyjwt==2.8.0
-
+python-jose[cryptography]==3.3.0
 
 # Support Utilities
 click==8.4.2
