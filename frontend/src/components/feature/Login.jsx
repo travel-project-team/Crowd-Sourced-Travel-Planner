@@ -4,7 +4,7 @@ import "../../styles/Forms.css"
 
 import { useEffect, useState } from "react";
 
-export const Login = () => {
+export const Login = ({setPage}) => {
   const [errors, setErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [serverResponse, setServerResponse] = useState({
@@ -49,7 +49,7 @@ export const Login = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        if (response.status === 422 && Array.isArray(data.detail)) {
+        if (response.status === 401 && Array.isArray(data.detail)) {
             const fastapiErrors = {};
             data.detail.forEach((err) => {
             const fieldName = err.loc[err.loc.length - 1];
@@ -68,6 +68,12 @@ export const Login = () => {
 
       // Reset errors
       setErrors({});
+
+      // get returned token
+      localStorage.setItem("token", data.access_token);
+
+      // page for redirection
+      setPage("dashboard");
 
       // Successful API Response
       setServerResponse({
