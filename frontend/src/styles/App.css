@@ -1,0 +1,25 @@
+
+.toggle-wrapper {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  text-decoration: underline;
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.25rem;
+  transition: color 0.15s ease;
+}
+
+.toggle-btn:hover {
+  color: #1d4ed8;
+}

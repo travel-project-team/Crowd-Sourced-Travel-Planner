@@ -1,0 +1,75 @@
+
+.dashboard-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  padding: 20px;
+}
+
+
+.dashboard-card {
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 650px;
+  text-align: center;
+  border: 1px solid rgba(229, 231, 235, 0.5);
+  transition: transform 0.3s ease;
+}
+
+
+.dashboard-heading {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin-bottom: 24px;
+  letter-spacing: -0.025em;
+}
+
+
+.profile-wrapper {
+  margin-top: 16px;
+  padding: 20px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+}
+
+.welcome-message {
+  font-size: 1.25rem;
+  color: #334155;
+  margin: 0;
+}
+
+.welcome-name {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+
+.loading-message {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

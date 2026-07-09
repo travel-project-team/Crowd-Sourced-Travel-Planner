@@ -1,4 +1,4 @@
-# Server side user authentication 
+# Server side user authentication
 
 from datetime import datetime, timedelta, timezone
 
@@ -32,14 +32,14 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 # Generate JWT access token
 def create_access_token(data: dict) -> str:
     user_information = data.copy()
-    
+
     # Calculate and add token expiration
     expiration_time = datetime.now(timezone.utc) + timedelta(minutes=EXPIRATION_MINUTES)
     user_information.update({"exp": expiration_time})
-    
-    # JWT should have sub=email, user_id:_id, expiration_time:expiration_minutes. 
+
+    # JWT should have sub=email, user_id:_id, expiration_time:expiration_minutes.
     jwt_token = jwt.encode(user_information, SECRET_KEY, algorithm=ALGORITHM)
-    
+
     return jwt_token
 
 
@@ -48,17 +48,17 @@ def create_access_token(data: dict) -> str:
 # Pull user id from this!
 def verify_user(credentials = Depends(token_extractor)):
     token = credentials.credentials
-    
+
     # Decode and verify JWT token
-    try:    
+    try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
         user_id = payload.get("user_id")
 
-        if user_id is None: 
+        if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid token")
 
-    except JWTError: 
+    except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
     # Convert to MongoDB ObjectId
@@ -67,7 +67,7 @@ def verify_user(credentials = Depends(token_extractor)):
     # Find authenticated user in database
     user = config.db.users.find_one({"_id": user_id})
 
-    if user is None: 
+    if user is None:
         raise HTTPException(status_code=401, detail="User not found")
 
     return user

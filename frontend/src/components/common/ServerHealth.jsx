@@ -1,8 +1,8 @@
 // Frontend-Backend server health
-// Development only component 
+// Development only component
 
 import { useEffect, useState } from "react";
-import { serverHealthApi } from "../services/api";
+import { serverHealthApi } from "../../services/api";
 
 export default function ServerHealth() {
   // Tracks connection status: loading, success,  error

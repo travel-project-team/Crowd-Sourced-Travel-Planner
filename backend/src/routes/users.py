@@ -34,14 +34,14 @@ def get_user_id(user=Depends(verify_user)):
 def create_user(user_info: UsersRegister):
     '''
     Input: JSON with user information
-    Output: JSON with success/error message 
+    Output: JSON with success/error message
     '''
     # Check for existing email and username
     if config.db.users.find_one({"email": user_info.email}):
         raise HTTPException(status_code=400, detail="Email already registered")
     if config.db.users.find_one({"username": user_info.username}):
         raise HTTPException(status_code=400, detail="Username already taken")
-    
+
     hashed = hash_password(user_info.password)
     new_user = {
         "first_name": user_info.first_name,
@@ -51,7 +51,7 @@ def create_user(user_info: UsersRegister):
         "password_hash": hashed,
         "created_at": datetime.now(timezone.utc)
     }
-    
+
     config.db.users.insert_one(new_user)
     return {"message": "User registered successfully"}
 
@@ -72,14 +72,14 @@ def login(form_data: UsersLogin):
 
     if user is None:
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    
+
     # Validate password
     get_database_hash = user["password_hash"]
     password_check = verify_password(form_data.password, get_database_hash)
-    
+
     if password_check is False:
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    
+
     # Generate JWT access token
     access_token = create_access_token(data={
         "sub": user["email"],
@@ -120,7 +120,7 @@ def update_user(data: UsersUpdate, user=Depends(verify_user)):
 
     if not data:
         raise HTTPException(status_code=400, detail="No update fields provided")
-    
+
     # Get user ID from verified token
     user_id = user["_id"]
 
