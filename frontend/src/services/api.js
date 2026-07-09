@@ -17,7 +17,7 @@ function buildQuery(params = {}) {
   return qs ? `?${qs}` : "";
 }
  
-// HTTP request engine with error handling
+// HTTP request engine 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
  

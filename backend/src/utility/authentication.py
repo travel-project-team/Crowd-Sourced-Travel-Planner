@@ -6,10 +6,10 @@ from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
-from bson import ObjectId
+from fastapi.security import HTTPBearer
 
-from src.config import db
+from src import config
+from src.utility.mongodb import mongo_objectid
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
@@ -17,7 +17,8 @@ EXPIRATION_MINUTES = 60
 
 password_encryption = CryptContext(schemes=["bcrypt"])
 
-token_extractor = OAuth2PasswordBearer(tokenUrl="/api/users/login")
+token_extractor = HTTPBearer(scheme_name="JWT Token")
+
 
 # Hash plain text password
 def hash_password(password: str) -> str:
@@ -44,21 +45,28 @@ def create_access_token(data: dict) -> str:
 
 
 # Verify JWT access token 
-def verify_user(token: str = Depends(token_extractor)):
+def verify_user(credentials = Depends(token_extractor)):
+    token = credentials.credentials
+
     try:
+        # Decode and verify JWT token
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        
-        # Check token for user ID
+
         user_id = payload.get("user_id")
-        if user_id is None:
+
+        if user_id is None: 
             raise HTTPException(status_code=401, detail="Invalid token")
 
-    except JWTError:
+    except JWTError: 
         raise HTTPException(status_code=401, detail="Invalid token")
 
-    # Check user exist
-    user = db.users.find_one({"_id": ObjectId(user_id)})
-    if user is None:
+    # Convert string user ID to MongoDB ObjectId
+    user_id = mongo_objectid(user_id)
+
+    # Find authenticated user in database
+    user = config.db.users.find_one({"_id": user_id})
+    
+    if user is None: 
         raise HTTPException(status_code=401, detail="User not found")
 
     return user

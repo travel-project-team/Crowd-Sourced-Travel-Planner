@@ -23,7 +23,7 @@ export const authentication = {
         return localStorage.getItem("access_token");
     },
 
-    // Check if user is logged in
+    // Check if user is logged in -returns True or False
     statusToken() {
         return !!this.getToken();
     }
