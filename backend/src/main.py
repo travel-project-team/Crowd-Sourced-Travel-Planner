@@ -4,8 +4,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from contextlib import asynccontextmanager
-from config import connect_db, close_db
+from dotenv import load_dotenv
 
+# Load .env file for environment variables
+load_dotenv()
+
+from config import connect_db, close_db
 from routes.trips import router as trips_router
 from routes.users import router as users_router
 from routes.experiences import router as experiences_router

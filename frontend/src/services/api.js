@@ -3,7 +3,6 @@
 // Vite proxy -- Development 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
-// Cancel requests that hang go on too long
 const REQUEST_TIMEOUT = 10000;
  
 // Convert params object to a query string and skipping empty values. Example: buildQuery({ location: "Seattle", limit: 10 }) --> "?location=Seattle&limit=10"
@@ -22,32 +21,45 @@ function buildQuery(params = {}) {
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
  
-  // Timeout support: abort the fetch if the server never responds
+  // Server timeout support
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
- 
+
   try {
+    // Handle JWT access token
+    const token = localStorage.getItem("access_token");
+
     const response = await fetch(url, {
       signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
+        ...(token && {
+          Authorization: `Bearer ${token}`,
+        }),
         ...options.headers,
       },
       ...options,
     });
  
     if (!response.ok) {
+      // Check for expired/invalid JWT
+      if (response.status === 401 && localStorage.getItem("access_token")) {
+        localStorage.removeItem("access_token");
+      }
+
       let errorMessage = `Request failed with status ${response.status}`;
+
       try {
         const errorBody = await response.json();
         errorMessage = errorBody.message || errorBody.detail || errorMessage;
       } catch {
         // Response body wasn't JSON, fall back to default message
       }
+
       throw new Error(errorMessage);
     }
  
-    // Handle empty responses (e.g. 204 No Content from DELETE)
+    // Handle empty responses 
     if (response.status === 204) {
       return null;
     }
@@ -58,7 +70,7 @@ async function request(endpoint, options = {}) {
     if (err.name === "AbortError") {
       throw new Error("The request timed out. Please try again.");
     }
-    // fetch() rejects with TypeError on network failure
+    // Network failure
     if (err instanceof TypeError) {
       throw new Error(
         "Unable to connect to the server. Please check your connection or try again later."
@@ -73,10 +85,13 @@ async function request(endpoint, options = {}) {
 // HTTP method wrapper 
 const api = {
   get: (endpoint) => request(endpoint, { method: "GET" }),
+
   post: (endpoint, body) =>
     request(endpoint, { method: "POST", body: JSON.stringify(body) }),
+
   put: (endpoint, body) =>
     request(endpoint, { method: "PUT", body: JSON.stringify(body) }),
+
   delete: (endpoint) => request(endpoint, { method: "DELETE" }),
 };
  
@@ -85,13 +100,12 @@ export const serverHealthApi = {
   check: () => api.get("/server-health"),
 };
  
-// Feature APIs 
+
 /* =============
    Users
 ================ */
 export const usersApi = {
-  getAll: () => api.get("/users"),
- 
+  // Load user profile
   getById: (id) => api.get(`/users/${id}`),
  
   create: (data) => api.post("/users", data),
@@ -99,8 +113,12 @@ export const usersApi = {
   update: (id, data) => api.put(`/users/${id}`, data),
  
   remove: (id) => api.delete(`/users/${id}`),
+
+  // Send email and password. Recieve access token
+  login: (data) => api.post("/users/login", data),
 };
  
+
 /* =============
    Trips
 ================ */
@@ -116,6 +134,7 @@ export const tripsApi = {
   remove: (id) => api.delete(`/trips/${id}`),
 };
  
+
 /* =============
    Experiences
 ================ */
