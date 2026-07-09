@@ -41,15 +41,35 @@ export const Registration = () => {
     setIsFormSubmitted(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/create", {
+
+      // re-format for backend
+      const payload = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const response = await fetch("http://localhost:8000/api/users/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
+
+      if (!response.ok) {
+      setServerResponse({
+        type: "error",
+        message: data.detail || "Registration failed.",
+      });
+        setIsFormSubmitted(false);
+        setIsLoading(false);
+        return;
+      }
 
       // Successful API Response
       setServerResponse({

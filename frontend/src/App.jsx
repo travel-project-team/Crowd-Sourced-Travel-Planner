@@ -16,7 +16,7 @@ import { DashboardLayout } from './layouts/DashboardLayout';
 
 
 function App() {
-  //  const [showLogin, setShowLogin] = useState(false);
+
 
    const [page, setPage] = useState(localStorage.getItem("token") ? "dashboard" : "login");
 
@@ -24,7 +24,7 @@ function App() {
     <>
       <ServerHealth />
       <div>
-        {/* {showLogin ? <Login /> : <Registration />} */}
+
 
         {page === "register" && <Registration setPage={setPage}/>}
         {page === "login" && <Login setPage={setPage}/>}

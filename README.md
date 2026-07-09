@@ -13,11 +13,13 @@ Create virtual environment.
 ```bash
 cd backend
 
-* Windows: 
+* Windows:
 python -m venv venv
 .\venv\Scripts\activate
 
-* Mac: 
+run this command: pip install "bcrypt==4.0.1"
+
+* Mac:
 python3 -m venv venv
 source venv/bin/activate
 ```
