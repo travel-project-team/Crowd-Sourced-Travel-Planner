@@ -1,7 +1,7 @@
 // citation: https://youtu.be/JVCU2qsGvOs?si=iVz1N7_lr78bsDkh
 import { Outlet } from "react-router-dom"
 import { Header } from "../components/common/Header"
-import { Siderbar } from "../components/Sidebar"
+import { Siderbar } from "../components/common/Sidebar"
 export const DashboardLayout = () => {
     return (
         <div className="flex">
