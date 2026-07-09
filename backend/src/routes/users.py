@@ -117,7 +117,7 @@ def update_user(id: str, data: UsersUpdate, user=Depends(verify_user)):
     if user["_id"] != user_id:
         raise HTTPException(status_code=403, detail="Unauthorized access")
 
-    # Disable edit of important fields
+    # Disable important fields
     data.pop("_id", None)
     data.pop("password_hash", None)
     data.pop("created_at", None)
@@ -141,9 +141,7 @@ def update_user(id: str, data: UsersUpdate, user=Depends(verify_user)):
         data["password_hash"] = hash_password(plain_password)
     
     # Update user in database
-    result = db.users.update_one({"_id": user_id}, {"$set": data})
-    if result.matched_count == 0:
-        raise HTTPException(status_code=404, detail="User not found")
+    db.users.update_one({"_id": user_id}, {"$set": data})
     
     return {"message": "User updated successfully"}
 
@@ -167,8 +165,6 @@ def remove_user(id: str, user=Depends(verify_user)):
         raise HTTPException(status_code=403, detail="Unauthorized access")
         
     # Delete user from database
-    result = db.users.delete_one({"_id": user_id})
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="User not found")
+    db.users.delete_one({"_id": user_id})
     
     return {"message": "User deleted successfully"}

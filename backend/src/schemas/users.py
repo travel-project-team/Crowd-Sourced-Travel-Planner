@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from datetime import datetime, timezone
+from pydantic import EmailStr
 
 # Users Base 
 class UsersBase(BaseModel):

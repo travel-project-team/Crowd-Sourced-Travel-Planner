@@ -14,6 +14,7 @@ annotated-doc==0.0.4
 annotated-types==0.7.0
 typing-inspection==0.4.2
 typing_extensions==4.16.0
+email-validator==2.2.0
 
 # Database 
 dnspython==2.8.0
