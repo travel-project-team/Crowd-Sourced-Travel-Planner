@@ -1,10 +1,10 @@
-// citation: https://youtu.be/YHiKHJbaTaY?si=Q_gdAE5wCmLruB-s
+// citation: https://youtu.be/k1xMMHea2Ms?si=qiSzGC1DGfF6tMR9
 
 import "../../styles/Forms.css"
 
 import { useEffect, useState } from "react";
 
-export const Login = () => {
+export const Registration = () => {
   const [errors, setErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [serverResponse, setServerResponse] = useState({
@@ -15,8 +15,12 @@ export const Login = () => {
 
   // Values for form inputs
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
+    username: "",
     password: "",
+    confirmPassword:"",
   });
 
   // Handle change function
@@ -37,44 +41,25 @@ export const Login = () => {
     setIsFormSubmitted(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/login", {
+      const response = await fetch("http://localhost:8000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        if (response.status === 422 && Array.isArray(data.detail)) {
-            const fastapiErrors = {};
-            data.detail.forEach((err) => {
-            const fieldName = err.loc[err.loc.length - 1];
-            fastapiErrors[fieldName] = err.msg;
-            });
-            setErrors(fastapiErrors);
-        } else {
-            setServerResponse({
-            type: "error",
-            message: data.detail || "Invalid credentials. Please try again.",
-            });
-        }
-        setIsLoading(false);
-        return;
-      }
-
-      // Reset errors
-      setErrors({});
-
       // Successful API Response
       setServerResponse({
         type: "success",
-        message: data.message || "Logged in successfully!",
+        message: data.message || "User Registered successfully!",
       });
+      setErrors({});
+      setIsFormSubmitted(true);
       setIsLoading(false);
+
     } catch (error) {
       console.log("API Error: ", error);
       setServerResponse({
@@ -82,6 +67,7 @@ export const Login = () => {
         message: "Unable to connect to FastAPI backend.",
       });
       setIsLoading(false);
+      setIsFormSubmitted(false);
     }
   };
 
@@ -95,16 +81,35 @@ export const Login = () => {
 
   const validateForm = () => {
     let newErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "Please enter your first name";
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Please enter your last name";
+    }
+
     if (!formData.email.trim()) {
       newErrors.email = "Please enter your email address";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
+    if (!formData.username.trim()) {
+      newErrors.username = "Please enter a username";
+    }
+
     if (!formData.password.trim()) {
       newErrors.password = "Please enter your password";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 chars long";
+    }
+
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(newErrors);
@@ -115,10 +120,46 @@ export const Login = () => {
     <div className="login-container">
       <div className="login-card">
         <h2 className="login-heading">
-          Login Form
+          Registration Form
         </h2>
 
         <form onSubmit={handleSubmit} className="login-form">
+          <div>
+            <label htmlFor="firstName" className="form-label">
+              First Name
+            </label>
+            <input
+              id="firstName"
+              type="text"
+              name="firstName"
+              onChange={handleChange}
+              value={formData.firstName}
+              placeholder="Enter your first name"
+              className="form-input"
+            />
+            {errors.firstName && (
+              <p className="error-message">{errors.firstName}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="lastName" className="form-label">
+              Last Name
+            </label>
+            <input
+              id="lastName"
+              type="text"
+              name="lastName"
+              onChange={handleChange}
+              value={formData.lastName}
+              placeholder="Enter your first name"
+              className="form-input"
+            />
+            {errors.lastName && (
+              <p className="error-message">{errors.lastName}</p>
+            )}
+          </div>
+
           <div>
             <label htmlFor="email" className="form-label">
               Email
@@ -134,6 +175,24 @@ export const Login = () => {
             />
             {errors.email && (
               <p className="error-message">{errors.email}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="username" className="form-label">
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              onChange={handleChange}
+              value={formData.username}
+              placeholder="Enter a username"
+              className="form-input"
+            />
+            {errors.username && (
+              <p className="error-message">{errors.username}</p>
             )}
           </div>
 
@@ -155,6 +214,24 @@ export const Login = () => {
             )}
           </div>
 
+            <div>
+            <label htmlFor="confirm-password" className="form-label">
+              Confirm Password
+            </label>
+            <input
+              id="confirm-password"
+              type="password"
+              name="confirmPassword"
+              onChange={handleChange}
+              value={formData.confirmPassword}
+              placeholder="Re-enter your password"
+              className="form-input"
+            />
+            {errors.confirmPassword && (
+              <p className="error-message">{errors.confirmPassword}</p>
+            )}
+          </div>
+
           <div className="submit-wrapper">
             <button
               className="submit-btn"
@@ -165,6 +242,15 @@ export const Login = () => {
             </button>
           </div>
         </form>
+
+        <div className="preview-container">
+            <h3 className="preview-title">Form Preview</h3>
+            <h4 className="preview-text">First Name: {formData.firstName}</h4>
+            <h4 className="preview-text">Last Name: {formData.lastName}</h4>
+            <h4 className="preview-text">Email: {formData.email}</h4>
+            <h4 className="preview-text">Username: {formData.username}</h4>
+        </div>
+
 
         {serverResponse.message && (
             <p className={`banner ${

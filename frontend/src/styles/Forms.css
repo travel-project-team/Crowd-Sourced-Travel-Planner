@@ -130,3 +130,44 @@
   background-color: #a7f3d0;
   border-color: #6ee7b7;
 }
+
+
+.preview-container {
+  margin-top: 1.5rem;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  box-sizing: border-box;
+}
+
+
+.preview-container > * + * {
+  margin-top: 1rem;
+}
+
+
+.preview-title {
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  color: #111827;
+}
+
+
+.preview-text {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  color: #374151;
+}
+
+
+.success-banner {
+  margin-top: 1rem;
+  text-align: center;
+  color: #16a34a;
+  background-color: #065f46;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
