@@ -1,4 +1,4 @@
-// Dedicated HTTP request file for all backend communication
+// Dedicated HTTP request file for all backend FastAPI communication
 
 // Vite proxy -- Development 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
@@ -26,7 +26,7 @@ async function request(endpoint, options = {}) {
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
   try {
-    // Handle JWT access token
+    // Add JWT access token if user is authenticated
     const token = localStorage.getItem("access_token");
 
     const response = await fetch(url, {
@@ -114,7 +114,7 @@ export const usersApi = {
  
   remove: (id) => api.delete(`/users/${id}`),
 
-  // Send email and password. Recieve access token
+  // Send email and password. Return access token
   login: (data) => api.post("/users/login", data),
 };
  

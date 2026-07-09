@@ -1,4 +1,4 @@
-# Handles client token and user passwords
+# Server side user authentication 
 
 import os
 from datetime import datetime, timedelta, timezone

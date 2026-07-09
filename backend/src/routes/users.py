@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 
 from src.config import db  
 from src.schemas.users import UsersRegister, UsersLogin, UsersProfile, UsersUpdate
-from src.utility.authorization import hash_password, verify_password, create_access_token, verify_user
+from src.utility.authentication import hash_password, verify_password, create_access_token, verify_user
 from src.utility.mongodb import mongo_objectid
 
 router = APIRouter(prefix="/api/users", tags=["Users"])
