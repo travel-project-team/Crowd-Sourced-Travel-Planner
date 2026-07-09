@@ -1,10 +1,14 @@
 // citation: https://youtu.be/k1xMMHea2Ms?si=qiSzGC1DGfF6tMR9
+// citation: AI enhanced
 
 import "../../styles/Forms.css"
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { usersApi } from "../../services/api";
 
 export const Registration = () => {
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [serverResponse, setServerResponse] = useState({
@@ -51,25 +55,7 @@ export const Registration = () => {
         password: formData.password,
       };
 
-      const response = await fetch("http://localhost:8000/api/users/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-      setServerResponse({
-        type: "error",
-        message: data.detail || "Registration failed.",
-      });
-        setIsFormSubmitted(false);
-        setIsLoading(false);
-        return;
-      }
+      const data = await usersApi.create(payload);
 
       // Successful API Response
       setServerResponse({
@@ -78,26 +64,17 @@ export const Registration = () => {
       });
       setErrors({});
       setIsFormSubmitted(true);
-      setIsLoading(false);
-
     } catch (error) {
-      console.log("API Error: ", error);
       setServerResponse({
         type: "error",
-        message: "Unable to connect to FastAPI backend.",
+        message: error.message || "Unable to create user.",
       });
-      setIsLoading(false);
       setIsFormSubmitted(false);
+
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (!serverResponse.message) return;
-    const timer = setTimeout(() => {
-      setServerResponse({ type: "", message: "" });
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [serverResponse.message]);
 
   const validateForm = () => {
     let newErrors = {};
@@ -235,7 +212,7 @@ export const Registration = () => {
           </div>
 
             <div>
-            <label htmlFor="confirm-password" className="form-label">
+            <label htmlFor="confirmPassword" className="form-label">
               Confirm Password
             </label>
             <input
@@ -258,18 +235,33 @@ export const Registration = () => {
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Logging in..." : "Login"}
+              {isLoading ? "Creating Account..." : "Register"}
             </button>
           </div>
         </form>
 
-        <div className="preview-container">
+        <div className="toggle-wrapper">
+          <p>
+            Have an account?{" "}
+            <button
+              className="toggle-btn"
+              type="button"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+          </p>
+        </div>
+
+        {isFormSubmitted && serverResponse.type === "success" && (
+          <div className="preview-container">
             <h3 className="preview-title">Form Preview</h3>
             <h4 className="preview-text">First Name: {formData.firstName}</h4>
             <h4 className="preview-text">Last Name: {formData.lastName}</h4>
             <h4 className="preview-text">Email: {formData.email}</h4>
             <h4 className="preview-text">Username: {formData.username}</h4>
-        </div>
+          </div>
+        )}
 
 
         {serverResponse.message && (

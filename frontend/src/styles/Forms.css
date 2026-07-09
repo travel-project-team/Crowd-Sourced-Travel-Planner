@@ -171,3 +171,34 @@
   padding: 0.5rem;
   border-radius: 0.25rem;
 }
+
+
+.toggle-wrapper {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: #2563eb;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.toggle-btn:hover {
+  color: #1d4ed8;
+}
+
+.toggle-btn:focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+  border-radius: 0.125rem;
+}

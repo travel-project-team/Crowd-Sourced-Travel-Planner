@@ -14,34 +14,38 @@ import { Registration } from './components/feature/Registration';
 import { Dashboard } from './components/feature/Dashboard';
 import { DashboardLayout } from './layouts/DashboardLayout';
 
+const ProtectedRoutes = () => {
+  const token = localStorage.getItem("access_token");
+  return token ? <Outlet /> : <Navigate to="/login" replace />;
+};
+
+
 
 function App() {
 
-
-   const [page, setPage] = useState(localStorage.getItem("token") ? "dashboard" : "login");
-
   return (
     <>
-      <ServerHealth />
-      <div>
+     <ServerHealth />
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Registration />} />
 
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoutes />}>
+            {/* <Route element={<DashboardLayout />}> */}
+              <Route path="/dashboard" element={<Dashboard />} />
+            {/* </Route> */}
+          </Route>
 
-        {page === "register" && <Registration setPage={setPage}/>}
-        {page === "login" && <Login setPage={setPage}/>}
-        {page === "dashboard" && <Dashboard setPage={setPage}/>}
-
-        {(page === "register" ||  page === "login") && (
-          <div className='toggle-wrapper'>
-            {page === "login" ? (
-              <p>Don't have an account? { " "}
-              <button className="toggle-btn" onClick={() => setPage("register")}>Register</button></p>
-            ):(
-              <p>Already have an account? { " "}
-              <button className="toggle-btn" onClick={() => setPage("login")}>Login</button></p>
-            )}
-          </div>
-        )}
-      </div>
+          {/* Catch-all fallback redirect */}
+          <Route
+            path="*"
+            element={<Navigate to={localStorage.getItem("access_token") ? "/dashboard" : "/login"} replace />}
+          />
+        </Routes>
+    </Router>
     </>
   )
 }

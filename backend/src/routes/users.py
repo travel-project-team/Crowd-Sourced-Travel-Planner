@@ -30,7 +30,7 @@ def get_user_id(user=Depends(verify_user)):
 # Method: POST
 #
 # Frontend Component: usersApi.create(data)
-@router.post("/create", status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 def create_user(user_info: UsersRegister):
     '''
     Input: JSON with user information

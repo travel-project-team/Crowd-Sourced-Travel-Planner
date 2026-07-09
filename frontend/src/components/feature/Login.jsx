@@ -1,10 +1,14 @@
 // citation: https://youtu.be/YHiKHJbaTaY?si=Q_gdAE5wCmLruB-s
+// citation: AI enhanced
 
 import "../../styles/Forms.css"
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { usersApi } from "../../services/api";
 
-export const Login = ({setPage}) => {
+export const Login = () => {
+    const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [serverResponse, setServerResponse] = useState({
@@ -37,67 +41,35 @@ export const Login = ({setPage}) => {
     setIsFormSubmitted(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const data = await usersApi.login(formData)
 
-      const data = await response.json();
+      // if we get a return token then login
+      if (data && data.access_token) {
 
-      if (!response.ok) {
-        if (response.status === 401 && Array.isArray(data.detail)) {
-            const fastapiErrors = {};
-            data.detail.forEach((err) => {
-            const fieldName = err.loc[err.loc.length - 1];
-            fastapiErrors[fieldName] = err.msg;
-            });
-            setErrors(fastapiErrors);
-        } else {
-            setServerResponse({
-            type: "error",
-            message: data.detail || "Invalid credentials. Please try again.",
-            });
-        }
-        setIsLoading(false);
-        return;
+        localStorage.setItem("access_token", data.access_token);
+
+        // Successful API Response
+        setServerResponse({
+          type: "success",
+          message: data.message || "Logged in successfully!",
+        });
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
+
       }
-
-      // Reset errors
-      setErrors({});
-
-      // get returned token
-      localStorage.setItem("token", data.access_token);
-
-      // page for redirection
-      setPage("dashboard");
-
-      // Successful API Response
-      setServerResponse({
-        type: "success",
-        message: data.message || "Logged in successfully!",
-      });
-      setIsLoading(false);
     } catch (error) {
-      console.log("API Error: ", error);
+
       setServerResponse({
         type: "error",
-        message: "Unable to connect to FastAPI backend.",
+        message: error.message || "Unable to connect to the server.",
       });
+
+    } finally{
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (!serverResponse.message) return;
-    const timer = setTimeout(() => {
-      setServerResponse({ type: "", message: "" });
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [serverResponse.message]);
 
   const validateForm = () => {
     let newErrors = {};
@@ -171,6 +143,19 @@ export const Login = ({setPage}) => {
             </button>
           </div>
         </form>
+
+        <div className="toggle-wrapper">
+          <p>
+            Don't have an account?{" "}
+            <button
+              className="toggle-btn"
+              type="button"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </button>
+          </p>
+        </div>
 
         {serverResponse.message && (
             <p className={`banner ${
