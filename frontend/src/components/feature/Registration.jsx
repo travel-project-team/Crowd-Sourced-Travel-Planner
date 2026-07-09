@@ -41,7 +41,7 @@ export const Registration = () => {
     setIsFormSubmitted(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/register", {
+      const response = await fetch("http://localhost:8000/api/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
