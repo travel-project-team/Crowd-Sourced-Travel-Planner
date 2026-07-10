@@ -30,12 +30,13 @@
     flex-direction: column;
     align-items: center;
     border: solid 4px #1e3a8a;
+    background-color: #0b0867;
     border-radius: 20%;
     padding: 20px;
     margin: 20px;
 }
 
 .trip-title {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-style: italic;
 }

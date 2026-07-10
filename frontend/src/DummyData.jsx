@@ -30,7 +30,7 @@ const trip_1 = {
     trip_description: "A trip to Paris",
     owner_id: 1,
     collaborator_ids: [2, 3],
-    experiece_ids: [1, 2],
+    experience_ids: [1, 2],
     created_at: "2023-01-01T00:00:00.000Z",
     updated_at: "2023-01-01T00:00:00.000Z"
 }
@@ -41,7 +41,7 @@ const trip_2 = {
     trip_description: "A trip to New York",
     owner_id: 2,
     collaborator_ids: [1, 3],
-    experiece_ids: [3, 4],
+    experience_ids: [3, 4],
     created_at: "2023-01-01T00:00:00.000Z",
     updated_at: "2023-01-01T00:00:00.000Z"
 }
