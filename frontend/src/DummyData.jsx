@@ -1,4 +1,4 @@
-user_1 = {
+const user_1 = {
     _id: 1,
     first_name: "John",
     last_name: "Doe",
@@ -6,7 +6,7 @@ user_1 = {
     email: "johndoe@gmail.com",
 }
 
-user_2 = {
+const user_2 = {
     _id: 2,
     first_name: "Jane",
     last_name: "Smith",
@@ -14,7 +14,7 @@ user_2 = {
     email: "janesmith@gmail.com",
 }
 
-user_3 = {
+const user_3 = {
     _id: 3,
     first_name: "Jill",
     last_name: "Donovan",
@@ -22,9 +22,9 @@ user_3 = {
     email: "jilldonovan@gmail.com",
 }
 
-users = [user_1, user_2, user_3]
+const users = [user_1, user_2, user_3]
 
-trip_1 = {
+const trip_1 = {
     _id: 1,
     trip_name: "Paris",
     trip_description: "A trip to Paris",
@@ -35,7 +35,7 @@ trip_1 = {
     updated_at: "2023-01-01T00:00:00.000Z"
 }
 
-trip_2 = {
+const trip_2 = {
     _id: 2,
     trip_name: "New York",
     trip_description: "A trip to New York",
@@ -46,9 +46,9 @@ trip_2 = {
     updated_at: "2023-01-01T00:00:00.000Z"
 }
 
-trips = [trip_1, trip_2]
+const trips = [trip_1, trip_2]
 
-experience_1 = {
+const experience_1 = {
     _id: 1,
     user_id: 1,
     title: "Eiffel Tower",
@@ -65,7 +65,7 @@ experience_1 = {
     image_url: "../tungtung.jpeg"
 }
 
-experience_2 = {
+const experience_2 = {
     _id: 2,
     user_id: 2,
     title: "Louvre Museum",
@@ -82,7 +82,7 @@ experience_2 = {
     image_url: "../tungtung.jpeg"
 }
 
-experience_3 = {
+const experience_3 = {
     _id: 3,
     user_id: 3,
     title: "Statue of Liberty",
@@ -99,7 +99,7 @@ experience_3 = {
     image_url: "../tungtung.jpeg"
 }
 
-experience_4 = {
+const experience_4 = {
     _id: 4,
     user_id: 1,
     title: "Central Park",
@@ -116,10 +116,12 @@ experience_4 = {
     image_url: "../tungtung.jpeg"
 }
 
-experiences = [experience_1, experience_2, experience_3, experience_4]
+const experiences = [experience_1, experience_2, experience_3, experience_4]
 
-export const dummyData = {
+const dummyData = {
     users: users,
     trips: trips,
     experiences: experiences
 }
+
+export default dummyData

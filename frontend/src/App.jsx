@@ -13,6 +13,7 @@ import { Login } from './components/feature/Login';
 import { Registration } from './components/feature/Registration';
 import { Dashboard } from './components/feature/Dashboard';
 import { DashboardLayout } from './layouts/DashboardLayout';
+import { Trips } from './components/feature/Trips';
 
 const ProtectedRoutes = () => {
   const token = localStorage.getItem("access_token");
@@ -36,6 +37,7 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             {/* <Route element={<DashboardLayout />}> */}
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/trips" element={<Trips />} />
             {/* </Route> */}
           </Route>
 
