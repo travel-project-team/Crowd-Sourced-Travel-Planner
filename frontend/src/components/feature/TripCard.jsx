@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import DummyData from "../../DummyData.jsx";
 import "../../styles/Trips.css";
 
 export const TripCard = ( {trip} ) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const owner = DummyData.users.find(user => user._id === trip.owner_id);
 
@@ -26,19 +27,25 @@ export const TripCard = ( {trip} ) => {
             <div className="trip-experiences-dropdown">
                 <button 
                     className="dropdown-toggle" 
-                    onClick={() => setIsOpen(!isOpen)}
-                    aria-expanded={isOpen}
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    aria-expanded={isDropdownOpen}
                 >
                     Experiences
-                    <span className={`arrow ${isOpen ? "open": ""}`}>▶</span>
+                    <span className={`arrow ${isDropdownOpen ? "open": ""}`}>▶</span>
                 </button>
 
-                {isOpen && (
+                {isDropdownOpen && (
                     <ul className="dropdown-menu">
                         {experiences.length > 0 ? (
                             experiences.map(exp => (
                                 <li key={exp._id} className="dropdown-item">
-                                    {exp.title}
+                                    <Link
+                                        to={`/experience/${exp._id}`}
+                                        state={{ experience: exp }}
+                                        className="dropdown-button-link"
+                                    >
+                                        {exp.title}
+                                    </Link>
                                 </li>
                             ))
                         ) : (

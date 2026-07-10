@@ -1,0 +1,27 @@
+.experience-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    padding: 20px;
+}
+
+.experience-div {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.experience-title {
+    font-size: 1.6rem;
+    font-style: italic;
+    color: #64748b;
+}
+
+.experience-attr {
+    font-size: 1.1rem;
+    color: #64748b;
+}

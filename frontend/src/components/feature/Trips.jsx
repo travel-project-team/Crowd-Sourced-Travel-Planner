@@ -10,7 +10,11 @@ export const Trips = () => {
                 {DummyData.trips.map((trip) => (
                     <TripCard key={trip._id} trip={trip} />
                 ))}
-            </div>   
+            </div> 
+            <div>
+                <button>Add trip</button>
+                <button>Add experience</button>  
+            </div>
         </div>
     );
 }

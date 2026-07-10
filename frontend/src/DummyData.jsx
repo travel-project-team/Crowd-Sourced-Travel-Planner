@@ -1,3 +1,5 @@
+import tungtungImage from "./tungtung.jpeg";
+
 const user_1 = {
     _id: 1,
     first_name: "John",
@@ -62,7 +64,7 @@ const experience_1 = {
     average_rating: 4,
     keywords: ["landmark", "tourist attraction", "view"],
     created_at: "2023-01-01T00:00:00.000Z",
-    image_url: "../tungtung.jpeg"
+    image_url: tungtungImage
 }
 
 const experience_2 = {
@@ -79,7 +81,7 @@ const experience_2 = {
     average_rating: 3.67,
     keywords: ["museum", "art", "history"],
     created_at: "2023-01-01T00:00:00.000Z",
-    image_url: "../tungtung.jpeg"
+    image_url: tungtungImage
 }
 
 const experience_3 = {
@@ -96,7 +98,7 @@ const experience_3 = {
     average_rating: 5,
     keywords: ["landmark", "tourist attraction", "view"],
     created_at: "2023-01-01T00:00:00.000Z",
-    image_url: "../tungtung.jpeg"
+    image_url: tungtungImage
 }
 
 const experience_4 = {
@@ -113,7 +115,7 @@ const experience_4 = {
     average_rating: 4.5,
     keywords: ["park", "nature", "outdoors"],
     created_at: "2023-01-01T00:00:00.000Z",
-    image_url: "../tungtung.jpeg"
+    image_url: tungtungImage
 }
 
 const experiences = [experience_1, experience_2, experience_3, experience_4]
