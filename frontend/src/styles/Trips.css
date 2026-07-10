@@ -1,0 +1,83 @@
+.trips-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    padding: 20px;
+}
+
+.trips-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.trips-heading {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #1e3a8a;
+    margin-bottom: 24px;
+    letter-spacing: -0.025em;
+}
+
+.trip-card {
+    font-size: 1.1rem;
+    color: #64748b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid 4px #1e3a8a;
+    background-color: #0b0867;
+    border-radius: 10%;
+    padding: 30px;
+    margin: 20px;
+}
+
+.trip-title {
+    font-size: 1.6rem;
+    font-style: italic;
+}
+
+.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.dropdown-button-link {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    text-decoration: none; 
+    background-color: #1e3a8a;
+    border-radius: 4px;
+    margin-top: 10px;
+    color: #64748b;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-button-link:visited,
+.dropdown-button-link:active {
+    color: #64748b;
+    text-decoration: none;
+}
+
+.dropdown-button-link:hover {
+    background-color: #0b0867;
+}
+
+.dropdown-item-no-exp {
+    padding: 10px 16px;
+    color: #64748b;
+    font-size: 1rem;
+    font-style: italic;
+}
