@@ -1,1 +1,0 @@
-// Navigation Bar for all application pages

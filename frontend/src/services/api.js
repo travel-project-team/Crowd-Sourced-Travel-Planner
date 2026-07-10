@@ -1,4 +1,4 @@
-// Dedicated HTTP request file for all backend communication
+// Dedicated HTTP request file for all backend FastAPI communication
 
 // Vite proxy -- Development 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
@@ -17,7 +17,7 @@ function buildQuery(params = {}) {
   return qs ? `?${qs}` : "";
 }
  
-// HTTP request engine with error handling
+// HTTP request engine 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
  
@@ -26,10 +26,11 @@ async function request(endpoint, options = {}) {
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
   try {
-    // Handle JWT access token
+    // Add JWT access token if user is authenticated
     const token = localStorage.getItem("access_token");
 
     const response = await fetch(url, {
+      ...options,
       signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +39,6 @@ async function request(endpoint, options = {}) {
         }),
         ...options.headers,
       },
-      ...options,
     });
  
     if (!response.ok) {
@@ -105,17 +105,20 @@ export const serverHealthApi = {
    Users
 ================ */
 export const usersApi = {
-  // Load user profile
-  getById: (id) => api.get(`/users/${id}`),
- 
-  create: (data) => api.post("/users", data),
- 
-  update: (id, data) => api.put(`/users/${id}`, data),
- 
-  remove: (id) => api.delete(`/users/${id}`),
+  // Get user ID --note that ID not needed for any endpoint in usersApi!!
+  getId: () => api.get("/users/id"),
 
-  // Send email and password. Recieve access token
+  // User registration
+  create: (data) => api.post("/users", data),
+  
   login: (data) => api.post("/users/login", data),
+
+  // Load user profile
+  getProfile: () => api.get("/users"),
+
+  update: (data) => api.put("/users", data),
+ 
+  remove: () => api.delete("/users"),
 };
  
 

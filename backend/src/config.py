@@ -23,7 +23,7 @@ def connect_db():
 
         # Select database from MongoDB cluster
         db = client.travel_planner
-        
+
         # Logs connection status to console
         logger.info("Connected to MongoDB successfully!")
     except Exception as e:
