@@ -25,6 +25,10 @@ python-dotenv==1.2.2
 bcrypt==4.1.2
 python-jose[cryptography]==3.3.0
 
+# Image Storage
+cloudinary==1.45.0
+python-multipart==0.0.12
+
 # Support Utilities
 click==8.4.2
 colorama==0.4.6
