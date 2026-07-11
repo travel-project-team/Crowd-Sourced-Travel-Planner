@@ -1,8 +1,8 @@
-# Server side user authentication
+# User authentication helper functions 
+
+import bcrypt 
 
 from datetime import datetime, timedelta, timezone
-
-from passlib.context import CryptContext
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer
@@ -14,19 +14,26 @@ SECRET_KEY = config.SECRET_KEY
 ALGORITHM = "HS256"
 EXPIRATION_MINUTES = 60
 
-password_encryption = CryptContext(schemes=["bcrypt"])
-
 token_extractor = HTTPBearer(scheme_name="JWT Token")
 
 
 # Hash plain text password
 def hash_password(password: str) -> str:
-    return password_encryption.hash(password)
+    password_in_bytes = password.encode("utf-8")
+        
+    salt = bcrypt.gensalt()
+    hashed_bytes = bcrypt.hashpw(password_in_bytes, salt)
+    
+    return hashed_bytes.decode("utf-8")
 
 
 # Compares two password strings.
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return password_encryption.verify(plain_password, hashed_password)
+    plain_in_bytes = plain_password.encode("utf-8")
+    hashed_in_bytes = hashed_password.encode("utf-8")
+    
+    # Compare securely using native checkpw
+    return bcrypt.checkpw(plain_in_bytes, hashed_in_bytes)
 
 
 # Generate JWT access token
