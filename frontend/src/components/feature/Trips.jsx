@@ -1,5 +1,6 @@
 import DummyData from "../../DummyData.jsx";
 import { TripCard } from "./TripCard.jsx";
+import { Link } from "react-router-dom";
 import "../../styles/Trips.css";
 
 export const Trips = () => {
@@ -12,8 +13,12 @@ export const Trips = () => {
                 ))}
             </div> 
             <div>
-                <button>Add trip</button>
-                <button>Add experience</button>  
+                <Link to="/add-trip" className="add-button">
+                    Add trip
+                </Link>
+                <Link to="/add-experience" className="add-button">
+                    Add experience
+                </Link>
             </div>
         </div>
     );
