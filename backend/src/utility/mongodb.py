@@ -1,4 +1,4 @@
-# Handles validation for MongoDB
+# MongoDB helper functions
 
 from bson import ObjectId
 from fastapi import HTTPException

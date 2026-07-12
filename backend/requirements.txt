@@ -23,8 +23,11 @@ python-dotenv==1.2.2
 
 # Authentication 
 bcrypt==4.1.2
-passlib[bcrypt]==1.7.4
 python-jose[cryptography]==3.3.0
+
+# Image Storage
+cloudinary==1.45.0
+python_multipart==0.0.12
 
 # Support Utilities
 click==8.4.2
