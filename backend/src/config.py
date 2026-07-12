@@ -26,9 +26,9 @@ def initialize_services():
     try:
         # MongoDB 
         client = MongoClient(MONGODB_URL)
-        client.admin.command('ping') # Database connection test
+        client.admin.command('ping')     # Database connection test
         db = client.travel_planner
-        logger.info("Connected to MongoDB successfully!")
+        logger.info("---MongoDB connected!!")
 
         # Cloudinary
         cloudinary.config(
@@ -37,7 +37,7 @@ def initialize_services():
             api_secret=CLOUDINARY_SECRET,
             secure=True
         )
-        logger.info("Cloudinary configurations are ready!")
+        logger.info("---Cloudinary service ready!!")
 
     except Exception as e:
         logger.error(f"Error connecting to MongoDB: {str(e)}")
@@ -46,4 +46,5 @@ def close_services():
     global client
     if client:
         client.close()
-        logger.info("MongoDB connection closed.")
+        logger.info("---MongoDB disconnected.")
+        logger.info("---Cloudinary service off.")

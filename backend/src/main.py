@@ -42,7 +42,7 @@ app.include_router(trips_router)
 app.include_router(users_router)
 app.include_router(experiences_router)
 
-# Server connection test. 
+# Server connection test. ---Remove after development
 @app.get("/api/server-health")
 def api_test():
     return {"status": "SUCCESS", "message": "Backend connected successfully!"}
