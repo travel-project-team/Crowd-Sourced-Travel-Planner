@@ -27,7 +27,7 @@ python-jose[cryptography]==3.3.0
 
 # Image Storage
 cloudinary==1.45.0
-python-multipart==0.0.12
+python_multipart==0.0.12
 
 # Support Utilities
 click==8.4.2

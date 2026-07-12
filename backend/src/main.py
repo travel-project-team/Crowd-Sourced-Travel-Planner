@@ -5,20 +5,20 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from contextlib import asynccontextmanager
 
-from src.config import connect_db, close_db
+from src.config import initialize_services, close_services
 from src.routes.trips import router as trips_router
 from src.routes.users import router as users_router
 from src.routes.experiences import router as experiences_router
 
-# FastAPI app startup and shutdown lifecycle 
+# FastAPI app lifecycle 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup - database connection
-    connect_db()
+    # Start external services
+    initialize_services()
 
     yield
-    # Shutdown - database connection
-    close_db()
+    # Shutdown external services
+    close_services()
 
 app = FastAPI(lifespan=lifespan)
 

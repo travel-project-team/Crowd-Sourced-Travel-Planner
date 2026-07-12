@@ -21,7 +21,7 @@ client = None
 db = None
 
 # Connection manager -called in main.py
-def initialize_external_services():
+def initialize_services():
     global client, db
     try:
         # MongoDB 
@@ -42,7 +42,7 @@ def initialize_external_services():
     except Exception as e:
         logger.error(f"Error connecting to MongoDB: {str(e)}")
 
-def close_external_services():
+def close_services():
     global client
     if client:
         client.close()
