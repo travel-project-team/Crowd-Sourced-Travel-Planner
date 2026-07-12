@@ -1,31 +1,74 @@
 // Citation: AI enhanced formatting with Gemini.
 
-import "../../styles/AddForms.css";
+import "../../styles/EditForms.css";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const AddExperience = () => {
+export const EditExperience = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
 
+    const { experience } = location.state || {};
+
+    const [formData, setFormData] = useState({
+        title: experience?.title|| "",
+        description: experience?.description || "",
+        location_name: experience?.location_name || "",
+        keywords: experience?.keywords || [],
+        ratings: experience?.ratings || [],
+        image_url: experience?.image_url || ""
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const updatedFields = {}
+
+        Object.keys(formData).forEach((key) => {
+            if (formData[key] !== experience?.[key]) {
+                updatedFields[key] = formData[key]
+            }
+        });
+
+        navigate(-1);
+    }
+
+    if (!experience) {
+        return(
+            <div className="edit-container">
+                <p>No data found. Please return to prior page.</p>
+                <button className="back-button" onClick={() => navigate(-1)}>Back</button>
+            </div>
+        )
+    }
+
     return (
-        <div className="add-container">
-            <h2 className="add-heading">Add a New Experience</h2>
-            <form className="add-form">
+        <div className="edit-container">
+            <h2 className="edit-heading">Update Your Experience</h2>
+            <form className="edit-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="experience-name">Experience Title:</label>
-                    <input type="text" id="experience-name" name="experience-name" required />
+                    <input type="text" id="experience-name" name="title" value={formData.title} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="experience-description">Description:</label>
-                    <textarea id="experience-description" name="experience-description"></textarea>
+                    <textarea id="experience-description" name="description" value={formData.description} onChange={handleInputChange}></textarea>
                 </div>    
-                
+
                 <div className="form-group">
                     <label htmlFor="experience-location">Location:</label>
-                    <textarea id="experience-location" name="experience-location"></textarea>
-                </div>   
+                    <textarea id="experience-location" name="location_name" value={formData.location_name} onChange={handleInputChange}></textarea>
+                </div>  
 
                 <div className="form-group">
                     <label htmlFor="experience-keywords">Keywords</label>
@@ -33,6 +76,7 @@ export const AddExperience = () => {
                         <input 
                             type="text"
                             id="experience-keywords"
+                            name="keywords"
                             placeholder="Add keywords to help others can find your experience!"
                         />
                         <button type="button" className="inline-add-btn">Add</button>
@@ -55,11 +99,11 @@ export const AddExperience = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="experience-image">Upload Image:</label>
+                    <label htmlFor="image_url">Upload Image:</label>
                     <input 
                         type="file" 
                         id="experience-image" 
-                        name="experience-image" 
+                        name="image_url" 
                         accept="image/*"
                         className="file-input"
                     />
@@ -77,7 +121,7 @@ export const AddExperience = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="submit-button">Add Experience</button>
+                <button type="submit" className="submit-button">Update Experience</button>
             </form>
 
             <button className="back-button" onClick={() => navigate(-1)}>Back</button>
