@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { usersApi } from "../../services/api";
 
 export const Login = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [serverResponse, setServerResponse] = useState({
