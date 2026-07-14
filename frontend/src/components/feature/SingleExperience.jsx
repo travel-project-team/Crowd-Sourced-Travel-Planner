@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { experiencesApi } from "../../services/api.js";
 import "../../styles/Experience.css";
 
 export const SingleExperience = () => {
@@ -12,11 +13,17 @@ export const SingleExperience = () => {
         navigate(`/edit-experience/${experience._id}`, { state: { experience }});
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.stopPropagation();
         if (window.confirm("Are you sure you want to delete this experience?")) {
-            console.log("Delete experience:", experience._id);
-            navigate(-1);
+            try {
+                await experiencesApi.remove(experience._id);
+                alert("Experience deleted successfully.");
+
+                navigate(-1);
+            } catch (err) {
+                alert(`Failed to delete experience ${err.message}`);
+            }
         }
     }
 
@@ -35,12 +42,20 @@ export const SingleExperience = () => {
                 <p className="experience-title">{experience.title}</p>
                 <p className="experience-attr">{experience.description}</p>
                 <p className="experience-attr">{experience.location_name}</p>
-                <p className="experience-attr">Coordinates: {experience.location_jeojson.coordinates.join(", ")}</p>
-                <p className="experience-attr">Average Rating: {experience.average_rating}</p>
-                <p className="experience-attr">Keywords: {experience.keywords.join(", ")}</p>
+                <p className="experience-attr">Coordinates: {experience.location_geojson.coordinates.join(", ")}</p>
+
+                {experience.average_rating && (
+                    <p className="experience-attr"><strong>Average Rating:</strong> {experience.average_rating}</p>
+                )}
+
+                {experience.keywords?.length > 0 && (
+                    <p className="experience-attr"><strong>Keywords:</strong> {experience.keywords.join(", ")}</p>
+                )}
             </div>
             <div className="experience-div">
-                <img className="experience-img" src={experience?.image_url} alt={experience?.title} />
+                {experience.image_url && (
+                    <img className="experience-img" src={experience.image_url} alt={experience.title} />
+                )}
                 <div className="experience-actions">
                     <button className="back-button" onClick={() => navigate(-1)}>Back</button>
                     <button className="action-btn edit-btn" onClick={handleEdit} title="Edit Experience">
