@@ -99,3 +99,45 @@ def remove_trip(trip_id: str, user=Depends(verify_user)):
         raise HTTPException(status_code=403, detail="Only the trip owner can delete this trip")
     config.db.trips.delete_one({"_id": mongo_objectid(trip_id)})
     return {"message": "Trip deleted successfully"}
+
+# Add an Experience to a Trip
+@router.post("/{trip_id}/experiences/{experience_id}", status_code=status.HTTP_201_CREATED)
+def add_experience_to_trip(trip_id: str, experience_id: str, user=Depends(verify_user)):
+    trip = config.db.trips.find_one({"_id": mongo_objectid(trip_id)})
+    if trip is None:
+        raise HTTPException(status_code=404, detail="Trip not found")
+    if not user_can_access(trip, user):
+        raise HTTPException(status_code=403, detail="You do not have access to this trip")
+
+    # Verify the experience actually exists before linking it
+    if config.db.experiences.find_one({"_id": mongo_objectid(experience_id)}) is None:
+        raise HTTPException(status_code=404, detail="Experience not found")
+
+    # $addToSet is atomic and prevents duplicates
+    config.db.trips.update_one(
+        {"_id": mongo_objectid(trip_id)},
+        {
+            "$addToSet": {"experience_ids": experience_id},
+            "$set": {"updated_at": datetime.now(timezone.utc)},
+        }
+    )
+    return {"message": "Experience added to trip"}
+
+# Remove an Experience from a Trip
+@router.delete("/{trip_id}/experiences/{experience_id}")
+def remove_experience_from_trip(trip_id: str, experience_id: str, user=Depends(verify_user)):
+    trip = config.db.trips.find_one({"_id": mongo_objectid(trip_id)})
+    if trip is None:
+        raise HTTPException(status_code=404, detail="Trip not found")
+    if not user_can_access(trip, user):
+        raise HTTPException(status_code=403, detail="You do not have access to this trip")
+
+    # $pull is atomic
+    config.db.trips.update_one(
+        {"_id": mongo_objectid(trip_id)},
+        {
+            "$pull": {"experience_ids": experience_id},
+            "$set": {"updated_at": datetime.now(timezone.utc)},
+        }
+    )
+    return {"message": "Experience removed from trip"}
