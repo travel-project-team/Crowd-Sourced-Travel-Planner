@@ -7,12 +7,27 @@ from fastapi import UploadFile, HTTPException
 
 logger = logging.getLogger("uvicorn.error")
 
+
 # Upload image 
 #
 # Input: UploadFile (image)
 # Output: Image URL string
 async def cloudinary_upload(file: UploadFile, folder_name: str = "travel_planner") -> str:
     try:
+        # Validate image type
+        allowed_types = ["image/jpeg", "image/png", "image/webp"]
+
+        if file.content_type not in allowed_types:
+            raise HTTPException(status_code=400, detail="Only JPEG, PNG, and WEBP images are allowed.")
+
+        # Validate image size -max 5MB
+        max_size = 5 * 1024 * 1024
+
+        file_size = file.size
+
+        if file_size is not None and file_size > max_size:
+            raise HTTPException(status_code=400, detail="Image size must be less than 5MB.")
+        
         loop = asyncio.get_running_loop()
         
         # Upload configurations
@@ -37,6 +52,9 @@ async def cloudinary_upload(file: UploadFile, folder_name: str = "travel_planner
             
         return image_url
 
+    except HTTPException:
+        raise
+
     except Exception as e:
         logger.error(f"Cloudinary upload failure: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Cloud asset storage error: {str(e)}")
+        raise HTTPException(status_code=500,detail="Cloud asset storage error.")

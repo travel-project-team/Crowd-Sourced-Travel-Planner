@@ -105,20 +105,26 @@ export const serverHealthApi = {
    Users
 ================ */
 export const usersApi = {
-  // Get user ID --note that ID not needed for any endpoint in usersApi!!
-  getId: () => api.get("/users/id"),
-
-  // User registration
   create: (data) => api.post("/users", data),
 
   login: (data) => api.post("/users/login", data),
 
-  // Load user profile
+  // Load current user profile
   getProfile: () => api.get("/users"),
 
   update: (data) => api.put("/users", data),
 
   remove: () => api.delete("/users"),
+
+  // Accepts array of 1 or more ID/email
+  getBatchById: (data) => api.post("/users/id", data),
+
+  getBatchByEmail: (data) => api.post("/users/email", data),
+  
+  // Accepts FormData object
+  uploadAvatar: (data) => api.post("/users/avatar", data),
+  
+  removeAvatar: () => api.delete("/users/avatar"),
 };
 
 
