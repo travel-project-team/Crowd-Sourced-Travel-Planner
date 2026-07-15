@@ -1,0 +1,17 @@
+.dashboard-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f4f6;
+}
+
+.page-body {
+  padding: 24px;
+  flex-grow: 1;
+}
