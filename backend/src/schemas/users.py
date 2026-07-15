@@ -7,6 +7,7 @@ class UsersBase(BaseModel):
     last_name: str = Field(..., examples=["Billerson"])
     username: str = Field(..., examples=["billbill123"])
     email: EmailStr = Field(..., examples=["billie.billerson@example.com"])
+    avatar_url: str = Field(..., example=["https://example.com/avatar.png"])
 
 # POST for User Registration 
 class UsersRegister(UsersBase):
@@ -33,6 +34,7 @@ class UsersUpdate(BaseModel):
     username: str | None = Field(None, min_length=1)
     email: EmailStr | None = None
     password: str | None = Field(None, min_length=1)
+    avatar_url: str | None = None
 
 # GET for User ID 
 class UsersId(BaseModel):
