@@ -1,12 +1,13 @@
 # Experiences backend routes 
 from datetime import datetime, timezone
 from typing import Optional, List
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi import APIRouter, HTTPException, status, Depends, Query, UploadFile, File
 from src import config
 from src.schemas.experiences import ExperiencesCreate
 from src.utility.authentication import verify_user
 from src.utility.mongodb import mongo_objectid, mongo_string
-from pydantic import BaseModel
+from src.utility.cloudinary import cloudinary_upload
+from pydantic import BaseModel, Field
 
 router = APIRouter(prefix="/api/experiences", tags=["Experiences"])
 
@@ -18,6 +19,10 @@ class ExperiencesUpdate(BaseModel):
     location_geojson: Optional[dict] = None
     keywords: Optional[List[str]] = None
     image_url: Optional[str] = None
+
+# POST body for ratings
+class RatingCreate(BaseModel):
+    rating: int = Field(..., ge=1, le=5, examples=[4])
 
 # Get All Experiences + Search (experiencesApi.getAll() & experiencesApi.search(params))
 @router.get("")
@@ -95,3 +100,34 @@ def remove_experience(experience_id: str, user=Depends(verify_user)):
         raise HTTPException(status_code=403, detail="You can only delete your own experiences")
     config.db.experiences.delete_one({"_id": mongo_objectid(experience_id)})
     return {"message": "Experience deleted successfully"}
+
+# Upload Image (frontend sends the file -> backend uploads to Cloudinary and returns the URL)
+@router.post("/image")
+async def upload_image(file: UploadFile = File(...), user=Depends(verify_user)):
+    if not (file.content_type or "").startswith("image/"):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    image_url = await cloudinary_upload(file)
+    return {"image_url": image_url}
+
+# Rate an Experience
+@router.post("/{experience_id}/ratings", status_code=status.HTTP_201_CREATED)
+def rate_experience(experience_id: str, body: RatingCreate, user=Depends(verify_user)):
+    experience = config.db.experiences.find_one({"_id": mongo_objectid(experience_id)})
+    if experience is None:
+        raise HTTPException(status_code=404, detail="Experience not found")
+    if experience.get("user_id") == str(user["_id"]):
+        raise HTTPException(status_code=403, detail="You cannot rate your own experience")
+
+    # Auto append the rating then average
+    config.db.experiences.update_one(
+        {"_id": mongo_objectid(experience_id)},
+        {"$push": {"ratings": body.rating}}
+    )
+    updated = config.db.experiences.find_one({"_id": mongo_objectid(experience_id)})
+    ratings = updated.get("ratings", [])
+    average = round(sum(ratings) / len(ratings), 2) if ratings else None
+    config.db.experiences.update_one(
+        {"_id": mongo_objectid(experience_id)},
+        {"$set": {"average_rating": average}}
+    )
+    return {"message": "Rating added successfully", "average_rating": average, "rating_count": len(ratings)}
