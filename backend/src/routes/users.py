@@ -1,28 +1,15 @@
 # Users backend routes
 
 from datetime import datetime, timezone
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, UploadFile
 
 from src import config
-from src.schemas.users import UsersRegister, UsersLogin, UsersProfile, UsersUpdate, UsersId
+from src.schemas.users import UsersRegister, UsersLogin, UsersProfile, UsersUpdate, BatchUsersById, BatchUsersProfile, BatchUsersByEmail
 from src.utility.authentication import hash_password, verify_password, create_access_token, verify_user
-from src.utility.mongodb import mongo_string
+from src.utility.mongodb import mongo_objectid, mongo_string
+from src.utility.cloudinary import cloudinary_upload
 
 router = APIRouter(prefix="/api/users", tags=["Users"])
-
-
-# Return User ID
-#
-# Method: GET
-#
-# Frontend Component: usersApi.getId()
-@router.get("/id", response_model=UsersId)
-def get_user_id(user=Depends(verify_user)):
-    '''
-    Input: None
-    Output: Authenticated user MongoDB ID
-    '''
-    return {"id": str(user["_id"])}
 
 
 # User Registration
@@ -101,7 +88,6 @@ def get_profile(user=Depends(verify_user)):
     Input: none
     Output: JSON with authenticated user information
     '''
-    # Convert MongoDB ObjectId to string
     return mongo_string(user)
 
 
@@ -158,7 +144,7 @@ def update_user(data: UsersUpdate, user=Depends(verify_user)):
 
 # Delete User
 #
-# Method: DELETE  --remember to logout of token right after deletion
+# Method: DELETE
 #
 # Frontend Component: usersApi.remove()
 @router.delete("")
@@ -174,3 +160,133 @@ def remove_user(user=Depends(verify_user)):
     config.db.users.delete_one({"_id": user_id})
 
     return {"message": "User deleted successfully"}
+
+
+# Batch User Profiles By ID
+#
+# Method: POST 
+#
+# Frontend Component: usersApi.getBatchById()
+@router.post("/id", response_model=list[BatchUsersProfile])
+def profile_by_id(data: BatchUsersById):
+    """
+    Input: JSON with array of user IDs
+    Output: JSON with list of public user profiles
+    """
+    user_ids = [
+        mongo_objectid(user_id)
+        for user_id in data.user_ids
+    ]
+
+    # Find users that match IDs
+    users = config.db.users.find(
+        {
+            "_id": {
+                "$in": user_ids
+            }
+        }
+    )
+
+    users_dict = {
+        str(user["_id"]): mongo_string(user)
+        for user in users
+    }
+
+    # Return users in requested order 
+    return [
+        users_dict[user_id]
+        for user_id in data.user_ids
+        if user_id in users_dict
+    ]
+
+
+# Batch User Profiles By Email
+#
+# Method: POST
+#
+# Frontend Component: usersApi.getBatchByEmail()
+@router.post("/email", response_model=list[BatchUsersProfile])
+def profile_by_email(data: BatchUsersByEmail):
+    """
+    Input: JSON with array of user emails
+    Output: JSON with list of public user profiles
+    """
+    # Find users that match emails
+    users = config.db.users.find(
+        {
+            "email": {
+                "$in": data.emails
+            }
+        }
+    )
+
+    users_dict = {
+        user["email"]: mongo_string(user)
+        for user in users
+    }
+
+    # Return users in requested order
+    return [
+        users_dict[email]
+        for email in data.emails
+        if email in users_dict
+    ]
+
+
+# User Avatar Upload
+#
+# Method: POST
+#
+# Frontend Component: usersApi.uploadAvatar(data)
+@router.post("/avatar")
+async def upload_avatar(file: UploadFile, user=Depends(verify_user)):
+    """
+    Input: Image file
+    Output: JSON with avatar URL
+    """
+    # Upload image to Cloudinary
+    avatar_url = await cloudinary_upload(
+        file,
+        folder_name="travel_planner/users"
+    )
+
+    # Update user avatar URL in MongoDB
+    config.db.users.update_one(
+        {"_id": user["_id"]},
+        {
+            "$set": {
+                "avatar_url": avatar_url
+            }
+        }
+    )
+
+    return {
+        "message": "Avatar upload success",
+        "avatar_url": avatar_url
+    }
+
+# Delete User Avatar
+#
+# Method: DELETE
+#
+# Frontend Component: usersApi.removeAvatar()
+@router.delete("/avatar")
+def remove_avatar(user=Depends(verify_user)):
+    """
+    Input: None
+    Output: JSON with success/error message
+    """
+
+    # Remove avatar URL from MongoDB
+    config.db.users.update_one(
+        {"_id": user["_id"]},
+        {
+            "$set": {
+                "avatar_url": None
+            }
+        }
+    )
+
+    return {
+        "message": "Avatar removed successfully"
+    }
