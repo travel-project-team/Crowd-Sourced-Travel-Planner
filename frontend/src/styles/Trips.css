@@ -24,21 +24,58 @@
 }
 
 .trip-card {
+    position: relative;
     font-size: 1.1rem;
-    color: #64748b;
+    color: #eeeeee;
     display: flex;
     flex-direction: column;
     align-items: center;
     border: solid 4px #1e3a8a;
     background-color: #0b0867;
-    border-radius: 10%;
+    border-radius: 24px;
     padding: 30px;
     margin: 20px;
 }
 
+.trip-actions {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.action-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+}
+
+.edit-btn:hover {
+    background-color: #1e3a8a; /* Soft blue highlight for edit */
+}
+
+.delete-btn:hover {
+    background-color: #dc2626; /* Warning red highlight for delete */
+}
+
 .trip-title {
     font-size: 1.6rem;
-    font-style: italic;
+    font-style: intalic;
+    padding-bottom: 4px;
+    border-bottom: solid 2px #eeeeee;
 }
 
 .dropdown-menu {
@@ -60,14 +97,14 @@
     background-color: #1e3a8a;
     border-radius: 4px;
     margin-top: 10px;
-    color: #64748b;
+    color: #eeeeee;
     font-size: 1rem;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .dropdown-button-link:visited,
 .dropdown-button-link:active {
-    color: #64748b;
+    color: #eeeeee;
     text-decoration: none;
 }
 
@@ -77,7 +114,24 @@
 
 .dropdown-item-no-exp {
     padding: 10px 16px;
-    color: #64748b;
+    color: #eeeeee;
     font-size: 1rem;
     font-style: italic;
+}
+
+.add-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 20px 10px 20px 10px;
+    font-size: 1rem;
+    color: #eeeeee;
+    background-color: #1e3a8a;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none; 
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.add-button:hover {
+    background-color: #0b0867;
 }

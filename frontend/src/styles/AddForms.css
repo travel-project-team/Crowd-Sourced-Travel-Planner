@@ -1,0 +1,157 @@
+/* Citation: AI enhanced with Gemini. */
+
+.add-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 40px auto;
+    max-width: 500px;
+    width: 100%;
+}
+
+.add-heading {
+    margin-bottom: 30px;
+    font-size: 1.6rem;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+    text-align: left;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-with-button-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.input-with-button-row input, 
+.input-with-button-row select {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+.inline-add-btn {
+    padding: 8px 16px;
+    background-color: #e0e0e0;
+    color: #888;
+    border: none;
+    border-radius: 4px;
+}
+
+.inline-add-btn:hover {
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"], 
+select,
+textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.tags-collection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e0e0e0;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: .8rem;
+}
+
+.remove-tag {
+    background: none;
+    border: none;
+    margin-left: 6px;
+    color: #888;
+    padding: 0 2px;
+}
+
+.remove-tag:hover {
+    color: #333;
+}
+
+.submit-button
+.back-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    background-color: #28a745;
+    color: #eee;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+.back-button {
+    background-color: #6c757d;
+    color: white;
+    margin-top: 15px;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
+.star-rating {
+    display: flex;
+    gap: 5px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.star {
+    color: #ccc;
+    transition: color 0.2s ease;
+}
+
+.star.filled {
+    color: #ffc107;
+}
+
+.star:hover {
+    color: #ffca28;
+}
+
+input[type="file"].file-input {
+    padding: 6px;
+    background-color: #f8f9fa;
+    border: 1px dashed #bbb;
+    border-radius: 4px;
+}

@@ -1,3 +1,5 @@
+/* Citation: AI enhanced with Gemini. */
+
 .experience-container {
     min-height: 100vh;
     display: flex;
@@ -13,6 +15,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    gap: 15px;
 }
 
 .experience-title {
@@ -24,4 +27,40 @@
 .experience-attr {
     font-size: 1.1rem;
     color: #64748b;
+}
+
+.experience-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.action-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.action-btn:hover {
+    transform: scale(1.05);
+}
+
+.edit-btn:hover {
+    background-color: #1e3a8a;
+    color: #eeeeee;
+}
+
+.delete-btn:hover {
+    background-color: #dc2626;
+    color: #eeeeee
 }
