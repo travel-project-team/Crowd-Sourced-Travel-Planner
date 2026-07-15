@@ -36,6 +36,7 @@ def create_user(user_info: UsersRegister):
         "username": user_info.username,
         "email": user_info.email,
         "password_hash": hashed,
+        "avatar_url": None,
         "created_at": datetime.now(timezone.utc)
     }
 
@@ -264,6 +265,7 @@ async def upload_avatar(file: UploadFile = File(...), user=Depends(verify_user))
         "message": "Avatar uploaded",
         "avatar_url": avatar_url
     }
+
 
 # Delete User Avatar
 #
