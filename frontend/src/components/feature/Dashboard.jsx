@@ -15,11 +15,9 @@ export const Dashboard = () =>{
     }, []);
 
     const getProfile = async () => {
-        const token = localStorage.getItem("token");
         try{
            const data = await usersApi.getProfile();
 
-           // if we get a return token then login
            if (data) {
             setUser(data);
             }
