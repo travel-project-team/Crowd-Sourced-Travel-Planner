@@ -40,7 +40,7 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoutes />}>
-            {/* <Route element={<DashboardLayout />}> */}
+            <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/trips" element={<Trips />} />
               <Route path="/single-experience/:id" element={<SingleExperience />} />
@@ -48,7 +48,7 @@ function App() {
               <Route path="/add-trip" element={<AddTrip />} />
               <Route path="/edit-trip/:id" element={<EditTrip />} />
               <Route path="/edit-experience/:id" element={<EditExperience />} />
-            {/* </Route> */}
+            </Route>
           </Route>
 
           {/* Catch-all fallback redirect */}
