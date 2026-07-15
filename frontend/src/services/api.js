@@ -116,10 +116,12 @@ export const usersApi = {
 
   remove: () => api.delete("/users"),
 
+  // Accepts array of 1 or more ID/email
   getBatchById: (data) => api.post("/users/id", data),
 
   getBatchByEmail: (data) => api.post("/users/email", data),
   
+  // Accepts FormData object
   uploadAvatar: (data) => api.post("/users/avatar", data),
   
   removeAvatar: () => api.delete("/users/avatar"),
