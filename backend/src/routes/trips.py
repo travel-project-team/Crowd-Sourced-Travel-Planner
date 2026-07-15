@@ -1,7 +1,8 @@
 # Trips backend routes
 from datetime import datetime, timezone
 from typing import Optional, List
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Query
+from pymongo import ASCENDING, DESCENDING
 from src import config
 from src.schemas.trips import TripsCreate
 from src.utility.authentication import verify_user
@@ -21,16 +22,36 @@ def user_can_access(trip, user):
     user_id = str(user["_id"])
     return trip.get("owner_id") == user_id or user_id in trip.get("collaborator_ids", [])
 
+# Whitelist of fields the client is allowed to sort by
+TRIP_SORT_FIELDS = {"created_at", "updated_at", "trip_name"}
+
 # Get All Trips for Current User (tripsApi.getAll())
 @router.get("")
-def get_trips(user=Depends(verify_user)):
+def get_trips(
+    user=Depends(verify_user),
+    limit: int = Query(50, ge=1, le=100),
+    skip: int = Query(0, ge=0, description="Number of results to skip (for pagination)"),
+    sort: str = Query("updated_at", description="Field to sort by: created_at, updated_at, or trip_name"),
+    order: str = Query("desc", description="Sort order: asc or desc"),
+):
+    if sort not in TRIP_SORT_FIELDS:
+        raise HTTPException(status_code=400, detail=f"Invalid sort field. Allowed: {sorted(TRIP_SORT_FIELDS)}")
+    if order not in ("asc", "desc"):
+        raise HTTPException(status_code=400, detail="Invalid order. Allowed: asc, desc")
+
     user_id = str(user["_id"])
-    results = config.db.trips.find({
-        "$or": [
-            {"owner_id": user_id},
-            {"collaborator_ids": user_id},
-        ]
-    })
+    direction = ASCENDING if order == "asc" else DESCENDING
+    results = (
+        config.db.trips.find({
+            "$or": [
+                {"owner_id": user_id},
+                {"collaborator_ids": user_id},
+            ]
+        })
+        .sort(sort, direction)
+        .skip(skip)
+        .limit(limit)
+    )
     return [mongo_string(trip) for trip in results]
 
 # Get Single Trip (tripsApi.getById(id))

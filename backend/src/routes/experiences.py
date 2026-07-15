@@ -1,7 +1,8 @@
 # Experiences backend routes 
 from datetime import datetime, timezone
 from typing import Optional, List
-from fastapi import APIRouter, HTTPException, status, Depends, Query, UploadFile, File
+from fastapi import APIRouter, HTTPException, status, Depends, Query, UploadFile, File, Response
+from pymongo import ASCENDING, DESCENDING
 from src import config
 from src.schemas.experiences import ExperiencesCreate
 from src.utility.authentication import verify_user
@@ -24,13 +25,25 @@ class ExperiencesUpdate(BaseModel):
 class RatingCreate(BaseModel):
     rating: int = Field(..., ge=1, le=5, examples=[4])
 
+# Whitelist of fields the client is allowed to sort by (prevents sorting on arbitrary/private fields)
+EXPERIENCE_SORT_FIELDS = {"created_at", "title", "average_rating"}
+
 # Get All Experiences + Search (experiencesApi.getAll() & experiencesApi.search(params))
 @router.get("")
 def get_experiences(
+    response: Response,
     location: Optional[str] = Query(None, description="Filter by location name"),
     keyword: Optional[str] = Query(None, description="Filter by keyword, title, or description"),
     limit: int = Query(50, ge=1, le=100),
+    skip: int = Query(0, ge=0, description="Number of results to skip (for pagination)"),
+    sort: str = Query("created_at", description="Field to sort by: created_at, title, or average_rating"),
+    order: str = Query("desc", description="Sort order: asc or desc"),
 ):
+    if sort not in EXPERIENCE_SORT_FIELDS:
+        raise HTTPException(status_code=400, detail=f"Invalid sort field. Allowed: {sorted(EXPERIENCE_SORT_FIELDS)}")
+    if order not in ("asc", "desc"):
+        raise HTTPException(status_code=400, detail="Invalid order. Allowed: asc, desc")
+
     query = {}
     if location:
         query["location_name"] = {"$regex": location, "$options": "i"}
@@ -41,7 +54,17 @@ def get_experiences(
             {"description": {"$regex": keyword, "$options": "i"}},
         ]
 
-    results = config.db.experiences.find(query).limit(limit)
+    direction = ASCENDING if order == "asc" else DESCENDING
+
+    # Total match count (before limit/skip) so the frontend can build page controls
+    response.headers["X-Total-Count"] = str(config.db.experiences.count_documents(query))
+
+    results = (
+        config.db.experiences.find(query)
+        .sort(sort, direction)
+        .skip(skip)
+        .limit(limit)
+    )
     return [mongo_string(experience) for experience in results]
 
 # Get Single Experience (experiencesApi.getById(id))
