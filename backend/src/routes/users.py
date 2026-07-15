@@ -1,7 +1,7 @@
 # Users backend routes
 
 from datetime import datetime, timezone
-from fastapi import APIRouter, HTTPException, status, Depends, UploadFile
+from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, File
 
 from src import config
 from src.schemas.users import UsersRegister, UsersLogin, UsersProfile, UsersUpdate, BatchUsersById, BatchUsersProfile, BatchUsersByEmail
@@ -239,7 +239,7 @@ def profile_by_email(data: BatchUsersByEmail):
 #
 # Frontend Component: usersApi.uploadAvatar(data)
 @router.post("/avatar")
-async def upload_avatar(file: UploadFile, user=Depends(verify_user)):
+async def upload_avatar(file: UploadFile = File(...), user=Depends(verify_user)):
     """
     Input: Image file
     Output: JSON with avatar URL
@@ -261,7 +261,7 @@ async def upload_avatar(file: UploadFile, user=Depends(verify_user)):
     )
 
     return {
-        "message": "Avatar upload success",
+        "message": "Avatar uploaded",
         "avatar_url": avatar_url
     }
 
@@ -288,5 +288,5 @@ def remove_avatar(user=Depends(verify_user)):
     )
 
     return {
-        "message": "Avatar removed successfully"
+        "message": "Avatar removed"
     }
