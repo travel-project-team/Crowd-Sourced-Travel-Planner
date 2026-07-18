@@ -16,7 +16,6 @@ export const Header = ({ user, logout }) => {
             <p className="welcome-message">
               Welcome, <strong className="welcome-name">{user.first_name} {user.last_name}</strong>!
             </p>
-            <button onClick={logout} className="btn-logout">Logout</button>
           </div>
         ) : (
           <div className="loading-message">
@@ -37,6 +36,8 @@ export const Header = ({ user, logout }) => {
             {open && (
               <div className="profile-dropdown-menu">
                 <Link to="/profile" className="profile-dropdown-link">My Profile</Link>
+                 {/* Logout */}
+                <button onClick={logout} className="logout-button">Logout</button>
               </div>
             )}
           </>
