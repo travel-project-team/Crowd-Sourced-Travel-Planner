@@ -4,8 +4,7 @@ import { useOutletContext } from "react-router-dom"
 import "../styles/Profile.css"
 
 export const Profile = () =>{
-    console.log(useOutletContext());
-    const { user } = useOutletContext();
+    const { user, deleteProfile } = useOutletContext();
     return (
         <div className="profile-container">
         <div className="profile-card">
@@ -42,7 +41,7 @@ export const Profile = () =>{
                     Update Profile
                 </button>
 
-                <button type="button" className="btn-delete-account">
+                <button onClick={deleteProfile} type="button" className="btn-delete-account">
                     Delete Account
                 </button>
             </div>

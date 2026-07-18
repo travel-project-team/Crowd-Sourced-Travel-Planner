@@ -35,7 +35,7 @@ export const Header = ({ user, logout }) => {
             {/* Dropdown */}
             {open && (
               <div className="profile-dropdown-menu">
-                <Link to="/profile" className="profile-dropdown-link">My Profile</Link>
+                <Link to="/profile" className="profile-dropdown-link" onClick={() => setOpen(false)}>My Profile</Link>
                  {/* Logout */}
                 <button onClick={logout} className="logout-button">Logout</button>
               </div>

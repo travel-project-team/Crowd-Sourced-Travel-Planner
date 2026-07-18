@@ -42,6 +42,36 @@ export const DashboardLayout = () => {
         }
     }
 
+    // Update User Profile
+    // const updateProfile = async () => {
+    //     try{
+    //         const data = await usersApi.updateProfile();
+
+    //         if (data) {
+    //             setUser(data);
+    //         }
+
+    //     }catch (error){
+    //         console.error("Profile error", error);
+    //     }
+    // }
+
+    // Delete User Profile
+    const deleteProfile = async () => {
+        if (window.confirm("Are you sure you want to delete your profile?")) {
+            try {
+                await usersApi.remove();
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.href = "/login";
+
+            } catch (err) {
+                alert(`Failed to delete profile: ${err.message}`);
+                throw err;
+            }
+        }
+    }
+
 
     return (
         <div className="dashboard-layout">
@@ -49,7 +79,7 @@ export const DashboardLayout = () => {
             <div className="main-content-area">
                 <Header user={user} logout={logout}/>
                 <main className="page-body">
-                    <Outlet context={{ user }}/>
+                    <Outlet context={{ user, deleteProfile}}/>
                 </main>
             </div>
         </div>
