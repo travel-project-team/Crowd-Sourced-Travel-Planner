@@ -49,7 +49,7 @@ export const DashboardLayout = () => {
             <div className="main-content-area">
                 <Header user={user} logout={logout}/>
                 <main className="page-body">
-                    <Outlet/>
+                    <Outlet context={{ user }}/>
                 </main>
             </div>
         </div>

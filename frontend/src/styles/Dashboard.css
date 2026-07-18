@@ -79,3 +79,19 @@
 .btn-logout:hover {
   background-color: #dc2626;
 }
+
+.profile-avatar-btn {
+  cursor: pointer;
+  width: 5.5rem !important;
+  height: 5.5rem !important;
+  border-radius: 9999px;
+  background-color: #2563eb;
+  color: #ffffff;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2.5rem !important;
+  border: 1px solid #f3f4f6;
+  transition: opacity 0.2s;
+}
