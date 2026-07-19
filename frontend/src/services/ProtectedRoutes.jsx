@@ -2,7 +2,7 @@
 
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { usersApi } from "../services/api";
+import { usersApi } from "./api";
 
 
 export const ProtectedRoutes = () => {

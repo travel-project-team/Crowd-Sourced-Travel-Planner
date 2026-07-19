@@ -40,11 +40,6 @@ app.include_router(trips_router)
 app.include_router(users_router)
 app.include_router(experiences_router)
 
-# Server connection test. ---Remove after development
-@app.get("/api/server-health")
-def api_test():
-    return {"status": "SUCCESS", "message": "Backend connected successfully!"}
-
 if __name__ == "__main__":
     # Enable hot reloading development server
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

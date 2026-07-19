@@ -98,12 +98,6 @@ const api = {
 };
 
 
-// Backend-Frontend server health
-export const serverHealthApi = {
-  check: () => api.get("/server-health"),
-};
-
-
 /* =============
    Users
 ================ */

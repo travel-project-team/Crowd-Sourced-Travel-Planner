@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-r
 import "./styles/App.css"
 
 // Custom
-import ServerHealth from "./components/common/ServerHealth";
 import { Login } from './components/feature/Login';
 import { Registration } from './components/feature/Registration';
 import { Dashboard } from './components/feature/Dashboard';
@@ -21,7 +20,7 @@ import { EditTrip } from './components/feature/EditTrip';
 import { EditExperience } from './components/feature/EditExperience'
 import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
-import { ProtectedRoutes } from "./services/protectedRoutes";
+import { ProtectedRoutes } from "./services/ProtectedRoutes";
 
 
 
@@ -29,7 +28,6 @@ function App() {
 
   return (
     <>
-     <ServerHealth />
       <Router>
         <Routes>
           {/* Public Routes */}
