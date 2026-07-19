@@ -42,6 +42,21 @@ export const DashboardLayout = () => {
         }
     }
 
+    // Delete User Profile
+    const deleteProfile = async () => {
+        if (window.confirm("Are you sure you want to delete your profile?")) {
+            try {
+                await usersApi.remove();
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.href = "/login";
+
+            } catch (err) {
+                alert(`Failed to delete profile: ${err.message}`);
+                throw err;
+            }
+        }
+    }
 
     return (
         <div className="dashboard-layout">
@@ -49,7 +64,7 @@ export const DashboardLayout = () => {
             <div className="main-content-area">
                 <Header user={user} logout={logout}/>
                 <main className="page-body">
-                    <Outlet/>
+                    <Outlet context={{ user, getProfile, deleteProfile}}/>
                 </main>
             </div>
         </div>

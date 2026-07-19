@@ -64,11 +64,11 @@
 }
 
 .edit-btn:hover {
-    background-color: #1e3a8a; /* Soft blue highlight for edit */
+    background-color: #1e3a8a;
 }
 
 .delete-btn:hover {
-    background-color: #dc2626; /* Warning red highlight for delete */
+    background-color: #dc2626;
 }
 
 .trip-title {
@@ -93,7 +93,7 @@
     width: 100%;
     padding: 10px 16px;
     box-sizing: border-box;
-    text-decoration: none; 
+    text-decoration: none;
     background-color: #1e3a8a;
     border-radius: 4px;
     margin-top: 10px;
@@ -128,7 +128,7 @@
     background-color: #1e3a8a;
     border: none;
     border-radius: 4px;
-    text-decoration: none; 
+    text-decoration: none;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 

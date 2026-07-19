@@ -19,6 +19,8 @@ import { AddExperience } from './components/feature/AddExperience';
 import { AddTrip } from './components/feature/AddTrip';
 import { EditTrip } from './components/feature/EditTrip';
 import { EditExperience } from './components/feature/EditExperience'
+import { Profile } from './pages/Profile';
+import { EditProfile } from './pages/EditProfile';
 
 const ProtectedRoutes = () => {
   const token = localStorage.getItem("access_token");
@@ -42,6 +44,8 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />}/>
+              <Route path="/profile/edit" element={<EditProfile />}/>
               <Route path="/trips" element={<Trips />} />
               <Route path="/single-experience/:id" element={<SingleExperience />} />
               <Route path="/add-experience" element={<AddExperience />} />
