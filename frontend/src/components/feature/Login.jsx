@@ -3,7 +3,7 @@
 
 import "../../styles/Forms.css"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usersApi } from "../../services/api";
 
@@ -43,20 +43,16 @@ export const Login = () => {
     try {
       const data = await usersApi.login(formData)
 
-      // If user is verfied by backend
-      if (data) {
+      // Successful API Response
+      setServerResponse({
+        type: "success",
+        message: data.message || "Logged in successfully!",
+      });
 
-        // Successful API Response
-        setServerResponse({
-          type: "success",
-          message: data.message || "Logged in successfully!",
-        });
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
 
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
-
-      }
     } catch (error) {
 
       setServerResponse({

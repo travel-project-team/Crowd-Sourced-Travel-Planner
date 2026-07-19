@@ -21,10 +21,7 @@ import { EditTrip } from './components/feature/EditTrip';
 import { EditExperience } from './components/feature/EditExperience'
 import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
-
-const ProtectedRoutes = () => {
-    return <Outlet />;
-};
+import { ProtectedRoutes } from "./services/protectedRoutes";
 
 
 
