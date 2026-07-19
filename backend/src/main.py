@@ -10,14 +10,12 @@ from src.routes.trips import router as trips_router
 from src.routes.users import router as users_router
 from src.routes.experiences import router as experiences_router
 
-# FastAPI app lifecycle 
+# FastAPI lifecycle - External services
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Start external services
     initialize_services()
 
     yield
-    # Shutdown external services
     close_services()
 
 app = FastAPI(lifespan=lifespan)
@@ -41,11 +39,6 @@ app.add_middleware(
 app.include_router(trips_router)
 app.include_router(users_router)
 app.include_router(experiences_router)
-
-# Server connection test. ---Remove after development
-@app.get("/api/server-health")
-def api_test():
-    return {"status": "SUCCESS", "message": "Backend connected successfully!"}
 
 if __name__ == "__main__":
     # Enable hot reloading development server

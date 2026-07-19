@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-r
 import "./styles/App.css"
 
 // Custom
-import ServerHealth from "./components/common/ServerHealth";
 import { Login } from './components/feature/Login';
 import { Registration } from './components/feature/Registration';
 import { Dashboard } from './components/feature/Dashboard';
@@ -22,11 +21,7 @@ import { EditTrip } from './components/feature/EditTrip';
 import { EditExperience } from './components/feature/EditExperience'
 import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
-
-const ProtectedRoutes = () => {
-  const token = localStorage.getItem("access_token");
-  return token ? <Outlet /> : <Navigate to="/login" replace />;
-};
+import { ProtectedRoutes } from "./services/ProtectedRoutes";
 
 
 
@@ -34,7 +29,6 @@ function App() {
 
   return (
     <>
-     <ServerHealth />
       <Router>
         <Routes>
           {/* Public Routes */}
@@ -58,10 +52,7 @@ function App() {
           </Route>
 
           {/* Catch-all fallback redirect */}
-          <Route
-            path="*"
-            element={<Navigate to={localStorage.getItem("access_token") ? "/dashboard" : "/login"} replace />}
-          />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     </Router>
     </>

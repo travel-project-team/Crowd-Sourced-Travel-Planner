@@ -4,8 +4,7 @@ import bcrypt
 
 from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
-from fastapi import Depends, HTTPException
-from fastapi.security import HTTPBearer
+from fastapi import Request, HTTPException
 
 from src import config
 from src.utility.mongodb import mongo_objectid
@@ -13,8 +12,6 @@ from src.utility.mongodb import mongo_objectid
 SECRET_KEY = config.SECRET_KEY
 ALGORITHM = "HS256"
 EXPIRATION_MINUTES = 60
-
-token_extractor = HTTPBearer(scheme_name="JWT Token")
 
 
 # Hash plain text password
@@ -52,12 +49,14 @@ def create_access_token(data: dict) -> str:
     return jwt_token
 
 
-# Verify JWT access token
+# Verify Access Token
 #
-# Returns user profile 
-# No need for frontend to send user ID -extract from this
-def verify_user(credentials = Depends(token_extractor)):
-    token = credentials.credentials
+# Returns user profile and browser automatically sends cookie
+def verify_user(request: Request):
+    token = request.cookies.get("access_token")
+
+    if token is None:
+        raise HTTPException(status_code=401, detail="Not authenticated")
 
     # Decode and verify JWT token
     try:
@@ -73,8 +72,10 @@ def verify_user(credentials = Depends(token_extractor)):
 
     user_id = mongo_objectid(user_id)
 
-    # Find authenticated user in database
-    user = config.db.users.find_one({"_id": user_id})
+    # Find user in database
+    user = config.db.users.find_one(
+        {"_id": user_id}
+    )
 
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")

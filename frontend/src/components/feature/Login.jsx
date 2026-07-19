@@ -3,7 +3,7 @@
 
 import "../../styles/Forms.css"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usersApi } from "../../services/api";
 
@@ -43,22 +43,16 @@ export const Login = () => {
     try {
       const data = await usersApi.login(formData)
 
-      // if we get a return token then login
-      if (data && data.access_token) {
+      // Successful API Response
+      setServerResponse({
+        type: "success",
+        message: data.message || "Logged in successfully!",
+      });
 
-        localStorage.setItem("access_token", data.access_token);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
 
-        // Successful API Response
-        setServerResponse({
-          type: "success",
-          message: data.message || "Logged in successfully!",
-        });
-
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
-
-      }
     } catch (error) {
 
       setServerResponse({

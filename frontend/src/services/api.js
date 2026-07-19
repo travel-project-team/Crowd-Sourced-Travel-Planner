@@ -5,6 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
 const REQUEST_TIMEOUT = 10000;
 
+
 // Convert params object to a query string and skipping empty values. Example: buildQuery({ location: "Seattle", limit: 10 }) --> "?location=Seattle&limit=10"
 function buildQuery(params = {}) {
   const query = new URLSearchParams();
@@ -25,35 +26,27 @@ async function request(endpoint, options = {}) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
+  // Include HTTP authentication cookies with every request
   try {
-    // Add JWT access token if user is authenticated
-    const token = localStorage.getItem("access_token");
-
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
+      credentials: "include",
       headers: {
-        ...(!(options.body instanceof FormData) && { "Content-Type": "application/json"}),
-        ...(token && {
-          Authorization: `Bearer ${token}`,
-        }),
-        ...options.headers,
-      },
+        ...(options.body instanceof FormData
+          ? {}
+          : { "Content-Type": "application/json" }),
+        ...options.headers,},
     });
 
     if (!response.ok) {
-      // Check for expired/invalid JWT
-      if (response.status === 401 && localStorage.getItem("access_token")) {
-        localStorage.removeItem("access_token");
-      }
-
       let errorMessage = `Request failed with status ${response.status}`;
 
       try {
         const errorBody = await response.json();
         errorMessage = errorBody.message || errorBody.detail || errorMessage;
       } catch {
-        // Response body wasn't JSON, fall back to default message
+        // Response body wasn't JSON. Default message
       }
 
       throw new Error(errorMessage);
@@ -82,22 +75,26 @@ async function request(endpoint, options = {}) {
   }
 }
 
+
+// Helper function for data type in request body
+function formatBody(body) {
+  if (body instanceof FormData) {
+    return body; // Image or file
+  }
+
+  return JSON.stringify(body); // Normal JSON data
+}
+
+
 // HTTP method wrapper
 const api = {
   get: (endpoint) => request(endpoint, { method: "GET" }),
 
-  post: (endpoint, body) =>
-    request(endpoint, { method: "POST", body: JSON.stringify(body) }),
+  post: (endpoint, body) => request(endpoint, { method: "POST", body: formatBody(body)}),
 
-  put: (endpoint, body) =>
-    request(endpoint, { method: "PUT", body: JSON.stringify(body) }),
+  put: (endpoint, body) => request(endpoint, { method: "PUT", body: formatBody(body)}),
 
   delete: (endpoint) => request(endpoint, { method: "DELETE" }),
-};
-
-// Backend-Frontend server health
-export const serverHealthApi = {
-  check: () => api.get("/server-health"),
 };
 
 
@@ -109,10 +106,14 @@ export const usersApi = {
 
   login: (data) => api.post("/users/login", data),
 
-  // Load current user profile
+  logout: () => api.post("/users/logout"),
+
   getProfile: () => api.get("/users"),
 
   update: (data) => api.put("/users", data),
+
+  // New
+  updatePassword: (data) => api.put("/users/password", data),
 
   remove: () => api.delete("/users"),
 
@@ -121,7 +122,6 @@ export const usersApi = {
 
   getBatchByEmail: (data) => api.post("/users/email", data),
   
-  // Accepts FormData object
   uploadAvatar: (data) => api.post("/users/avatar", data),
   
   removeAvatar: () => api.delete("/users/avatar"),
