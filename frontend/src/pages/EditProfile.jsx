@@ -1,3 +1,4 @@
+// Citation: AI enhanced with Google AI
 import { useState, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 
@@ -30,10 +31,8 @@ export const EditProfile = () => {
   }, [user]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData({...formData, [name]: value});
   };
 
   const handleSubmit = async (e) => {
