@@ -7,7 +7,8 @@ export const Sidebar = () => {
       <h2>Crowd Sourced Travel Planner</h2>
       <nav>
         <NavLink to="/dashboard">Home</NavLink>
-        <NavLink to="/trips">Discover</NavLink>
+        <NavLink to="/trips">Your Trips</NavLink>
+        <NavLink to="/experiences">Your Experiences</NavLink>
       </nav>
     </aside>
   );

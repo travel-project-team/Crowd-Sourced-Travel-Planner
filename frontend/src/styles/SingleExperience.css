@@ -1,6 +1,6 @@
 /* Citation: AI enhanced with Gemini. */
 
-.experience-container {
+.single-experience-container {
     min-height: 100vh;
     display: flex;
     flex-direction: row;
@@ -10,7 +10,7 @@
     padding: 20px;
 }
 
-.experience-div {
+.single-experience-div {
     flex-direction: column;
     display: flex;
     align-items: center;
@@ -18,18 +18,28 @@
     gap: 15px;
 }
 
-.experience-title {
+.single-experience-img {
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.single-experience-title {
     font-size: 1.6rem;
     font-style: italic;
     color: #64748b;
 }
 
-.experience-attr {
+.single-experience-attr {
     font-size: 1.1rem;
     color: #64748b;
 }
 
-.experience-actions {
+.single-experience-actions {
     display: flex;
     flex-direction: row;
     align-items: center;

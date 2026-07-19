@@ -1,12 +1,38 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { experiencesApi } from "../../services/api.js";
-import "../../styles/Experience.css";
+import "../../styles/SingleExperience.css";
 
 export const SingleExperience = () => {
+    const { id } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { experience } = location.state || {};
+    const [experience, setExperience] = useState(location.state?.experience || null);
+    const [loading, setLoading] = useState(!experience);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (experience) return;
+
+        const fetchExperience = async () => {
+            try {
+                setLoading(true);
+                const response = await experiencesApi.getById(id);
+                setExperience(response.data || response);
+                setError(null);
+            } catch (err) {
+                setError(err.message || "Failed to load experience details.");
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (id) {
+            fetchExperience();
+        }
+
+    },[id, experience])
 
     const handleEdit = (e) => {
         e.stopPropagation();
@@ -27,9 +53,17 @@ export const SingleExperience = () => {
         }
     }
 
-    if (!experience) {
+    if (loading) {
+        return (
+            <div className="single-experience-container">
+                <p>Loading experience details...</p>
+            </div>
+        );
+    }
+
+    if (error || !experience) {
         return(
-            <div className="experience-container">
+            <div className="single-experience-container">
                 <p>No experience data found. Please return to previous page.</p>
                 <button className="back-button" onClick={() => navigate(-1)}>Back</button>
             </div>
@@ -37,26 +71,24 @@ export const SingleExperience = () => {
     }
 
     return(
-        <div className="experience-container">
-            <div className="experience-div">
-                <p className="experience-title">{experience.title}</p>
-                <p className="experience-attr">{experience.description}</p>
-                <p className="experience-attr">{experience.location_name}</p>
-                <p className="experience-attr">Coordinates: {experience.location_geojson.coordinates.join(", ")}</p>
-
-                {experience.average_rating && (
-                    <p className="experience-attr"><strong>Average Rating:</strong> {experience.average_rating}</p>
-                )}
+        <div className="single-experience-container">
+            <div className="single-experience-div">
+                <p className="single-experience-title">{experience.title}</p>
+                <p className="single-experience-attr">{experience.description}</p>
+                <p className="single-experience-attr">{experience.location_name}</p>
+                <p className="single-experience-attr">Coordinates: {experience.location_geojson?.coordinates ? experience.location_geojson.coordinates.join(", ") : "N/A"}</p>
+                <p className="single-experience-attr">Average Rating: {experience.ratings.length === 0 ? "N/A"
+                   : (experience.ratings.reduce((acc, currVal) => acc + currVal, 0)) / experience.ratings.length}</p>
 
                 {experience.keywords?.length > 0 && (
-                    <p className="experience-attr"><strong>Keywords:</strong> {experience.keywords.join(", ")}</p>
+                    <p className="single-experience-attr"><strong>Keywords:</strong> {experience.keywords.join(", ")}</p>
                 )}
             </div>
-            <div className="experience-div">
+            <div className="single-experience-div">
                 {experience.image_url && (
-                    <img className="experience-img" src={experience.image_url} alt={experience.title} />
+                    <img className="single-experience-img" src={experience.image_url} alt={experience.title} />
                 )}
-                <div className="experience-actions">
+                <div className="single-experience-actions">
                     <button className="back-button" onClick={() => navigate(-1)}>Back</button>
                     <button className="action-btn edit-btn" onClick={handleEdit} title="Edit Experience">
                         ✏️
