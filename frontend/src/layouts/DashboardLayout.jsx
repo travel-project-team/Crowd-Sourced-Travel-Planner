@@ -42,20 +42,6 @@ export const DashboardLayout = () => {
         }
     }
 
-    // Update User Profile
-    // const updateProfile = async () => {
-    //     try{
-    //         const data = await usersApi.updateProfile();
-
-    //         if (data) {
-    //             setUser(data);
-    //         }
-
-    //     }catch (error){
-    //         console.error("Profile error", error);
-    //     }
-    // }
-
     // Delete User Profile
     const deleteProfile = async () => {
         if (window.confirm("Are you sure you want to delete your profile?")) {
@@ -72,14 +58,13 @@ export const DashboardLayout = () => {
         }
     }
 
-
     return (
         <div className="dashboard-layout">
             <Sidebar/>
             <div className="main-content-area">
                 <Header user={user} logout={logout}/>
                 <main className="page-body">
-                    <Outlet context={{ user, deleteProfile}}/>
+                    <Outlet context={{ user, getProfile, deleteProfile}}/>
                 </main>
             </div>
         </div>
