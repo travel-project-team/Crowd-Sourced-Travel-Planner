@@ -1,50 +1,63 @@
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from datetime import datetime
 
-# Commonly shared fields 
+
+# Basic User Model
 class UsersBase(BaseModel):
     first_name: str = Field(..., examples=["Billie"])
     last_name: str = Field(..., examples=["Billerson"])
     username: str = Field(..., examples=["billbill123"])
 
-# Shared profile fields
+
+# Profile Model
 class UsersProfileBase(UsersBase):
     email: EmailStr = Field(..., examples=["billie.billerson@example.com"])
     avatar_url: str | None = None
 
 
-########## REQUEST MODELS ##########
+#################### REQUEST ####################
 
-# POST for User Registration 
+
+# POST for Account Registration 
 class UsersRegister(UsersBase):
     email: EmailStr = Field(..., examples=["billie.billerson@example.com"])
     password: str 
 
-# POST for User Login 
+
+# POST for Login 
 class UsersLogin(BaseModel):
     email: EmailStr = Field(..., examples=["billie.billerson@example.com"])
     password: str
 
-# PUT for User Update 
+
+# PUT for profile update 
 class UsersUpdate(BaseModel):
     first_name: str | None = Field(None, min_length=1)
     last_name: str | None = Field(None, min_length=1)
     username: str | None = Field(None, min_length=1)
     email: EmailStr | None = None
-    password: str | None = Field(None, min_length=1)
 
-# POST for Batch ID 
+
+# PUT for password change
+class UsersPassword(BaseModel):
+    current_password: str
+    new_password: str = Field(..., min_length=6)
+
+
+# POST for Batch of IDs 
 class BatchUsersById(BaseModel):
     user_ids: list[str]
 
-# POST for Batch Email 
+
+# POST for Batch of Emails
 class BatchUsersByEmail(BaseModel):
     emails: list[EmailStr]
 
 
-########## RESPONSE MODELS ##########
+#################### RESPONSE ####################
 
-# GET for User Profile 
+
+# GET Current User Profile 
 class UsersProfile(UsersProfileBase):
     id: str = Field(..., alias="_id")
     created_at: datetime 
@@ -53,7 +66,8 @@ class UsersProfile(UsersProfileBase):
         populate_by_name=True,
     )
 
-# POST for Batch Users Profile
+
+# POST Multiple User Profiles
 class BatchUsersProfile(UsersProfileBase):
     id: str = Field(..., alias="_id")
 

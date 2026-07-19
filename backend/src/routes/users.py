@@ -1,10 +1,10 @@
 # Users backend routes
 
 from datetime import datetime, timezone
-from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, File
+from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, File, Response
 
 from src import config
-from src.schemas.users import UsersRegister, UsersLogin, UsersProfile, UsersUpdate, BatchUsersById, BatchUsersProfile, BatchUsersByEmail
+from src.schemas.users import UsersRegister, UsersLogin, UsersProfile, UsersUpdate, BatchUsersById, BatchUsersProfile, BatchUsersByEmail, UsersPassword
 from src.utility.authentication import hash_password, verify_password, create_access_token, verify_user
 from src.utility.mongodb import mongo_objectid, mongo_string
 from src.utility.cloudinary import cloudinary_upload
@@ -12,11 +12,7 @@ from src.utility.cloudinary import cloudinary_upload
 router = APIRouter(prefix="/api/users", tags=["Users"])
 
 
-# User Registration
-#
-# Method: POST
-#
-# Frontend Component: usersApi.create(data)
+# Account Registration (usersApi.create(data))
 @router.post("", status_code=status.HTTP_201_CREATED)
 def create_user(user_info: UsersRegister):
     '''
@@ -44,16 +40,12 @@ def create_user(user_info: UsersRegister):
     return {"message": "User registered successfully"}
 
 
-# User Login
-#
-# Method: POST
-#
-# Frontend Component: usersApi.login(data)
+# User Login (usersApi.login(data))
 @router.post("/login")
-def login(form_data: UsersLogin):
+def login(form_data: UsersLogin, response: Response):
     '''
     Input: JSON with email and password
-    Output: JSON with JWT token that contains sub=email, user_id:_id, expiration_time:60.
+    Output: JSON with login success message.
     '''
     # Validate email
     user = config.db.users.find_one({"email": form_data.email})
@@ -75,14 +67,20 @@ def login(form_data: UsersLogin):
         }
     )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    # Store JWT in HTTP-only cookie
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        samesite="lax",
+        secure=False,    # Change to True for production!!
+        max_age=60 * 60 
+    )
+
+    return {"message": "Login successful"}
 
 
-# Get User
-#
-# Method: GET
-#
-# Frontend Component: usersApi.getProfile()
+# Get Current User Profile (usersApi.getProfile())
 @router.get("", response_model=UsersProfile)
 def get_profile(user=Depends(verify_user)):
     '''
@@ -92,15 +90,11 @@ def get_profile(user=Depends(verify_user)):
     return mongo_string(user)
 
 
-# Update User
-#
-# Method: PUT
-#
-# Frontend Component: usersApi.update(data)
+# Update Profile (usersApi.update(data))
 @router.put("")
 def update_user(data: UsersUpdate, user=Depends(verify_user)):
     '''
-    Input: JSON with updated user information. Allows password update.
+    Input: JSON with updated user information.
     Output: JSON with success/error message
     '''
     data = data.model_dump(exclude_unset=True)
@@ -110,11 +104,6 @@ def update_user(data: UsersUpdate, user=Depends(verify_user)):
 
     # Get user ID from verified token
     user_id = user["_id"]
-
-    # Disable important fields
-    data.pop("_id", None)
-    data.pop("password_hash", None)
-    data.pop("created_at", None)
 
     # Check for existing email and username
     for field, message in [
@@ -129,25 +118,40 @@ def update_user(data: UsersUpdate, user=Depends(verify_user)):
             if existing:
                 raise HTTPException(status_code=400, detail=message)
 
-    # Edit password
-    if "password" in data:
-        plain_password = data.pop("password")
-        data["password_hash"] = hash_password(plain_password)
-
     # Update authenticated user
     config.db.users.update_one(
         {"_id": user_id},
         {"$set": data}
     )
-
     return {"message": "User updated successfully"}
 
 
-# Delete User
-#
-# Method: DELETE
-#
-# Frontend Component: usersApi.remove()
+# Update Password (usersApi.updatePassword(data))
+@router.put("/password")
+def update_password(data: UsersPassword, user=Depends(verify_user)):
+    '''
+    Input: Current password and new password.
+    Output: JSON with success/error message.
+    '''
+    # Verify current password
+    password_check = verify_password(data.current_password, user["password_hash"])
+
+    if not password_check:
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+
+    # Hash new password
+    new_password_hash = hash_password(data.new_password)
+
+    # Update password
+    config.db.users.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"password_hash": new_password_hash}}
+    )
+
+    return {"message": "Password updated successfully"}
+
+
+# Delete Account (usersApi.remove())
 @router.delete("")
 def remove_user(user=Depends(verify_user)):
     '''
@@ -163,13 +167,9 @@ def remove_user(user=Depends(verify_user)):
     return {"message": "User deleted successfully"}
 
 
-# Batch User Profiles By ID
-#
-# Method: POST 
-#
-# Frontend Component: usersApi.getBatchById()
+# Get Multiple User Profiles By ID (usersApi.getBatchById())
 @router.post("/id", response_model=list[BatchUsersProfile])
-def profile_by_id(data: BatchUsersById):
+def profile_by_id(data: BatchUsersById, _=Depends(verify_user)):
     """
     Input: JSON with array of user IDs
     Output: JSON with list of public user profiles
@@ -181,16 +181,12 @@ def profile_by_id(data: BatchUsersById):
 
     # Find users that match IDs
     users = config.db.users.find(
-        {
-            "_id": {
-                "$in": user_ids
-            }
-        }
+        {"_id": {"$in": user_ids}}
     )
 
     users_dict = {
-        str(user["_id"]): mongo_string(user)
-        for user in users
+        str(db_user["_id"]): mongo_string(db_user)
+        for db_user in users
     }
 
     # Return users in requested order 
@@ -201,29 +197,21 @@ def profile_by_id(data: BatchUsersById):
     ]
 
 
-# Batch User Profiles By Email
-#
-# Method: POST
-#
-# Frontend Component: usersApi.getBatchByEmail()
+# Get Multiple User Profiles By Email (usersApi.getBatchByEmail())
 @router.post("/email", response_model=list[BatchUsersProfile])
-def profile_by_email(data: BatchUsersByEmail):
+def profile_by_email(data: BatchUsersByEmail, _=Depends(verify_user)):
     """
     Input: JSON with array of user emails
     Output: JSON with list of public user profiles
     """
     # Find users that match emails
     users = config.db.users.find(
-        {
-            "email": {
-                "$in": data.emails
-            }
-        }
+        {"email": {"$in": data.emails}}
     )
 
     users_dict = {
-        user["email"]: mongo_string(user)
-        for user in users
+        db_user["email"]: mongo_string(db_user)
+        for db_user in users
     }
 
     # Return users in requested order
@@ -234,11 +222,7 @@ def profile_by_email(data: BatchUsersByEmail):
     ]
 
 
-# User Avatar Upload
-#
-# Method: POST
-#
-# Frontend Component: usersApi.uploadAvatar(data)
+# Upload Avatar (usersApi.uploadAvatar(data))
 @router.post("/avatar")
 async def upload_avatar(file: UploadFile = File(...), user=Depends(verify_user)):
     """
@@ -246,49 +230,28 @@ async def upload_avatar(file: UploadFile = File(...), user=Depends(verify_user))
     Output: JSON with avatar URL
     """
     # Upload image to Cloudinary
-    avatar_url = await cloudinary_upload(
-        file,
-        folder_name="travel_planner/users"
-    )
+    avatar_url = await cloudinary_upload(file, folder_name="travel_planner/users")
 
     # Update user avatar URL in MongoDB
     config.db.users.update_one(
         {"_id": user["_id"]},
-        {
-            "$set": {
-                "avatar_url": avatar_url
-            }
-        }
+        {"$set": {"avatar_url": avatar_url}}
     )
 
-    return {
-        "message": "Avatar uploaded",
-        "avatar_url": avatar_url
-    }
+    return {"message": "Avatar uploaded", "avatar_url": avatar_url}
 
 
-# Delete User Avatar
-#
-# Method: DELETE
-#
-# Frontend Component: usersApi.removeAvatar()
+# Delete Avatar (usersApi.removeAvatar())
 @router.delete("/avatar")
 def remove_avatar(user=Depends(verify_user)):
     """
     Input: None
     Output: JSON with success/error message
     """
-
     # Remove avatar URL from MongoDB
     config.db.users.update_one(
         {"_id": user["_id"]},
-        {
-            "$set": {
-                "avatar_url": None
-            }
-        }
+        {"$set": {"avatar_url": None}}
     )
 
-    return {
-        "message": "Avatar removed"
-    }
+    return {"message": "Avatar removed"}
