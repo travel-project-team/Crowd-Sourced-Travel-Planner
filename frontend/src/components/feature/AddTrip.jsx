@@ -3,7 +3,7 @@
 import "../../styles/AddForms.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { tripsApi, usersApi } from "../../services/api";
+import { tripsApi, usersApi, experiencesApi } from "../../services/api";
 
 export const AddTrip = () => {
 
@@ -15,55 +15,63 @@ export const AddTrip = () => {
     const [ownerId, setOwnerId] = useState(null);
 
     // These will be updated as new endpoints come in
-    const [collaborators, setCollaborators] = useState(["jim@example.org", "john@example.org"]);
-    const [experiences, setExperiences] = useState([{ id: "exp-1", name: "Scuba Diving" }]);
+    const [collaborators, setCollaborators] = useState([]);
+    const [experiences, setExperiences] = useState([]);
     const [emailInput, setEmailInput] = useState("");
     const [selectedExperience, setSelectedExperience] = useState("");
 
+    const [availableExperiences, setAvailableExperiences] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchUserProfile = async () => {
+        const initialize = async () => {
             try {
-                const profile = await usersApi.getProfile();
-                
-                const userId = profile._id;
-                
-                if (userId) {
-                    setOwnerId(userId);
+                const [profile, allTrips, allExperiences] = await Promise.all([
+                    usersApi.getProfile(),
+                    tripsApi.getAll(),
+                    experiencesApi.getAll()
+                ]);
+
+                if (profile?._id) {
+                    setOwnerId(profile._id);
                 } else {
                     throw new Error("Could not extract User ID from profile.");
                 }
+
+                const tripsData = allTrips.data || allTrips || [];
+                const experiencesData = allExperiences.data || allExperiences || [];
+
+                const affiliatedIds = new Set(
+                    tripsData.flatMap(trip => trip.experience_ids || [])
+                );
+
+                const unaffiliated = experiencesData.filter(
+                    exp => !affiliatedIds.has(exp._id)
+                );
+
+                setAvailableExperiences(unaffiliated);
+
             } catch (err) {
-                setError("Failed to verify user identity. Please try re-logging in.");
-                console.error("Profile fetch error:", err);
-            } finally {
-                setIsLoadingProfile(false);
+                setError("Failed to load initial form data.");
+                console.error("Initialize error:", err);
             }
         };
 
-        fetchUserProfile();
+        initialize();
     }, []);
 
-    // Will get these with a useEffect hook once endpoint is ready. Filter them down to experiences owned by user,
-    // not yet affiliated with trip.
-    const availableExperiences = [
-        { id: "exp-1", name: "Scuba Diving" },
-        { id: "exp-2", name: "Eiffel Tower" }
-    ];
-
-    // Both UI Only for now.
     const handleAddCollaborator = () => {
-        if (emailInput.trim() && !collaborators.includes(emailInput.trim())) {
-            setCollaborators([...collaborators, emailInput.trim()]);
+        const email = emailInput.trim();
+        if (email && !collaborators.includes(email)) {
+            setCollaborators([...collaborators, email]);
             setEmailInput("");
         }
     };
 
     const handleAddExperience = () => {
-        const match = availableExperiences.find(exp => exp.id === selectedExperience);
-        if (match && !experiences.some(e => e.id === match.id)) {
+        const match = availableExperiences.find(exp => exp._id === selectedExperience);
+        if (match && !experiences.some(e => e._id === match._id)) {
             setExperiences([...experiences, match]);
             setSelectedExperience("");
         }
@@ -71,16 +79,37 @@ export const AddTrip = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isSubmitting) return;
         setIsSubmitting(true);
         setError(null);
 
-        const payload = {
-            trip_name: tripName,
-            trip_description: description,
-            owner_id: ownerId
-        }
-
         try {
+            let collaboratorIds = [];
+
+            const finalCollaborators = [...collaborators];
+            const remainingEmail = emailInput.trim();
+            if (remainingEmail && !finalCollaborators.includes(remainingEmail)) {
+                finalCollaborators.push(remainingEmail);
+            }
+
+            if (finalCollaborators.length > 0) {
+                const usersResult = await usersApi.getBatchByEmail({ emails: finalCollaborators });
+                const usersData = usersResult.data || usersResult || [];
+                collaboratorIds = usersData.map(user => user._id);
+
+                if (collaboratorIds.length !== finalCollaborators.length) {
+                    console.warn("Some collaborator emails could not be resolved to registered accounts.");
+                }
+            }
+
+            const payload = {
+                trip_name: tripName,
+                trip_description: description,
+                owner_id: ownerId,
+                collaborator_ids: collaboratorIds,
+                experience_ids: experiences.map(exp => exp._id)
+            }
+
             await tripsApi.create(payload);
             navigate("/trips");
         } catch (err) {
@@ -116,6 +145,12 @@ export const AddTrip = () => {
                             placeholder="Add by email."
                             value={emailInput}
                             onChange={(e) => setEmailInput(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleAddCollaborator();
+                                }
+                            }}
                         />
                         <button type="button" className="inline-add-btn" onClick={handleAddCollaborator}>Add</button>
                     </div>
@@ -134,23 +169,28 @@ export const AddTrip = () => {
                     <div className="input-with-button-row">
                         <select id="trip-experiences" value={selectedExperience} onChange={(e) => setSelectedExperience(e.target.value)}>
                             <option value="" disabled>Select from your unaffiliated experiences to add to this trip...</option>
-                            {availableExperiences.map(exp => (
-                                <option key={exp.id} value={exp.id}>{exp.name}</option>
-                            ))}
+                            {availableExperiences
+                                .filter(ae => !experiences.some(e => e._id === ae._id))
+                                .map(exp => (
+                                    <option key={exp._id} value={exp._id}>{exp.title}</option>
+                                ))
+                            }
                         </select>
                         <button type="button" className="inline-add-btn" onClick={handleAddExperience}>Add</button>
                     </div>
                     <div className="tag-container">
                         {experiences.map(exp => (
                             <span key={exp.id} className="tag-chip">
-                                {exp.name}
+                                {exp.title}
                                 <button type="button" className="remove-tag" onClick={() => setExperiences(experiences.filter(e => e.id !== exp.id))}>&times;</button>
                             </span>
                         ))}
                     </div>
                 </div>
 
-                <button type="submit" className="submit-button" disabled={isSubmitting}>Add Trip</button>
+                <button type="submit" className="submit-button" disabled={isSubmitting}>
+                    {isSubmitting ? "Adding Trip..." : "Add Trip"}
+                </button>
             </form>
 
             <button className="back-button" onClick={() => navigate(-1)} disabled={isSubmitting}>Back to trips</button>

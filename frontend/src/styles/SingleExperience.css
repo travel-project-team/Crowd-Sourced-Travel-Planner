@@ -18,6 +18,16 @@
     gap: 15px;
 }
 
+.single-experience-img {
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
 .single-experience-title {
     font-size: 1.6rem;
     font-style: italic;

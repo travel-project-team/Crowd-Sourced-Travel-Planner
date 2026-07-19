@@ -141,7 +141,7 @@ textarea {
     transition: color 0.2s ease;
 }
 
-.star.filled {
+.star.filled, .star.active {
     color: #ffc107;
 }
 

@@ -140,3 +140,79 @@
 .add-button:hover {
     background-color: #0b0867;
 }
+
+.affiliated-trip-container,
+.unaffiliated-trip-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(238, 238, 238, 0.2); /* Clean separator inside card */
+}
+
+.trip-status {
+    font-size: 1rem;
+    color: #eeeeee;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.trip-dropdown {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    color: #eeeeee;
+    background-color: #1e3a8a;
+    border: solid 2px #eeeeee;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.trip-dropdown:focus {
+    border-color: #3b82f6;
+}
+
+.trip-dropdown option {
+    background-color: #0b0867;
+    color: #eeeeee;
+}
+
+.trip-action-btn {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #eeeeee;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.trip-action-btn.add-btn {
+    background-color: #10b981;
+}
+
+.trip-action-btn.add-btn:hover {
+    background-color: #059669;
+}
+
+.trip-action-btn.remove-btn {
+    background-color: #ef4444;
+}
+
+.trip-action-btn.remove-btn:hover {
+    background-color: #dc2626;
+}
+
+.trip-action-btn:disabled,
+.trip-dropdown:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

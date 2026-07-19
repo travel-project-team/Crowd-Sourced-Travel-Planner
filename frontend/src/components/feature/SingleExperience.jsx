@@ -76,11 +76,9 @@ export const SingleExperience = () => {
                 <p className="single-experience-title">{experience.title}</p>
                 <p className="single-experience-attr">{experience.description}</p>
                 <p className="single-experience-attr">{experience.location_name}</p>
-                <p className="single-experience-attr">Coordinates: {experience.location_geojson.coordinates.join(", ")}</p>
-
-                {experience.average_rating && (
-                    <p className="single-experience-attr"><strong>Average Rating:</strong> {experience.average_rating}</p>
-                )}
+                <p className="single-experience-attr">Coordinates: {experience.location_geojson?.coordinates ? experience.location_geojson.coordinates.join(", ") : "N/A"}</p>
+                <p className="single-experience-attr">Average Rating: {experience.ratings.length === 0 ? "N/A"
+                   : (experience.ratings.reduce((acc, currVal) => acc + currVal, 0)) / experience.ratings.length}</p>
 
                 {experience.keywords?.length > 0 && (
                     <p className="single-experience-attr"><strong>Keywords:</strong> {experience.keywords.join(", ")}</p>
