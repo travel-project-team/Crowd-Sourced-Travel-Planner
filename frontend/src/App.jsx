@@ -14,6 +14,7 @@ import { Registration } from './components/feature/Registration';
 import { Dashboard } from './components/feature/Dashboard';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { Trips } from './components/feature/Trips';
+import { Experiences } from './components/feature/Experiences';
 import { SingleExperience } from './components/feature/SingleExperience';
 import { AddExperience } from './components/feature/AddExperience';
 import { AddTrip } from './components/feature/AddTrip';
@@ -47,6 +48,7 @@ function App() {
               <Route path="/profile" element={<Profile />}/>
               <Route path="/profile/edit" element={<EditProfile />}/>
               <Route path="/trips" element={<Trips />} />
+              <Route path="/experiences" element={<Experiences />} />
               <Route path="/single-experience/:id" element={<SingleExperience />} />
               <Route path="/add-experience" element={<AddExperience />} />
               <Route path="/add-trip" element={<AddTrip />} />

@@ -33,7 +33,7 @@ async function request(endpoint, options = {}) {
       ...options,
       signal: controller.signal,
       headers: {
-        "Content-Type": "application/json",
+        ...(!(options.body instanceof FormData) && { "Content-Type": "application/json"}),
         ...(token && {
           Authorization: `Bearer ${token}`,
         }),
@@ -141,6 +141,12 @@ export const tripsApi = {
   update: (id, data) => api.put(`/trips/${id}`, data),
 
   remove: (id) => api.delete(`/trips/${id}`),
+
+  addExperienceToTrip: (tripId, experienceId) =>
+    api.post(`/trips/${tripId}/experiences/${experienceId}`),
+
+  removeExperienceFromTrip: (tripId, experienceId) =>
+    api.delete(`/trips/${tripId}/experiences/${experienceId}`)
 };
 
 
@@ -160,4 +166,6 @@ export const experiencesApi = {
   update: (id, data) => api.put(`/experiences/${id}`, data),
 
   remove: (id) => api.delete(`/experiences/${id}`),
+
+  uploadImage: (formData) => request("/experiences/image", { method: "POST", body: formData })
 };

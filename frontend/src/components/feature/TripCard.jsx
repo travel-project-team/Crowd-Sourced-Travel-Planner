@@ -10,6 +10,60 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [filteredExperiences, setFilteredExperiences] = useState([]);
 
+    const [ownerName, setOwnerName] = useState(`User: (${trip.owner_id})`);
+    const [collaboratorNames, setCollaboratorNames] = useState("None");
+
+    useEffect(() => {
+        const resolveUserNames = async () => {
+            const uniqueIdsToFetch = new Set();
+
+            if (currentUser?._id === trip.owner_id) {
+                setOwnerName(`${currentUser.first_name} ${currentUser.last_name}`);
+            } else if (trip.owner_id) {
+                uniqueIdsToFetch.add(trip.owner_id);
+            }
+
+            const collabIds = trip.collaborator_ids || [];
+            collabIds.forEach(id => uniqueIdsToFetch.add(id));
+
+            if (uniqueIdsToFetch.size === 0) {
+                if (collabIds.length === 0) setCollaboratorNames("None");
+                return;
+            }
+
+            try {
+                const usersList = await usersApi.getBatchById({ user_ids: Array.from(uniqueIdsToFetch) });
+
+                if (currentUser?._id !== trip.owner_id) {
+                    const ownerObj = usersList.find(u => u._id === trip.owner_id);
+                    if (ownerObj) {
+                        setOwnerName(`${ownerObj.first_name} ${ownerObj.last_name}`)
+                    }
+                }
+
+                if (collabIds.length > 0) {
+                    const matchingCollabs = usersList.filter(u => collabIds.includes(u._id));
+
+                    if (matchingCollabs.length > 0) {
+                        const formattedNames = matchingCollabs
+                            .map(u => `${u.first_name} ${u.last_name}`)
+                            .join(", ");
+                        setCollaboratorNames(formattedNames);
+                    } else {
+                        setCollaboratorNames(collabIds.join(", "));
+                    }
+                } else {
+                    setCollaboratorNames("None");
+                }
+            } catch (err) {
+                console.error("Failed to resolve user names for trip", trip._id, err);
+                if (collabIds.length > 0) setCollaboratorNames(collabIds.join(", "));
+            }
+        };
+
+        resolveUserNames();
+    }, [trip.owner_id, trip.collaborator_ids, currentUser]);
+
     useEffect(() => {
         if (!isDropdownOpen) return;
 
@@ -29,14 +83,6 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
 
         fetchAndFilterExperiences();
     },[isDropdownOpen, trip.experience_ids, trip._id]);
-
-    const ownerName = trip.owner_id === currentUser?._id
-        ? `${currentUser.first_name} ${currentUser.last_name}`
-        : `User (${trip.owner_id})`;
-
-    const collaboratorNames = trip.collaborator_ids?.length > 0
-        ? trip.collaborator_ids.join(", ")
-        : "None"
 
     const handleEdit = (e) => {
         e.stopPropagation();
