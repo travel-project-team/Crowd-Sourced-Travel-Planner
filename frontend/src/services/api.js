@@ -26,7 +26,7 @@ async function request(endpoint, options = {}) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-  // Include HTTP only authentication cookies with every request
+  // Include HTTP authentication cookies with every request
   try {
     const response = await fetch(url, {
       ...options,
@@ -46,7 +46,7 @@ async function request(endpoint, options = {}) {
         const errorBody = await response.json();
         errorMessage = errorBody.message || errorBody.detail || errorMessage;
       } catch {
-        // Response body wasn't JSON, fall back to default message
+        // Response body wasn't JSON. Default message
       }
 
       throw new Error(errorMessage);
@@ -111,6 +111,8 @@ export const usersApi = {
   create: (data) => api.post("/users", data),
 
   login: (data) => api.post("/users/login", data),
+
+  logout: () => api.post("/users/logout"),
 
   getProfile: () => api.get("/users"),
 

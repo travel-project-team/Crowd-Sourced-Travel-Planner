@@ -1,9 +1,7 @@
 // citation: https://youtu.be/JVCU2qsGvOs?si=iVz1N7_lr78bsDkh
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { usersApi } from "../services/api";
-import { authentication } from "../services/authentication";
 import { Header } from "../components/common/Header"
 import { Sidebar } from "../components/common/Sidebar"
 import "../styles/DashboardLayout.css"
@@ -18,27 +16,23 @@ export const DashboardLayout = () => {
     const getProfile = async () => {
         try{
             const data = await usersApi.getProfile();
-
-            if (data) {
-                setUser(data);
-            }
+            setUser(data);
 
         }catch (error){
             console.error("Profile error", error);
+            navigate("/login");
         }
     }
 
     // Logout
     const logout = async () =>{
         try {
-            authentication.logout();
-            localStorage.removeItem("access_token");
-            localStorage.clear();
-            sessionStorage.clear();
+            await usersApi.logout();
+            setUser(null);
         } catch (error) {
             console.error("Logout encountered a problem:", error);
         } finally {
-            window.location.href = "/login";
+            navigate("/login");
         }
     }
 
@@ -47,9 +41,8 @@ export const DashboardLayout = () => {
         if (window.confirm("Are you sure you want to delete your profile?")) {
             try {
                 await usersApi.remove();
-                localStorage.clear();
-                sessionStorage.clear();
-                window.location.href = "/login";
+                setUser(null);
+                navigate("/login");
 
             } catch (err) {
                 alert(`Failed to delete profile: ${err.message}`);

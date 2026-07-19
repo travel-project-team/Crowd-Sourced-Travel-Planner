@@ -43,10 +43,8 @@ export const Login = () => {
     try {
       const data = await usersApi.login(formData)
 
-      // if we get a return token then login
-      if (data && data.access_token) {
-
-        localStorage.setItem("access_token", data.access_token);
+      // If user is verfied by backend
+      if (data) {
 
         // Successful API Response
         setServerResponse({

@@ -10,14 +10,12 @@ from src.routes.trips import router as trips_router
 from src.routes.users import router as users_router
 from src.routes.experiences import router as experiences_router
 
-# FastAPI app lifecycle 
+# FastAPI lifecycle - External services
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Start external services
     initialize_services()
 
     yield
-    # Shutdown external services
     close_services()
 
 app = FastAPI(lifespan=lifespan)

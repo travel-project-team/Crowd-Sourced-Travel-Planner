@@ -23,8 +23,7 @@ import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
 
 const ProtectedRoutes = () => {
-  const token = localStorage.getItem("access_token");
-  return token ? <Outlet /> : <Navigate to="/login" replace />;
+    return <Outlet />;
 };
 
 
@@ -58,7 +57,7 @@ function App() {
           {/* Catch-all fallback redirect */}
           <Route
             path="*"
-            element={<Navigate to={localStorage.getItem("access_token") ? "/dashboard" : "/login"} replace />}
+            element={<Navigate to="/login" replace />}
           />
         </Routes>
     </Router>

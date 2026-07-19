@@ -80,6 +80,15 @@ def login(form_data: UsersLogin, response: Response):
     return {"message": "Login successful"}
 
 
+# User Logout (usersApi.logout())
+@router.post("/logout")
+def logout(response: Response):
+    # Remove HTTP browser cookie
+    response.delete_cookie(key="access_token")
+
+    return {"message": "Logout successful"}
+
+
 # Get Current User Profile (usersApi.getProfile())
 @router.get("", response_model=UsersProfile)
 def get_profile(user=Depends(verify_user)):
