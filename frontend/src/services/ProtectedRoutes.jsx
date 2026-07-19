@@ -4,32 +4,27 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { usersApi } from "./api";
 
-
 export const ProtectedRoutes = () => {
-    const [loading, setLoading] = useState(true);
     const [authenticated, setAuthenticated] = useState(null);
 
-    // Check authentication if user enters protected route
+    // Check authentication when entering protected routes
     useEffect(() => {
         async function checkAuth() {
-        try {
-            await usersApi.getProfile();
-            setAuthenticated(true);
-
-        } catch {
-            setAuthenticated(false);
-
-        } finally {
-            setLoading(false);}
+            try {
+                await usersApi.getProfile();
+                setAuthenticated(true);
+            } catch {
+                setAuthenticated(false);
+            }
         }
 
         checkAuth();
     }, []);
 
-    // Only render pages once authentication is confirmed
+    // Wait until authentication check finishes
     if (authenticated === null) {
         return null;
     }
 
     return authenticated ? <Outlet /> : <Navigate to="/login" replace />;
-    };
+};
