@@ -118,9 +118,9 @@ export const usersApi = {
   remove: () => api.delete("/users"),
 
   // Accepts array of 1 or more ID/email
-  getByIds: (data) => api.post("/users/id", data),
+  getBatchById: (data) => api.post("/users/id", data),
 
-  getByEmails: (data) => api.post("/users/email", data),
+  getBatchByEmail: (data) => api.post("/users/email", data),
   
   uploadAvatar: (data) => api.post("/users/avatar", data),
   
