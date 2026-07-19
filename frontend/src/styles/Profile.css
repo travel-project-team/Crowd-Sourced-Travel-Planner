@@ -98,43 +98,41 @@
 
 .profile-actions-bar {
   display: flex;
-  justify-content: space-between; /* Pushes updates to the left, delete to the right */
+  justify-content: space-between;
   align-items: center;
-  margin-top: 3rem;              /* Generates spacing beneath text details */
+  margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #f3f4f6;  /* Subtle separator dividing line */
+  border-top: 1px solid #f3f4f6;
 }
 
 .btn-update-profile {
-  display: inline-block;        /* Ensures proper block rendering layout for a link tag */
-  text-decoration: none;        /* Fix: Removes the default browser text underline styling */
+  display: inline-block;
+  text-decoration: none;
   text-align: center;
-
-  /* --- Match Save Changes styling properties --- */
-  background-color: #2563eb;    /* Set this to your exact blue color code if different */
+  background-color: #2563eb;
   color: #ffffff;
   padding: 10px 20px;
   border-radius: 6px;
   font-size: 16px;
-  font-weight: 600;             /* Forces bold font weight rendering */
+  font-weight: 600;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .btn-update-profile:hover {
-  background-color: #1d4ed8;    /* Darkens button slightly on hover */
-  color: #ffffff;               /* Keeps text white on hover */
-  text-decoration: none;        /* Prevents hover underlines */
+  background-color: #1d4ed8;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 .btn-delete-account {
-  background-color: #dc2626;     /* Solid Tailwind red-600 background color */
-  color: #ffffff;                /* Sharp white readable text */
+  background-color: #dc2626;
+  color: #ffffff;
   padding: 0.625rem 1.25rem;
   font-size: 0.95rem;
-  font-weight: 600;              /* Bumped weight up to match Update Profile */
-  border: 1px solid transparent; /* Keeps sizing identical to the sibling button */
+  font-weight: 600;
+  border: 1px solid transparent;
   border-radius: 0.375rem;
   cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -142,9 +140,8 @@
 }
 
 .btn-delete-account:hover {
-  background-color: #b91c1c;     /* Deep rich red shade on pointer hover */
+  background-color: #b91c1c;
 }
-
 
 .profile-card {
   background: #ffffff;
@@ -153,49 +150,42 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Grid layout managing individual form rows */
 .profile-grid {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Adds consistent spacing between each form row field */
+  gap: 16px;
 }
 
-/* Row alignment layout */
 .profile-row {
   display: grid;
-  grid-template-columns: 140px 1fr; /* Locks labels to a fixed width of 140px */
+  grid-template-columns: 140px 1fr;
   align-items: center;
-  gap: 12px; /* Adds perfect horizontal spacing between the ":" and the input box */
+  gap: 12px;
 }
 
-/* Label text adjustment */
 .profile-label {
   margin: 0;
   color: #333333;
 }
 
-/* Clean Input Field boxes styling */
 .profile-input {
   width: 100%;
   max-width: 320px;
-  padding: 10px 14px;            /* Slightly increased padding for larger text comfort */
+  padding: 10px 14px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   outline: none;
-
-  /* --- Font Size Changes --- */
-  font-size: 18px;               /* Increased from 14px to 18px to make values larger */
-  font-weight: 500;              /* Makes the input values look crisp and legible */
-  color: #111111;                /* Solid dark color for better readability */
-
+  font-size: 18px;
+  font-weight: 500;
+  color: #111111;
   transition: border-color 0.2s;
 }
 
 .profile-input:focus {
-  border-color: #2563eb;         /* Blue highlight border on selection */
+  border-color: #2563eb;
 }
 
-/* Also increasing the static date value text size to match the inputs */
+
 .profile-value {
   font-size: 18px;
   margin: 0;
@@ -203,25 +193,25 @@
 }
 
 .btn-save-edit{
-  background-color: #2563eb;     /* Accent blue tone matching your theme */
+  background-color: #2563eb;
   color: #ffffff;
-  padding: 0.625rem 1.25rem;     /* Clean button boundary spacing padding */
+  padding: 0.625rem 1.25rem;
   font-size: 0.95rem;
   font-weight: 600;
   border: none;
-  border-radius: 0.375rem;       /* Clean rounded corners */
+  border-radius: 0.375rem;
   cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: background-color 0.15s ease;
 }
 
 .btn-cancel-edit {
-  background-color: #6c757d;     /* Solid Tailwind red-600 background color */
-  color: #ffffff;                /* Sharp white readable text */
+  background-color: #6c757d;
+  color: #ffffff;
   padding: 0.625rem 1.25rem;
   font-size: 0.95rem;
-  font-weight: 600;              /* Bumped weight up to match Update Profile */
-  border: 1px solid transparent; /* Keeps sizing identical to the sibling button */
+  font-weight: 600;
+  border: 1px solid transparent;
   border-radius: 0.375rem;
   cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
