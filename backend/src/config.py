@@ -41,7 +41,8 @@ def initialize_services():
 
     except Exception as e:
         logger.error(f"Error connecting to MongoDB: {str(e)}")
-
+        raise e
+    
 def close_services():
     global client
     if client:
