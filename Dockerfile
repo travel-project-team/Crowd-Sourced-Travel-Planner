@@ -1,4 +1,4 @@
-# Handles Docker Production via Google Cloud Run
+# Builds Docker container for production
 
 # Compile frontend source code
 FROM node:20 AS frontend-builder
