@@ -1,6 +1,7 @@
-# Automates Dockerfile for Cloud Run 
+# Automate container workflow in Cloud Run 
 
 steps:
+    # Build production container
   - name: gcr.io/cloud-builders/docker
     args:
       [
@@ -10,13 +11,15 @@ steps:
         "."
       ]
 
+    # Push to Goolge container registry
   - name: gcr.io/cloud-builders/docker
     args:
       [
         "push",
         "gcr.io/capstone-project-503000/github.com/travel-project-team/crowd-sourced-travel-planner:$COMMIT_SHA"
       ]
-      
+
+    # Deploy as new Cloud Run image
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
     args:
@@ -33,5 +36,6 @@ steps:
         "--quiet"
       ]
 
+# Store build logs
 options:
   logging: CLOUD_LOGGING_ONLY
