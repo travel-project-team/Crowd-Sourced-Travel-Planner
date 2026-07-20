@@ -3,6 +3,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import uvicorn, os
 from contextlib import asynccontextmanager
 
@@ -41,7 +42,11 @@ app.include_router(experiences_router)
 
 # Production - Handles frontend as static file
 if os.path.exists("static"):
-    app.mount("/", StaticFiles(directory="static", html=True), name="static")
+    app.mount("/assets", StaticFiles(directory="static/assets"), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def frontend(full_path: str):
+        return FileResponse("static/index.html")
 
 # Development - Hot reloading server
 if __name__ == "__main__":
