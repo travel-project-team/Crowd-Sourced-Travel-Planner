@@ -1,4 +1,4 @@
-// Starts the backend server in a virtual environment
+// Development - Starts virtual environment in backend 
 
 import { spawn } from "child_process";
 import path from "path";

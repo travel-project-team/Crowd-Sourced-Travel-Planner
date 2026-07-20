@@ -3,6 +3,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import uvicorn, os
 from contextlib import asynccontextmanager
 
@@ -21,11 +22,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+# Development - Bypassed by Vite proxy
+# Production - Dockerfile ensures same front/back origin
 origins = [
     "http://localhost:9000",
     "http://127.0.0.1:9000",
 ]
 
+# Keep for possible cross origin needs
 app.add_middleware(
     CORSMiddleware,
     allow_origins= origins,
@@ -39,10 +43,14 @@ app.include_router(trips_router)
 app.include_router(users_router)
 app.include_router(experiences_router)
 
-# Production - Handles frontend as static file
+# Production - Serve React frontend from FastAPI container
 if os.path.exists("static"):
-    app.mount("/", StaticFiles(directory="static", html=True), name="static")
+    app.mount("/assets", StaticFiles(directory="static/assets"), name="assets")
 
-# Development - Hot reloading server
+    @app.get("/{full_path:path}")
+    async def frontend(full_path: str):
+        return FileResponse("static/index.html")
+
+# Development - Startup hot reloading backend server
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
