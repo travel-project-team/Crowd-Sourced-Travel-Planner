@@ -169,6 +169,26 @@ def remove_user(user=Depends(verify_user)):
     '''
     # Get user ID from verified token
     user_id = user["_id"]
+    user_id_str = str(user_id)
+
+    # get user's experience IDs before deleting them, so they can be unlinked from other users' trips 
+    owned_experiences = config.db.experiences.find(
+        {"user_id": user_id_str}, {"_id": 1}
+    )
+    owned_experience_ids = [str(exp["_id"]) for exp in owned_experiences]
+
+    # Delete the user's experiences & trips
+    config.db.experiences.delete_many({"user_id": user_id_str})
+    config.db.trips.delete_many({"owner_id": user_id_str})
+    config.db.trips.update_many(
+        {},
+        {
+            "$pull": {
+                "collaborator_ids": user_id_str,
+                "experience_ids": {"$in": owned_experience_ids},
+            }
+        },
+    )
 
     # Delete user
     config.db.users.delete_one({"_id": user_id})
