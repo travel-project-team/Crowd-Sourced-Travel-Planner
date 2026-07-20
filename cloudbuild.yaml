@@ -16,6 +16,22 @@ steps:
         "push",
         "gcr.io/capstone-project-503000/github.com/travel-project-team/crowd-sourced-travel-planner:$COMMIT_SHA"
       ]
+      
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      [
+        "run",
+        "deploy",
+        "travelplanner",
+        "--image",
+        "gcr.io/capstone-project-503000/github.com/travel-project-team/crowd-sourced-travel-planner:$COMMIT_SHA",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
+        "--quiet"
+      ]
 
 options:
   logging: CLOUD_LOGGING_ONLY
