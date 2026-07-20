@@ -1,4 +1,4 @@
-# Build Docker container for production
+# Production - Build Docker container for production
 
 # Compile frontend into static file
 FROM node:20 AS frontend-builder
