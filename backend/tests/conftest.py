@@ -2,7 +2,7 @@
 # test_db: in memory mongomock database swapped into config.db
 # client: FastAPI TestClient that calls routes in-process
 # make_user: inserts a user and mints a real JWT for them
-# default_user: a registered user with token and auth headers
+# default_user: a registered user with token and auth cookie
 
 import os
 os.environ.setdefault("SECRET_KEY", "test-secret-key-not-for-production")
@@ -56,7 +56,7 @@ def make_user(test_db):
             "first_name": first_name,
             "last_name": last_name,
             "token": token,
-            "headers": {"Authorization": f"Bearer {token}"},
+            "cookies": {"access_token": token},
         }
 
     return _make_user
