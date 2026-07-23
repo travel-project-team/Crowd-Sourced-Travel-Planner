@@ -25,24 +25,57 @@ export const Header = ({ user, logout }) => {
       </div>
 
       {/* Profile dropdown */}
-      <div className="profile-dropdown-container" style={{ position: 'relative', display: 'inline-block' }}>
-        {user && (
-          <>
-            <button onClick={() => setOpen(!open)} className="profile-avatar-btn">
-              {getInitials(user.first_name, user.last_name)}
-            </button>
+      <div className="profile-dropdown-container">
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="profile-avatar-btn"
+            style={{ padding: 0, overflow: 'hidden', border: 'none' }}
+          >
+            {user?.avatar_url ? (
+              <img
+                src={user.avatar_url}
+                alt={`${getInitials(user?.first_name, user?.last_name)}`}
+                className="profile-avatar-image"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  if (e.target.nextSibling) {
+                    e.target.nextSibling.style.display = 'flex';
+                  }
+                }}
+              />
+            ) : null}
 
-            {/* Dropdown */}
-            {open && (
-              <div className="profile-dropdown-menu">
-                <Link to="/profile" className="profile-dropdown-link" onClick={() => setOpen(false)}>My Profile</Link>
-                 {/* Logout */}
-                <button onClick={logout} className="logout-button">Logout</button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+            <span
+              className="profile-avatar-fallback"
+              style={{
+                display: user?.avatar_url ? 'none' : 'flex',
+                width: '100%',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {getInitials(user?.first_name, user?.last_name)}
+            </span>
+          </button>
+
+          {open && (
+            <div className="profile-dropdown-menu">
+              <Link
+                to="/profile"
+                className="profile-dropdown-link"
+                onClick={() => setOpen(false)}
+              >
+                My Profile
+              </Link>
+              <button onClick={logout} className="logout-button">
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
     </header>
   );
 };
