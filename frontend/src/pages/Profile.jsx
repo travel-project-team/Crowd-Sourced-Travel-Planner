@@ -47,6 +47,23 @@ export const Profile = () =>{
         }
     };
 
+    // Remove User Avatar
+    const removeAvatarSubmit = async (e) => {
+        e.preventDefault();
+        try{
+            await usersApi.removeAvatar();
+
+            setSelectedFile(null);
+
+            if (getProfile) {
+                await getProfile();
+            }
+            navigate("/profile");
+        }catch (error){
+            console.error("Profile image removal error", error);
+        }
+    };
+
     return (
         <div className="profile-container">
         <div className="profile-card">
@@ -121,6 +138,9 @@ export const Profile = () =>{
                     Save Photo
                   </button>
                 )}
+                <button onClick={removeAvatarSubmit} type="submit" className="btn-save-edit" style={{ marginTop: '8px', padding: '4px 10px', fontSize: '12px' }}>
+                    Remove Photo
+                </button>
               </form>
             </div>
         )}
