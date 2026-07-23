@@ -1,9 +1,9 @@
 // Citation: AI enhanced formatting with Gemini.
 
 import "../../styles/EditForms.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { tripsApi } from "../../services/api.js";
+import { tripsApi, experiencesApi, usersApi } from "../../services/api.js";
 
 export const EditTrip = () => {
 
@@ -20,20 +20,153 @@ export const EditTrip = () => {
         experience_ids: trip?.experience_ids || []
     });
 
+    const [collaboratorInput, setCollaboratorInput] = useState("");
+    const [isLookingUpUser, setIsLookingUpUser] = useState(false);
+    const [collaboratorMap, setCollaboratorMap] = useState({});
+
+    const [selectedExperienceId, setSelectedExperienceId] = useState("");
+    const [allExperiences, setAllExperiences] = useState([]);
+    const [isLoadingExperiences, setIsLoadingExperiences] = useState(false);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
-    // These will be updated when new endpoints come in
-    const availableExperiences = [
-        { id: "exp-1", name: "Scuba Diving" },
-        { id: "exp-2", name: "Eiffel Tower" }
-    ];
+    useEffect(() => {
+        const fetchInitialCollaborators = async () => {
+            if (trip.collaborator_ids.length === 0) return;
+            try {
+                const res = await usersApi.getBatchById({ user_ids: trip.collaborator_ids});
+                const users = res.data || res || [];
+
+                const map = {};
+                users.forEach((u) => {
+                    const userId = String(u._id);
+                    map[userId] = u.email;
+                });
+
+                setCollaboratorMap(map);
+            } catch (err){
+                console.error("Failed to load initial collaborators", err);
+            }
+        };
+
+        fetchInitialCollaborators();
+    }, [trip]);
+
+    useEffect(() => {
+        const fetchUserExperiences = async () => {
+            setIsLoadingExperiences(true);
+            try {
+                const [allTrips, allExperiences] = await Promise.all([
+                    tripsApi.getAll(),
+                    experiencesApi.getAll()
+                ]);
+
+                const tripsData = allTrips.data || allTrips || [];
+                const experiencesData = allExperiences.data || allExperiences || [];
+
+                const otherTrips = tripsData.filter(t => String(t._id) !== String(tripId));
+
+                const affiliatedIds = new Set(
+                    otherTrips.flatMap(trip => trip.experience_ids || []).map(String)
+                );
+
+                const unaffiliated = experiencesData.filter(
+                    exp => !affiliatedIds.has(exp._id)
+                );
+
+                setAllExperiences(unaffiliated);
+            } catch (err) {
+                console.error("Failed to load experiences", err);
+            } finally {
+                setIsLoadingExperiences(false);
+            }
+        };
+
+        fetchUserExperiences();
+    }, []);
+
+    const dropdownOptions = allExperiences.filter(
+        exp => !formData.experience_ids.map(String).includes(String(exp._id))
+    );
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
             [name]: value
+        }));
+    };
+
+    const handleAddCollaborator = async () => {
+        const email = collaboratorInput.trim();
+
+        if (!email) return;
+
+        setIsLookingUpUser(true);
+        setError(null);
+
+        try {
+            const res = await usersApi.getBatchByEmail({emails: [email]});
+            const users = res.data || res || [];
+            const foundUser = users[0];
+
+            if (!foundUser || !foundUser._id) {
+                setError("No user found with this email address.");
+                return;
+            }
+
+            const userId = String(foundUser._id);
+
+            if (formData.collaborator_ids.map(String).includes(userId)) {
+                setError("This user is already a collaborator.");
+                return;
+            }
+
+            setFormData((prev) => ({
+                ...prev,
+                collaborator_ids: [...prev.collaborator_ids, userId]
+            }));
+
+            setCollaboratorMap((prev) => ({
+                ...prev,
+                [userId]: foundUser.email || email
+            }));
+
+            setCollaboratorInput("");
+        } catch (err) {
+            setError(err.message || "Failed to find user with that email.")
+        } finally {
+            setIsLookingUpUser(false);
+        }
+    };
+
+    const handleRemoveCollaborator = (emailToRemove) => {
+        setFormData((prev) => ({
+            ...prev,
+            collaborator_ids: prev.collaborator_ids.filter((item) => item !== emailToRemove)
+        }));
+    };
+
+    const handleAddExperiences = () => {
+        if (!selectedExperienceId) return;
+
+        if (formData.experience_ids.includes(selectedExperienceId)) {
+            return;
+        }
+
+        setFormData((prev) => ({
+            ...prev,
+            experience_ids: [...prev.experience_ids, selectedExperienceId]
+        }));
+
+        setSelectedExperienceId("");
+    }
+
+    const handleRemoveExperience = (expIdToRemove) => {
+        setFormData((prev) => ({
+            ...prev,
+            experience_ids: prev.experience_ids.filter((id) => id !== expIdToRemove)
         }));
     };
 
@@ -44,8 +177,18 @@ export const EditTrip = () => {
 
         const updatedFields = {}
 
+        const isArrayEqual = (arr1=[], arr2=[]) => {
+            if (arr1.length !== arr2.length) return false;
+            return arr1.every((val, index) => val === arr2[index]);
+        }
+
         Object.keys(formData).forEach((key) => {
-            if (formData[key] !== trip?.[key]) {
+            if (Array.isArray(formData[key])) {
+                if (!isArrayEqual(formData[key], trip?.[key] || [])) {
+                    updatedFields[key] = formData[key];
+                }
+            }
+            else if (formData[key] !== trip?.[key]) {
                 updatedFields[key] = formData[key]
             }
         });
@@ -91,23 +234,29 @@ export const EditTrip = () => {
                     <label htmlFor="trip-description">Description:</label>
                     <textarea id="trip-description" name="trip_description" value={formData.trip_description} onChange={handleInputChange}></textarea>
                 </div>    
-
-                
+ 
                 <div className="form-group">
                     <label htmlFor="trip-collaborators">Collaborators</label>
                     <div className="input-with-button-row">
                         <input 
                             type="email"
                             id="trip-collaborators"
-                            placeholder="Add by email."
-                            disabled
+                            placeholder="Add by email..."
+                            value={collaboratorInput}
+                            onChange={(e) => setCollaboratorInput(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleAddCollaborator();
+                                }
+                            }}
                         />
-                        <button type="button" className="inline-add-btn" disabled>Add</button>
+                        <button type="button" className="inline-add-btn" onClick={handleAddCollaborator} disabled={isLookingUpUser || !collaboratorInput.trim()}>{isLookingUpUser ? "searching..." : "Add"}</button>
                     </div>
                     <div className="tags-container">
                         {formData.collaborator_ids.length > 0 ? (
-                            formData.collaborator_ids.map(id => (
-                                <span key={id} className="tag-chip">{id}<button type="button" className="remove-tag">&times;</button></span>
+                            formData.collaborator_ids.map((id) => (
+                                <span key={id} className="tag-chip">{collaboratorMap[id] || id}<button type="button" className="remove-tag" onClick={() => handleRemoveCollaborator(id)}>&times;</button></span>
                             ))
                         ) : (
                             <span className="tag-chip" style={{ background: "#eee", color: "#666" }}>No collaborators added yet</span>
@@ -118,20 +267,32 @@ export const EditTrip = () => {
                 <div className="form-group">
                     <label htmlFor="trip-experiences">Experiences: </label>
                     <div className="input-with-button-row">
-                        <select id="trip-experiences" value="" onChange={() => {}} disabled>
-                            <option value="" disabled>Select from your unaffiliated experiences to add to this trip...</option>
-                            {availableExperiences.map(exp => (
-                                <option key={exp.id} value={exp.id}>{exp.name}</option>
+                        <select id="trip-experiences" value={selectedExperienceId} onChange={(e) => setSelectedExperienceId(e.target.value)} disabled={isLoadingExperiences}>
+                            <option value="" disabled>
+                                {isLoadingExperiences
+                                    ? "Loading experiences..."
+                                    : "Select an unaffiliated experience to add..."
+                                }
+                            </option>
+                            {dropdownOptions.map(exp => (
+                                <option key={exp._id} value={exp._id}>{exp.title}</option>
                             ))}
                         </select>
-                        <button type="button" className="inline-add-btn" disabled>Add</button>
+                        <button 
+                            type="button" 
+                            className="inline-add-btn" 
+                            onClick={handleAddExperiences} 
+                            disabled={!selectedExperienceId}
+                        >
+                            Add
+                        </button>
                     </div>
-                    <div className="tag-container">
+                    <div className="tags-container">
                         {formData.experience_ids.length > 0 ? (
                             formData.experience_ids.map(id => {
-                                const match = availableExperiences.find(e => e.id === id);
+                                const match = allExperiences.find(e => String(e._id) === String(id));
                                 return (
-                                    <span key={id} className="tag-chip">{match ? match.name : id}<button type="button" className="remove-tag">&times;</button></span>
+                                    <span key={id} className="tag-chip">{match ? match.title : id}<button type="button" className="remove-tag" onClick={() => handleRemoveExperience(id)}>&times;</button></span>
                                 );
                             })
                         ) : (

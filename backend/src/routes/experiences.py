@@ -20,6 +20,7 @@ class ExperiencesUpdate(BaseModel):
     location_geojson: Optional[dict] = None
     keywords: Optional[List[str]] = None
     image_url: Optional[str] = None
+    ratings: Optional[List[int]] = None
 
 # POST body for ratings
 class RatingCreate(BaseModel):
