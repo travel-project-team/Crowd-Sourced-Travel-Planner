@@ -217,3 +217,85 @@
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: background-color 0.15s ease;
 }
+
+.profile-main-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* FIX: Centers the avatar vertically relative to the entire text block */
+  gap: 40px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.profile-text-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.profile-avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 123px;
+  margin-bottom: 35px;
+}
+
+.profile-avatar-circle {
+  width: 9rem; /* Perfectly sized to align neatly next to the fields block */
+  height: 9rem;
+  border-radius: 9999px;
+  background-color: #2563eb;
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.profile-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 2.8rem;
+}
+
+.profile-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Vertical wrapper layout spacing for the upload input fields group */
+.avatar-upload-group {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Typography styles for the input field instruction text */
+.avatar-upload-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+/* Restricts the default wide dimensions of standard HTML file pickers */
+.file-input {
+  font-size: 0.8rem;
+  color: #6b7280;
+  max-width: 170px;
+}
