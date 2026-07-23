@@ -239,7 +239,7 @@ def profile_by_email(data: BatchUsersByEmail, _=Depends(verify_user)):
     )
 
     users_dict = {
-        db_user["email"]: mongo_string(db_user)
+        str(db_user["email"]): mongo_string(db_user)
         for db_user in users
     }
 
