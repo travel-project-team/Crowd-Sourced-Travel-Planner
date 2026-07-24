@@ -1,9 +1,9 @@
 // Citation: AI enhanced formatting with Gemini.
 
-import "../../styles/EditForms.css";
+import "../styles/EditForms.css";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { tripsApi, experiencesApi } from "../../services/api.js";
+import { tripsApi, experiencesApi } from "../services/api.js";
 
 export const EditExperience = () => {
 
@@ -20,7 +20,7 @@ export const EditExperience = () => {
 
     const [keywordInput, setKeywordInput] = useState("");
     const [keywords, setKeywords] = useState(experience?.keywords || []);
-    
+
     const [selectedFile, setSelectedFile] = useState(null);
     const [currentImageUrl, setCurrentImageUrl] = useState(experience?.image_url || "");
 
@@ -175,17 +175,17 @@ export const EditExperience = () => {
                 <div className="form-group">
                     <label htmlFor="experience-description">Description:</label>
                     <textarea id="experience-description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-                </div>    
+                </div>
 
                 <div className="form-group">
                     <label htmlFor="experience-location">Location:</label>
                     <input type="text" id="experience-location" value={locationName} onChange={(e) => setLocationName(e.target.value)} required />
-                </div>  
+                </div>
 
                 <div className="form-group">
                     <label htmlFor="experience-keywords">Keywords</label>
                     <div className="input-with-button-row">
-                        <input 
+                        <input
                             type="text"
                             id="experience-keywords"
                             value={keywordInput}
@@ -215,8 +215,8 @@ export const EditExperience = () => {
                     <label>Your Rating:</label>
                     <div className="star-rating">
                         {[1, 2, 3, 4, 5].map((starValue) => (
-                            <span 
-                                key={starValue} 
+                            <span
+                                key={starValue}
                                 className={`star ${(hoveredRating || rating) >= starValue ? "active" : ""}`}
                                 onClick={() => setRating(starValue)}
                                 onMouseEnter={() => setHoveredRating(starValue)}
@@ -230,9 +230,9 @@ export const EditExperience = () => {
 
                 <div className="form-group">
                     <label htmlFor="experience-image">Replace or Add Image:</label>
-                    <input 
-                        type="file" 
-                        id="experience-image" 
+                    <input
+                        type="file"
+                        id="experience-image"
                         onChange={handleFileChange}
                         accept="image/*"
                         className="file-input"
@@ -242,9 +242,9 @@ export const EditExperience = () => {
                             <p style={{ fontSize: "0.85rem", color: "#666", marginBottom: "5px" }}>
                                 {selectedFile ? "New file selected:" : "Current image:"}
                             </p>
-                            <img 
-                                src={selectedFile ? URL.createObjectURL(selectedFile) : currentImageUrl} 
-                                alt="Experience preview" 
+                            <img
+                                src={selectedFile ? URL.createObjectURL(selectedFile) : currentImageUrl}
+                                alt="Experience preview"
                                 style={{ maxWidth: "150px", maxHeight: "150px", borderRadius: "8px", objectFit: "cover" }}
                             />
                         </div>

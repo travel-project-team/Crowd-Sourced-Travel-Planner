@@ -2,10 +2,10 @@
 import { Outlet, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { usersApi } from "../services/api";
-import { Header } from "../components/common/Header"
-import { Sidebar } from "../components/common/Sidebar"
+import { Header } from "../components/Header"
+import { Sidebar } from "../components/Sidebar"
 import "../styles/DashboardLayout.css"
-export const DashboardLayout = () => {
+export const HomePageLayout = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
 
@@ -20,7 +20,7 @@ export const DashboardLayout = () => {
 
         }catch (error){
             console.error("Profile error", error);
-            navigate("/login");
+            navigate("/home");
         }
     }
 
@@ -32,7 +32,7 @@ export const DashboardLayout = () => {
         } catch (error) {
             console.error("Logout encountered a problem:", error);
         } finally {
-            navigate("/login");
+            navigate("/home");
         }
     }
 
@@ -42,7 +42,7 @@ export const DashboardLayout = () => {
             try {
                 await usersApi.remove();
                 setUser(null);
-                navigate("/login");
+                navigate("/home");
 
             } catch (err) {
                 alert(`Failed to delete profile: ${err.message}`);
@@ -53,12 +53,13 @@ export const DashboardLayout = () => {
 
     return (
         <div className="dashboard-layout">
-            <Sidebar/>
+            <Sidebar user={user}/>
             <div className="main-content-area">
-                <Header user={user} logout={logout}/>
+                {user && <Header user={user} logout={logout}/>}
                 <main className="page-body">
                     <Outlet context={{ user, getProfile, deleteProfile}}/>
                 </main>
+
             </div>
         </div>
     )

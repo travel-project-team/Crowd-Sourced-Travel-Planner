@@ -1,9 +1,9 @@
 // Citation: AI enhanced formatting with Gemini.
 
-import "../../styles/AddForms.css";
+import "../styles/AddForms.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { tripsApi, usersApi, experiencesApi } from "../../services/api";
+import { tripsApi, usersApi, experiencesApi } from "../services/api";
 
 export const AddTrip = () => {
 
@@ -134,12 +134,12 @@ export const AddTrip = () => {
                 <div className="form-group">
                     <label htmlFor="trip_description">Description:</label>
                     <textarea id="trip_description" name="trip_description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-                </div>    
+                </div>
 
                 <div className="form-group">
                     <label htmlFor="trip-collaborators">Collaborators</label>
                     <div className="input-with-button-row">
-                        <input 
+                        <input
                             type="email"
                             id="trip-collaborators"
                             placeholder="Add by email."

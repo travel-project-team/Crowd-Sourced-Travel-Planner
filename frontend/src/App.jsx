@@ -8,20 +8,21 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-r
 import "./styles/App.css"
 
 // Custom
-import { Login } from './components/feature/Login';
-import { Registration } from './components/feature/Registration';
-import { Dashboard } from './components/feature/Dashboard';
-import { DashboardLayout } from './layouts/DashboardLayout';
-import { Trips } from './components/feature/Trips';
-import { Experiences } from './components/feature/Experiences';
-import { SingleExperience } from './components/feature/SingleExperience';
-import { AddExperience } from './components/feature/AddExperience';
-import { AddTrip } from './components/feature/AddTrip';
-import { EditTrip } from './components/feature/EditTrip';
-import { EditExperience } from './components/feature/EditExperience'
+import { Login } from './pages/Login';
+import { Registration } from './pages/Registration';
+import { HomePageLayout } from './layouts/HomePageLayout';
+import { Trips } from './pages/Trips';
+import { Experiences } from './pages/Experiences';
+import { SingleExperience } from './pages/SingleExperience';
+import { AddExperience } from './pages/AddExperience';
+import { AddTrip } from './pages/AddTrip';
+import { EditTrip } from './pages/EditTrip';
+import { EditExperience } from './pages/EditExperience'
 import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
-import { ProtectedRoutes } from "./services/ProtectedRoutes";
+import { HomePage} from './pages/HomePage';
+import { ChangePassword } from './pages/ChangePassword';
+import { ProtectedRoutes } from "./helpers/ProtectedRoutes";
 
 
 
@@ -32,15 +33,18 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Registration />} />
+          <Route element={<HomePageLayout />}>
+            <Route path="/home" element={<HomePage/>}/>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Registration />} />
+          </Route>
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoutes />}>
-            <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
+            <Route element={<HomePageLayout />}>
               <Route path="/profile" element={<Profile />}/>
               <Route path="/profile/edit" element={<EditProfile />}/>
+              <Route path="/profile/change-password" element={<ChangePassword />}/>
               <Route path="/trips" element={<Trips />} />
               <Route path="/experiences" element={<Experiences />} />
               <Route path="/single-experience/:id" element={<SingleExperience />} />
@@ -52,7 +56,7 @@ function App() {
           </Route>
 
           {/* Catch-all fallback redirect */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
     </Router>
     </>

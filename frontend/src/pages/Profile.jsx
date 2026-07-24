@@ -149,9 +149,9 @@ export const Profile = () =>{
             <div className="profile-actions-bar">
                 <Link to="/profile/edit" className="btn-update-profile">Update Profile</Link>
 
-                <button type="button" className="btn-update-profile">
+                <Link to="/profile/change-password" className="btn-update-profile">
                     Update Password
-                </button>
+                </Link>
 
                 <button onClick={deleteProfile} type="button" className="btn-delete-account">
                     Delete Account
