@@ -50,7 +50,7 @@ export const Login = () => {
       });
 
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/trips");
       }, 1000);
 
     } catch (error) {

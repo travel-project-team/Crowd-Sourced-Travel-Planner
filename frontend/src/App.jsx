@@ -21,6 +21,8 @@ import { EditTrip } from './components/feature/EditTrip';
 import { EditExperience } from './components/feature/EditExperience'
 import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
+import { HomePage} from './pages/HomePage';
+import { ChangePassword } from './pages/ChangePassword';
 import { ProtectedRoutes } from "./services/ProtectedRoutes";
 
 
@@ -32,15 +34,17 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoutes />}>
             <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />}/>
               <Route path="/profile/edit" element={<EditProfile />}/>
+              <Route path="/profile/change-password" element={<ChangePassword />}/>
               <Route path="/trips" element={<Trips />} />
               <Route path="/experiences" element={<Experiences />} />
               <Route path="/single-experience/:id" element={<SingleExperience />} />
@@ -52,7 +56,7 @@ function App() {
           </Route>
 
           {/* Catch-all fallback redirect */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
     </Router>
     </>
