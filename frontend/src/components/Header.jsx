@@ -1,8 +1,8 @@
 // citation: https://youtu.be/JVCU2qsGvOs?si=iVz1N7_lr78bsDkh
 import { useState } from "react";
 import { Link } from "react-router";
-import "../../styles/Header.css";
-import { getInitials } from "../../helpers/getInitials.js";
+import "../styles/Header.css";
+import { getInitials } from "../helpers/getInitials.js";
 
 export const Header = ({ user, logout }) => {
   const [open, setOpen] = useState(false);

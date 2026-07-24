@@ -1,9 +1,9 @@
 // Citation: AI enhanced formatting with Gemini.
 
-import "../../styles/AddForms.css";
+import "../styles/AddForms.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { tripsApi, experiencesApi, usersApi } from "../../services/api.js";
+import { tripsApi, experiencesApi, usersApi } from "../services/api.js";
 
 export const AddExperience = () => {
 
@@ -135,17 +135,17 @@ export const AddExperience = () => {
                 <div className="form-group">
                     <label htmlFor="experience-description">Description:</label>
                     <textarea id="experience-description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-                </div>    
-                
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="experience-location">Location:</label>
                     <input type="text" id="experience-location" value={locationName} onChange={(e) => setLocationName(e.target.value)} required />
-                </div>   
+                </div>
 
                 <div className="form-group">
                     <label htmlFor="experience-keywords">Keywords</label>
                     <div className="input-with-button-row">
-                        <input 
+                        <input
                             type="text"
                             id="experience-keywords"
                             placeholder="Add keywords to help others can find your experience!"
@@ -169,8 +169,8 @@ export const AddExperience = () => {
                     <label>Your Rating:</label>
                     <div className="star-rating">
                         {[1, 2, 3, 4, 5].map((starValue) => (
-                            <span 
-                                key={starValue} 
+                            <span
+                                key={starValue}
                                 className={`star ${(hoveredRating || rating) >= starValue ? "active" : ""}`}
                                 onClick={() => setRating(starValue)}
                                 onMouseEnter={() => setHoveredRating(starValue)}
@@ -184,10 +184,10 @@ export const AddExperience = () => {
 
                 <div className="form-group">
                     <label htmlFor="experience-image">Upload Image:</label>
-                    <input 
-                        type="file" 
-                        id="experience-image" 
-                        name="experience-image" 
+                    <input
+                        type="file"
+                        id="experience-image"
+                        name="experience-image"
                         accept="image/*"
                         className="file-input"
                         onChange={handleFileChange}

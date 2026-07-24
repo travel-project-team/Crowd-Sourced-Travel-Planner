@@ -8,21 +8,21 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-r
 import "./styles/App.css"
 
 // Custom
-import { Login } from './components/feature/Login';
-import { Registration } from './components/feature/Registration';
+import { Login } from './pages/Login';
+import { Registration } from './pages/Registration';
 import { HomePageLayout } from './layouts/HomePageLayout';
-import { Trips } from './components/feature/Trips';
-import { Experiences } from './components/feature/Experiences';
-import { SingleExperience } from './components/feature/SingleExperience';
-import { AddExperience } from './components/feature/AddExperience';
-import { AddTrip } from './components/feature/AddTrip';
-import { EditTrip } from './components/feature/EditTrip';
-import { EditExperience } from './components/feature/EditExperience'
+import { Trips } from './pages/Trips';
+import { Experiences } from './pages/Experiences';
+import { SingleExperience } from './pages/SingleExperience';
+import { AddExperience } from './pages/AddExperience';
+import { AddTrip } from './pages/AddTrip';
+import { EditTrip } from './pages/EditTrip';
+import { EditExperience } from './pages/EditExperience'
 import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
 import { HomePage} from './pages/HomePage';
 import { ChangePassword } from './pages/ChangePassword';
-import { ProtectedRoutes } from "./services/ProtectedRoutes";
+import { ProtectedRoutes } from "./helpers/ProtectedRoutes";
 
 
 

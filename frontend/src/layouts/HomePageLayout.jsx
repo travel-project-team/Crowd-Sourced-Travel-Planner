@@ -2,8 +2,8 @@
 import { Outlet, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { usersApi } from "../services/api";
-import { Header } from "../components/common/Header"
-import { Sidebar } from "../components/common/Sidebar"
+import { Header } from "../components/Header"
+import { Sidebar } from "../components/Sidebar"
 import "../styles/DashboardLayout.css"
 export const HomePageLayout = () => {
     const navigate = useNavigate();
@@ -42,7 +42,7 @@ export const HomePageLayout = () => {
             try {
                 await usersApi.remove();
                 setUser(null);
-                navigate("/login");
+                navigate("/home");
 
             } catch (err) {
                 alert(`Failed to delete profile: ${err.message}`);

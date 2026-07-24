@@ -1,8 +1,8 @@
-import { experiencesApi, usersApi } from "../../services/api.js";
+import { experiencesApi, usersApi } from "../services/api.js";
 import { ExperienceCard } from "./ExperienceCard.jsx";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "../../styles/Experiences.css";
+import "../styles/Experiences.css";
 
 export const Experiences = () => {
     const [experiences, setExperiences] = useState([]);
@@ -41,15 +41,15 @@ export const Experiences = () => {
                     <p>No experiences found. Time to plan a new one...</p>
                 ) : (
                     experiences.map((experience) => (
-                        <ExperienceCard 
-                            key={experience._id} 
-                            experience={experience} 
+                        <ExperienceCard
+                            key={experience._id}
+                            experience={experience}
                             currentUser={currentUser}
                             onTripDeleted={(id) => setExperiences(prev => prev.filter(e => e.id !== id))}
                         />
                     ))
                 )}
-            </div> 
+            </div>
             <div>
                 <Link to="/add-trip" className="add-button">
                     Add trip

@@ -2,7 +2,7 @@
 
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { usersApi } from "./api";
+import { usersApi } from "../services/api";
 
 export const ProtectedRoutes = () => {
     const [authenticated, setAuthenticated] = useState(null);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { tripsApi, experiencesApi, usersApi } from "../../services/api";
-import "../../styles/Experiences.css";
+import { tripsApi, experiencesApi, usersApi } from "../services/api";
+import "../styles/Experiences.css";
 
 export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted } ) => {
     const navigate = useNavigate();
@@ -88,7 +88,7 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
     const handleViewSingleExperience = () => {
         navigate(`/single-experience/${experience._id}`);
     };
-    
+
     return(
         <div className="experience-card">
             <div className="experience-actions">
@@ -103,7 +103,7 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
             <p className="experience-attr">{experience.description}</p>
             <p className="experience-attr">Location: {experience.location_name} </p>
             <p className="experience-attr">Keywords: {experience.keywords}</p>
-            <p className="experience-attr">Average rating: 
+            <p className="experience-attr">Average rating:
                 {experience.ratings.length === 0 ? "N/A"
                    : (experience.ratings.reduce((acc, currVal) => acc + currVal, 0)) / experience.ratings.length}
                 </p>
@@ -114,7 +114,7 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
                 {associatedTrip ? (
                     <div className="affiliated-trip-container">
                         <p className="trip-status">Trip: {associatedTrip.trip_name}</p>
-                        <button 
+                        <button
                             className="trip-action-btn remove-btn"
                             onClick={handleRemoveFromTrip}
                             disabled={loading}

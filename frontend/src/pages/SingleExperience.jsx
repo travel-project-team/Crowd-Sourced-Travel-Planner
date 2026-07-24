@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { experiencesApi } from "../../services/api.js";
-import "../../styles/SingleExperience.css";
+import { experiencesApi } from "../services/api.js";
+import "../styles/SingleExperience.css";
 
 export const SingleExperience = () => {
     const { id } = useParams();

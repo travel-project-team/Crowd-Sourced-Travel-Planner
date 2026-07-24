@@ -1,8 +1,8 @@
-import { tripsApi, usersApi } from "../../services/api.js";
+import { tripsApi, usersApi } from "../services/api.js";
 import { TripCard } from "./TripCard.jsx";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "../../styles/Trips.css";
+import "../styles/Trips.css";
 
 export const Trips = () => {
     const [trips, setTrips] = useState([]);
@@ -41,15 +41,15 @@ export const Trips = () => {
                     <p>No trips found. Time to plan a new one...</p>
                 ) : (
                     trips.map((trip) => (
-                        <TripCard 
-                            key={trip._id} 
-                            trip={trip} 
+                        <TripCard
+                            key={trip._id}
+                            trip={trip}
                             currentUser={currentUser}
                             onTripDeleted={(id) => setTrips(prev => prev.filter(t => t.id !== id))}
                         />
                     ))
                 )}
-            </div> 
+            </div>
             <div>
                 <Link to="/add-trip" className="add-button">
                     Add trip

@@ -1,11 +1,11 @@
 // citation: https://youtu.be/k1xMMHea2Ms?si=qiSzGC1DGfF6tMR9
 // citation: AI enhanced
 
-import "../../styles/Forms.css"
+import "../styles/Forms.css"
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { usersApi } from "../../services/api";
+import { usersApi } from "../services/api";
 
 export const Registration = () => {
   const navigate = useNavigate();

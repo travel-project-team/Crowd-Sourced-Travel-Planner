@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { tripsApi, experiencesApi, usersApi } from "../../services/api";
-import "../../styles/Trips.css";
+import { tripsApi, experiencesApi, usersApi } from "../services/api";
+import "../styles/Trips.css";
 
 export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
-    // Get actual collaborators when you have a get users by ID route. 
+    // Get actual collaborators when you have a get users by ID route.
     const navigate = useNavigate();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -67,7 +67,7 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
     useEffect(() => {
         if (!isDropdownOpen) return;
 
-        // Refactor this to the batch of Ids endpoint eventually. 
+        // Refactor this to the batch of Ids endpoint eventually.
         const fetchAndFilterExperiences = async () => {
             try {
                 const allExperiences = await experiencesApi.getAll();
@@ -102,7 +102,7 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
             }
         }
     };
-    
+
     return(
         <div className="trip-card">
             <div className="trip-actions">
@@ -118,8 +118,8 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
             <p className="trip-attr">Owner: {ownerName} </p>
             <p className="trip-attr">Collaborators: {collaboratorNames}</p>
             <div className="trip-experiences-dropdown">
-                <button 
-                    className="dropdown-toggle" 
+                <button
+                    className="dropdown-toggle"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     aria-expanded={isDropdownOpen}
                 >
