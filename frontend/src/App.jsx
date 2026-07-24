@@ -10,8 +10,7 @@ import "./styles/App.css"
 // Custom
 import { Login } from './components/feature/Login';
 import { Registration } from './components/feature/Registration';
-import { Dashboard } from './components/feature/Dashboard';
-import { DashboardLayout } from './layouts/DashboardLayout';
+import { HomePageLayout } from './layouts/HomePageLayout';
 import { Trips } from './components/feature/Trips';
 import { Experiences } from './components/feature/Experiences';
 import { SingleExperience } from './components/feature/SingleExperience';
@@ -34,14 +33,15 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/home" element={<HomePage/>}/>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Registration />} />
+          <Route element={<HomePageLayout />}>
+            <Route path="/home" element={<HomePage/>}/>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Registration />} />
+          </Route>
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoutes />}>
-            <Route element={<DashboardLayout />}>
+            <Route element={<HomePageLayout />}>
               <Route path="/profile" element={<Profile />}/>
               <Route path="/profile/edit" element={<EditProfile />}/>
               <Route path="/profile/change-password" element={<ChangePassword />}/>
