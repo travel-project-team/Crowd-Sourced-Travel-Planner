@@ -11,6 +11,7 @@ export const Sidebar = ({user}) => {
           <>
             <NavLink to="/trips">Your Trips</NavLink>
             <NavLink to="/experiences">Your Experiences</NavLink>
+            <NavLink to="/search">Search Experiences</NavLink>
           </>
         )}
         {(!user) &&(

@@ -3,6 +3,7 @@
 // React libraries
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-router-dom';
+import { SearchPage } from './pages/SearchPage';
 
 // Styling
 import "./styles/App.css"
@@ -52,6 +53,7 @@ function App() {
               <Route path="/add-trip" element={<AddTrip />} />
               <Route path="/edit-trip/:id" element={<EditTrip />} />
               <Route path="/edit-experience/:id" element={<EditExperience />} />
+              <Route path="/search" element={<SearchPage />} />
             </Route>
           </Route>
 
