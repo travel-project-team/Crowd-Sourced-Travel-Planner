@@ -14,7 +14,7 @@ export const Experiences = () => {
         const loadData = async () => {
             try {
                 const [experienceData, userData] = await Promise.all([
-                    experiencesApi.getAll(),
+                    experiencesApi.getUser(),
                     usersApi.getProfile()
                 ]);
 
@@ -45,7 +45,7 @@ export const Experiences = () => {
                             key={experience._id}
                             experience={experience}
                             currentUser={currentUser}
-                            onTripDeleted={(id) => setExperiences(prev => prev.filter(e => e.id !== id))}
+                            onExperienceDeleted={(id) => setExperiences(prev => prev.filter(e => e._id !== id))}
                         />
                     ))
                 )}
