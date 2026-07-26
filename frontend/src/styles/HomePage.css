@@ -1,0 +1,130 @@
+/* Citation: AI enhanced with Gemini. */
+.home-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Hero */
+.home-hero {
+    background:
+        linear-gradient(135deg, rgba(30, 58, 138, 0.85) 0%, rgba(37, 99, 235, 0.75) 100%),
+        url("../assets/hero.jpg") center / cover no-repeat;
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 64px 48px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.home-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0 0 16px 0;
+    max-width: 640px;
+    line-height: 1.15;
+}
+
+.home-subtitle {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #dbeafe;
+    max-width: 560px;
+    margin: 0 0 32px 0;
+}
+
+.home-cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.home-cta {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.home-cta:hover {
+    transform: translateY(-1px);
+}
+
+.home-cta.primary {
+    background-color: #ffffff;
+    color: #1e3a8a;
+}
+
+.home-cta.primary:hover {
+    background-color: #eff6ff;
+}
+
+.home-cta.secondary {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.home-cta.secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Feature cards */
+.home-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.home-feature-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(229, 231, 235, 0.5);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+}
+
+.home-feature-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 14px;
+}
+
+.home-feature-card h3 {
+    color: #1e3a8a;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+}
+
+.home-feature-card p {
+    color: #4b5563;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .home-hero {
+        padding: 40px 24px;
+    }
+
+    .home-title {
+        font-size: 1.85rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-cta {
+        transition: none;
+    }
+
+    .home-cta:hover {
+        transform: none;
+    }
+}
