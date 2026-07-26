@@ -53,9 +53,7 @@ header button {
   justify-content: center;
   font-weight: 700;
   border: 1px solid #f3f4f6;
-
-  /* FIXED: Scaled up from 1.8rem to 2.8rem to match the profile view lettering size */
-  font-size: 2.8rem !important;
+  font-size: 2.25rem !important;
 }
 
 .profile-dropdown-menu {

@@ -221,7 +221,7 @@
 .profile-main-content {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* FIX: Centers the avatar vertically relative to the entire text block */
+  align-items: center;
   gap: 40px;
   width: 100%;
   margin-bottom: 24px;
@@ -245,7 +245,7 @@
 }
 
 .profile-avatar-circle {
-  width: 9rem; /* Perfectly sized to align neatly next to the fields block */
+  width: 9rem;
   height: 9rem;
   border-radius: 9999px;
   background-color: #2563eb;
@@ -276,7 +276,6 @@
   display: block;
 }
 
-/* Vertical wrapper layout spacing for the upload input fields group */
 .avatar-upload-group {
   margin-top: 14px;
   display: flex;
@@ -285,7 +284,6 @@
   gap: 6px;
 }
 
-/* Typography styles for the input field instruction text */
 .avatar-upload-label {
   font-size: 0.85rem;
   font-weight: 600;
@@ -293,7 +291,6 @@
   cursor: pointer;
 }
 
-/* Restricts the default wide dimensions of standard HTML file pickers */
 .file-input {
   font-size: 0.8rem;
   color: #6b7280;
