@@ -155,3 +155,10 @@ def rate_experience(experience_id: str, body: RatingCreate, user=Depends(verify_
         {"$set": {"average_rating": average}}
     )
     return {"message": "Rating added successfully", "average_rating": average, "rating_count": len(ratings)}
+
+# Get Experience from Current User (experiencesApi.getUser)
+@router.get("/user")
+def get_my_experiences(user=Depends(verify_user)):
+    user_id = str(user["_id"])
+    results = config.db.experiences.find({"user_id": user_id})
+    return [mongo_string(experience) for experience in results]

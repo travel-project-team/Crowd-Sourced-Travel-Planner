@@ -1,5 +1,5 @@
 import { experiencesApi, usersApi } from "../services/api.js";
-import { ExperienceCard } from "./ExperienceCard.jsx";
+import { ExperienceCard } from "../components/ExperienceCard.jsx";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Experiences.css";

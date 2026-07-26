@@ -112,12 +112,10 @@ export const usersApi = {
 
   update: (data) => api.put("/users", data),
 
-  // New
   updatePassword: (data) => api.put("/users/password", data),
 
   remove: () => api.delete("/users"),
 
-  // Accepts array of 1 or more ID/email
   getBatchById: (data) => api.post("/users/id", data),
 
   getBatchByEmail: (data) => api.post("/users/email", data),
@@ -167,5 +165,7 @@ export const experiencesApi = {
 
   remove: (id) => api.delete(`/experiences/${id}`),
 
-  uploadImage: (formData) => request("/experiences/image", { method: "POST", body: formData })
+  uploadImage: (formData) => request("/experiences/image", { method: "POST", body: formData }),
+
+  getUser: () => api.get("/experiences/user"),
 };
