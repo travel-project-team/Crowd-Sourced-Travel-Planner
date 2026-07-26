@@ -30,6 +30,18 @@ export const Trips = () => {
         loadData();
     },[]);
 
+    // Delete: calls the API and updates state
+    const handleDeleteTrip = async (tripId) => {
+        if (window.confirm("Are you sure you want to delete this trip?")) {
+            try {
+                await tripsApi.remove(tripId);
+                setTrips(prev => prev.filter(t => t._id !== tripId));
+            } catch (err) {
+                alert(`Failed to delete trip: ${err.message}`);
+            }
+        }
+    };
+
     if (loading) return <div className="trips-container"><p>Loading your trips...</p></div>;
     if (error) return <div className="trips-container"><p>Error: {error}</p></div>;
 
@@ -45,7 +57,7 @@ export const Trips = () => {
                             key={trip._id}
                             trip={trip}
                             currentUser={currentUser}
-                            onTripDeleted={(id) => setTrips(prev => prev.filter(t => t._id !== id))}
+                            onDelete={handleDeleteTrip}
                         />
                     ))
                 )}

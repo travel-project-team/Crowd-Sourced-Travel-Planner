@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { tripsApi, experiencesApi, usersApi } from "../services/api";
+import { experiencesApi, usersApi } from "../services/api";
 import "../styles/Trips.css";
 
-export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
+export const TripCard = ( { trip, currentUser, onDelete } ) => {
     // Get actual collaborators when you have a get users by ID route.
     const navigate = useNavigate();
 
@@ -89,18 +89,9 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
         navigate(`/edit-trip/${trip._id}`, { state: { trip } });
     };
 
-    const handleDelete = async (e) => {
+    const handleDelete = (e) => {
         e.stopPropagation();
-        if (window.confirm("Are you sure you want to delete this trip?")) {
-            try {
-                await tripsApi.remove(trip._id);
-                if (onTripDeleted) {
-                    onTripDeleted(trip._id);
-                }
-            } catch (err) {
-                alert(`Failed to delete trip: ${err.message}`);
-            }
-        }
+        onDelete(trip._id);
     };
 
     return(
