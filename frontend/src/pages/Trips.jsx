@@ -45,7 +45,7 @@ export const Trips = () => {
                             key={trip._id}
                             trip={trip}
                             currentUser={currentUser}
-                            onTripDeleted={(id) => setTrips(prev => prev.filter(t => t.id !== id))}
+                            onTripDeleted={(id) => setTrips(prev => prev.filter(t => t._id !== id))}
                         />
                     ))
                 )}
