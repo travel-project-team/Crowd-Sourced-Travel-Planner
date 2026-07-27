@@ -14,7 +14,7 @@ export const Experiences = () => {
         const loadData = async () => {
             try {
                 const [experienceData, userData] = await Promise.all([
-                    experiencesApi.getAll(),
+                    experiencesApi.getUser(),
                     usersApi.getProfile()
                 ]);
 
@@ -29,6 +29,18 @@ export const Experiences = () => {
 
         loadData();
     },[]);
+
+// Delete: calls the API and updates state
+    const handleDeleteExperience= async (experienceId) => {
+        if (window.confirm("Are you sure you want to delete this Experience?")) {
+            try {
+                await experiencesApi.remove(experienceId);
+                setExperiences(prev => prev.filter(e => e._id !== experienceId));
+            } catch (err) {
+                alert(`Failed to delete experience: ${err.message}`);
+            }
+        }
+    };
 
     if (loading) return <div className="experiences-container"><p>Loading your experiences...</p></div>;
     if (error) return <div className="experiences-container"><p>Error: {error}</p></div>;
@@ -45,7 +57,7 @@ export const Experiences = () => {
                             key={experience._id}
                             experience={experience}
                             currentUser={currentUser}
-                            onTripDeleted={(id) => setExperiences(prev => prev.filter(e => e.id !== id))}
+                            onExperienceDeleted={handleDeleteExperience}
                         />
                     ))
                 )}

@@ -73,16 +73,7 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
 
     const handleDelete = async (e) => {
         e.stopPropagation();
-        if (window.confirm("Are you sure you want to delete this experience?")) {
-            try {
-                await experiencesApi.remove(experience._id);
-                if (onExperienceDeleted) {
-                    onExperienceDeleted(experience._id);
-                }
-            } catch (err) {
-                alert(`Failed to delete experience: ${err.message}`);
-            }
-        }
+        onExperienceDeleted(experience._id);
     };
 
     const handleViewSingleExperience = () => {
