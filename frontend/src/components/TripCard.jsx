@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { experiencesApi, usersApi } from "../services/api";
 import "../styles/Trips.css";
 
-export const TripCard = ( { trip, currentUser, onDelete } ) => {
+export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
     // Get actual collaborators when you have a get users by ID route.
     const navigate = useNavigate();
 
@@ -91,7 +91,7 @@ export const TripCard = ( { trip, currentUser, onDelete } ) => {
 
     const handleDelete = (e) => {
         e.stopPropagation();
-        onDelete(trip._id);
+        onTripDeleted(trip._id);
     };
 
     return(

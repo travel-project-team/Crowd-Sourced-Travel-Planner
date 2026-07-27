@@ -1,5 +1,5 @@
 import { tripsApi, usersApi } from "../services/api.js";
-import { TripCard } from "./TripCard.jsx";
+import { TripCard } from "../components/TripCard.jsx";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Trips.css";
@@ -57,7 +57,7 @@ export const Trips = () => {
                             key={trip._id}
                             trip={trip}
                             currentUser={currentUser}
-                            onDelete={handleDeleteTrip}
+                            onTripDeleted={handleDeleteTrip}
                         />
                     ))
                 )}
