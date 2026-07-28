@@ -6,7 +6,7 @@ export const Sidebar = ({user}) => {
     <aside className="sidebar-container">
       <h2>Crowd Sourced Travel Planner</h2>
       <nav>
-        <NavLink to="/dashboard">Home</NavLink>
+        <NavLink to="/home">Home</NavLink>
         {(user) &&(
           <>
             <NavLink to="/trips">Your Trips</NavLink>
