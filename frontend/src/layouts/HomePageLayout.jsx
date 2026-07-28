@@ -31,8 +31,7 @@ export const HomePageLayout = () => {
 
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token && !user) {
+    if (!user) {
       getProfile();
     }
   }, [location.pathname, user, getProfile]);
