@@ -1,6 +1,6 @@
 // citation: https://youtu.be/JVCU2qsGvOs?si=iVz1N7_lr78bsDkh
 // Used Google Gemini for routing optimization
-import { Outlet, useNavigate, useLocation  } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { useEffect, useState, useCallback} from "react";
 import { usersApi } from "../services/api";
 import { Header } from "../components/Header"
@@ -8,7 +8,6 @@ import { Sidebar } from "../components/Sidebar"
 import "../styles/DashboardLayout.css"
 export const HomePageLayout = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
