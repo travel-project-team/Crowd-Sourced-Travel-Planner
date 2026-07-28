@@ -1,4 +1,5 @@
 // citation: https://youtu.be/JVCU2qsGvOs?si=iVz1N7_lr78bsDkh
+// Used Google Gemini for routing optimization
 import { Outlet, useNavigate, useLocation  } from "react-router-dom"
 import { useEffect, useState, useCallback} from "react";
 import { usersApi } from "../services/api";
@@ -11,27 +12,26 @@ export const HomePageLayout = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Memoize getProfile so it can be passed cleanly down context & used in effects
+// Get User profile
   const getProfile = useCallback(async () => {
     try {
       const data = await usersApi.getProfile();
       setUser(data);
     } catch (error) {
       console.error("Profile error", error);
-      setUser(null); // Set user to null safely without forcing navigate()
+      setUser(null);
     } finally {
-      setIsLoading(false); // Mark initial check as done
+      setIsLoading(false);
     }
   }, []);
 
-  // Run initial profile fetch on layout mount
+
   useEffect(() => {
     getProfile();
   }, [getProfile]);
 
-  // Optional session sync effect (properly wrapped inside useEffect)
+
   useEffect(() => {
-    // Only re-check if token exists or to re-validate session state on route changes
     const token = localStorage.getItem("token");
     if (token && !user) {
       getProfile();
@@ -47,7 +47,7 @@ export const HomePageLayout = () => {
     } finally {
       localStorage.removeItem("token");
       setUser(null);
-      navigate("/home", { replace: true }); // Wipe browser back-button history on logout
+      navigate("/home", { replace: true });
     }
   };
 
@@ -67,12 +67,12 @@ export const HomePageLayout = () => {
     }
   };
 
-  // 1. MANDATORY RENDER GATE: Keeps the DOM stable while network requests resolve
+ // Prevent Sidebar from briefly rendering
   if (isLoading) {
-    return null; // Prevents Sidebar/Header from briefly rendering unauthenticated states
+    return null;
   }
 
-  // 2. Stable execution block
+
   return (
     <div className="dashboard-layout">
       <Sidebar user={user} />
