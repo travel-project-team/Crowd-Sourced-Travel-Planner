@@ -10,7 +10,9 @@ export const HomePageLayout = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        getProfile();
+        if (user) {
+            getProfile();
+        }
     }, []);
 
     const getProfile = async () => {
