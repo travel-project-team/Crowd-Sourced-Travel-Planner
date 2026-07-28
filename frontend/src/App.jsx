@@ -38,22 +38,19 @@ function App() {
             <Route path="/home" element={<HomePage/>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
-          </Route>
-
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoutes />}>
-            <Route element={<HomePageLayout />}>
-              <Route path="/profile" element={<Profile />}/>
-              <Route path="/profile/edit" element={<EditProfile />}/>
-              <Route path="/profile/change-password" element={<ChangePassword />}/>
-              <Route path="/trips" element={<Trips />} />
-              <Route path="/experiences" element={<Experiences />} />
-              <Route path="/single-experience/:id" element={<SingleExperience />} />
-              <Route path="/add-experience" element={<AddExperience />} />
-              <Route path="/add-trip" element={<AddTrip />} />
-              <Route path="/edit-trip/:id" element={<EditTrip />} />
-              <Route path="/edit-experience/:id" element={<EditExperience />} />
-              <Route path="/search" element={<SearchPage />} />
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoutes />}>
+                <Route path="/profile" element={<Profile />}/>
+                <Route path="/profile/edit" element={<EditProfile />}/>
+                <Route path="/profile/change-password" element={<ChangePassword />}/>
+                <Route path="/trips" element={<Trips />} />
+                <Route path="/experiences" element={<Experiences />} />
+                <Route path="/single-experience/:id" element={<SingleExperience />} />
+                <Route path="/add-experience" element={<AddExperience />} />
+                <Route path="/add-trip" element={<AddTrip />} />
+                <Route path="/edit-trip/:id" element={<EditTrip />} />
+                <Route path="/edit-experience/:id" element={<EditExperience />} />
+                <Route path="/search" element={<SearchPage />} />
             </Route>
           </Route>
 
