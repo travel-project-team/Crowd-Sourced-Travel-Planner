@@ -4,11 +4,12 @@
 import "../styles/Forms.css"
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { usersApi } from "../services/api";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { getProfile } = useOutletContext();
   const [errors, setErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [serverResponse, setServerResponse] = useState({
@@ -49,9 +50,11 @@ export const Login = () => {
         message: data.message || "Logged in successfully!",
       });
 
-      setTimeout(() => {
-        navigate("/trips");
-      }, 1000);
+      if (getProfile) {
+        await getProfile();
+      }
+
+      navigate("/trips", { replace: true });
 
     } catch (error) {
 
