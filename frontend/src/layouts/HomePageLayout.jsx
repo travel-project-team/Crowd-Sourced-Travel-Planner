@@ -37,33 +37,31 @@ export const HomePageLayout = () => {
   }, [location.pathname, user, getProfile]);
 
   // Logout
-  const logout = async () => {
+  const logout = async () =>{
     try {
       await usersApi.logout();
+      setUser(null);
     } catch (error) {
       console.error("Logout encountered a problem:", error);
     } finally {
-      localStorage.removeItem("token");
-      setUser(null);
-      navigate("/home", { replace: true });
+      navigate("/home");
     }
-  };
+  }
 
-  // Delete User Profile
+    // Delete User Profile
   const deleteProfile = async () => {
     if (window.confirm("Are you sure you want to delete your profile?")) {
       try {
         await usersApi.remove();
+        setUser(null);
+        navigate("/home");
+
       } catch (err) {
         alert(`Failed to delete profile: ${err.message}`);
         throw err;
-      } finally {
-        localStorage.removeItem("token");
-        setUser(null);
-        navigate("/home", { replace: true });
       }
     }
-  };
+  }
 
  // Prevent Sidebar from briefly rendering
   if (isLoading) {
