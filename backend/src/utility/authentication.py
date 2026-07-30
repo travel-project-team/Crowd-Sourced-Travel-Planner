@@ -14,8 +14,12 @@ ALGORITHM = "HS256"
 EXPIRATION_MINUTES = 60
 
 
-# Hash plain text password
+# Hash Plaintext Password
 def hash_password(password: str) -> str:
+    '''
+    Input: User's plaintext password.
+    Output: Bcrypt-hashed password.
+    '''
     password_in_bytes = password.encode("utf-8")
         
     salt = bcrypt.gensalt()
@@ -24,16 +28,24 @@ def hash_password(password: str) -> str:
     return hashed_bytes.decode("utf-8")
 
 
-# Compares two password strings.
+# Check Password
 def verify_password(plain_password: str, hashed_password: str) -> bool:
+    '''
+    Input: User's plaintext password and bcrypt hashed password.
+    Output: True if the passwords match. False otherwise.
+    '''
     plain_in_bytes = plain_password.encode("utf-8")
     hashed_in_bytes = hashed_password.encode("utf-8")
     
     return bcrypt.checkpw(plain_in_bytes, hashed_in_bytes)
 
 
-# Generate JWT access token
+# Generate JWT Access Token
 def create_access_token(data: dict) -> str:
+    '''
+    Input: User information to put into JWT payload.
+    Output: Signed JWT access token with an expiration.
+    '''
     user_information = data.copy()
 
     # Add token expiration
@@ -50,9 +62,11 @@ def create_access_token(data: dict) -> str:
 
 
 # Verify Access Token
-#
-# Returns user profile and browser automatically sends cookie
 def verify_user(request: Request):
+    '''
+    Input: FastAPI request containing access token cookie.
+    Output: Dictionary with user's MongoDB document.
+    '''
     token = request.cookies.get("access_token")
 
     if token is None:

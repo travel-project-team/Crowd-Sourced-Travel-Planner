@@ -76,7 +76,7 @@ async function request(endpoint, options = {}) {
 }
 
 
-// Helper function for data type in request body
+// Helper function for different data types in request body
 function formatBody(body) {
   if (body instanceof FormData) {
     return body; // Image or file

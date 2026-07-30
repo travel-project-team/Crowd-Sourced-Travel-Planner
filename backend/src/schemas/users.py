@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from datetime import datetime
 
+# The following code was generated with the help of ChatGPT. This transcript: [https://docs.google.com/document/d/1ZctEc2OG-L5qCFgWMeN-HBGRJFmRPa7pp49o4UEmulA/edit?usp=sharing] 
+# documents the GenAI interaction that led to the FastAPI user schema.
 
 # Basic User Model
 class UsersBase(BaseModel):

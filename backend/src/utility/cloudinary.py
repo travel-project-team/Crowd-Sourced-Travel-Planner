@@ -8,11 +8,12 @@ from fastapi import UploadFile, HTTPException
 logger = logging.getLogger("uvicorn.error")
 
 
-# Upload image 
-#
-# Input: UploadFile (image)
-# Output: Image URL string
+# Upload Image Helper Function
 async def cloudinary_upload(file: UploadFile, folder_name: str = "travel_planner") -> str:
+    '''
+    Input: UploadFile (image)
+    Output: Image URL string
+    '''
     try:
         # Validate image type
         allowed_types = ["image/jpeg", "image/png", "image/webp"]
