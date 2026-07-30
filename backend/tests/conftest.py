@@ -1,10 +1,14 @@
-# Shared pytest fixtures for the backend tests
-# test_db: in memory mongomock database swapped into config.db
-# client: FastAPI TestClient that calls routes in-process
-# make_user: inserts a user and mints a real JWT for them
-# default_user: a registered user with token and auth cookie
+"""Shared pytest fixtures for the backend tests.
+
+Fixtures:
+    test_db: in-memory mongomock database swapped into config.db
+    client: FastAPI TestClient that calls routes in-process
+    make_user: inserts a user and mints a real JWT for them
+    default_user: a registered user with token and auth cookie
+"""
 
 import os
+# Set before importing src.* so config picks up test values at import time.
 os.environ.setdefault("SECRET_KEY", "test-secret-key-not-for-production")
 os.environ.setdefault("MONGODB_URL", "mongodb://localhost:27017/unused-in-tests")
 from datetime import datetime, timezone
@@ -24,10 +28,13 @@ def test_db(monkeypatch):
 
 @pytest.fixture()
 def client(test_db):
+    """A TestClient bound to the app, with the mock database already in place."""
     return TestClient(app)
 
 @pytest.fixture()
 def make_user(test_db):
+    """Factory fixture for creating users; call the returned function per user needed."""
+
     def _make_user(
         username: str = "billbill123",
         email: str = "billie.billerson@example.com",
@@ -35,6 +42,7 @@ def make_user(test_db):
         first_name: str = "Billie",
         last_name: str = "Billerson",
     ):
+        """Insert a user with a hashed password and return their details plus auth cookie."""
         result = test_db.users.insert_one(
             {
                 "first_name": first_name,

@@ -303,7 +303,7 @@ class TestAvatar:
         )
         assert response.status_code in (401, 403)
 
-# CASCADE DELETE: AI Enhanced Using Claude
+# The following four test functions were generated with the help of Qwen 2.5. The transcript [https://oregonstateuniversity-my.sharepoint.com/:w:/g/personal/valderrm_oregonstate_edu/IQB9LrvrOmcNSJcl7jhF9_5uAQsnhLruhQ5L5Vp4tvgBgos?e=npK8ax] documents the GenAI interaction that led to these three functions under the Test_Users.py Section.
 class TestCascadeDelete:
     def test_delete_removes_owned_experiences(self, client, make_user, test_db):
         user = make_user()
