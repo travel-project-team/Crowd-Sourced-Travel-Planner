@@ -4,7 +4,7 @@ import "../styles/Sidebar.css"
 export const Sidebar = ({user}) => {
   return (
     <aside className="sidebar-container">
-      <h2>Crowd Sourced Travel Planner</h2>
+      <h2>Journey</h2>
       <nav>
         <NavLink to="/home">Home</NavLink>
         {(user) &&(
