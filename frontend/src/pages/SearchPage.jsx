@@ -58,6 +58,18 @@ export const SearchPage = () => {
         fetchExperiences("");
     };
 
+    // Delete: calls the API and updates state 
+    const handleDeleteExperience = async (experienceId) => {
+        if (window.confirm("Are you sure you want to delete this Experience?")) {
+            try {
+                await experiencesApi.remove(experienceId);
+                setExperiences(prev => prev.filter(e => e._id !== experienceId));
+            } catch (err) {
+                alert(`Failed to delete experience: ${err.message}`);
+            }
+        }
+    };
+
     return (
         <div className="experiences-container">
             <h2 className="experiences-heading">Search Experiences</h2>
@@ -95,9 +107,7 @@ export const SearchPage = () => {
                                 key={experience._id}
                                 experience={experience}
                                 currentUser={currentUser}
-                                onExperienceDeleted={(id) =>
-                                    setExperiences(prev => prev.filter(e => e._id !== id))
-                                }
+                                onExperienceDeleted={handleDeleteExperience}
                             />
                         ))
                     )}
