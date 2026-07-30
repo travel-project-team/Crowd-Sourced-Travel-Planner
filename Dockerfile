@@ -1,5 +1,8 @@
 # Production - Build Docker container for production
 
+# The following code was generated with the help of ChatGPT. This transcript: [https://docs.google.com/document/d/1ZctEc2OG-L5qCFgWMeN-HBGRJFmRPa7pp49o4UEmulA/edit?usp=sharing] 
+# documents the GenAI interaction that led to this dockerfile.
+
 # Compile frontend into static file
 FROM node:20 AS frontend-builder
 WORKDIR /app/frontend

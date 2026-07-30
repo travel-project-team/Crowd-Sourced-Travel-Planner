@@ -16,8 +16,8 @@ router = APIRouter(prefix="/api/users", tags=["Users"])
 @router.post("", status_code=status.HTTP_201_CREATED)
 def create_user(user_info: UsersRegister):
     '''
-    Input: JSON with user information
-    Output: JSON with success/error message
+    Input: JSON with user information.
+    Output: JSON with success/error message.
     '''
     # Check for existing email and username
     if config.db.users.find_one({"email": user_info.email}):
@@ -44,7 +44,7 @@ def create_user(user_info: UsersRegister):
 @router.post("/login")
 def login(form_data: UsersLogin, response: Response):
     '''
-    Input: JSON with email and password
+    Input: JSON with email and password.
     Output: JSON with login success message.
     '''
     # Validate email
@@ -93,7 +93,7 @@ def logout(response: Response):
 @router.get("", response_model=UsersProfile)
 def get_profile(user=Depends(verify_user)):
     '''
-    Input: none
+    Input: None.
     Output: JSON with authenticated user information
     '''
     return mongo_string(user)
@@ -104,7 +104,7 @@ def get_profile(user=Depends(verify_user)):
 def update_user(data: UsersUpdate, user=Depends(verify_user)):
     '''
     Input: JSON with updated user information.
-    Output: JSON with success/error message
+    Output: JSON with success/error message.
     '''
     data = data.model_dump(exclude_unset=True)
 
@@ -164,8 +164,8 @@ def update_password(data: UsersPassword, user=Depends(verify_user)):
 @router.delete("")
 def remove_user(user=Depends(verify_user)):
     '''
-    Input: None
-    Output: JSON with success/error message
+    Input: None.
+    Output: JSON with success/error message.
     '''
     # Get user ID from verified token
     user_id = user["_id"]
@@ -200,8 +200,8 @@ def remove_user(user=Depends(verify_user)):
 @router.post("/id", response_model=list[BatchUsersProfile])
 def profile_by_id(data: BatchUsersById, _=Depends(verify_user)):
     """
-    Input: JSON with array of user IDs
-    Output: JSON with list of public user profiles
+    Input: JSON with array of user IDs.
+    Output: JSON with list of public user profiles.
     """
     user_ids = [
         mongo_objectid(user_id)
@@ -230,8 +230,8 @@ def profile_by_id(data: BatchUsersById, _=Depends(verify_user)):
 @router.post("/email", response_model=list[BatchUsersProfile])
 def profile_by_email(data: BatchUsersByEmail, _=Depends(verify_user)):
     """
-    Input: JSON with array of user emails
-    Output: JSON with list of public user profiles
+    Input: JSON with array of user emails.
+    Output: JSON with list of public user profiles.
     """
     # Find users that match emails
     users = config.db.users.find(
@@ -255,8 +255,8 @@ def profile_by_email(data: BatchUsersByEmail, _=Depends(verify_user)):
 @router.post("/avatar")
 async def upload_avatar(file: UploadFile = File(...), user=Depends(verify_user)):
     """
-    Input: Image file
-    Output: JSON with avatar URL
+    Input: Image file.
+    Output: JSON with avatar URL.
     """
     # Upload image to Cloudinary
     avatar_url = await cloudinary_upload(file, folder_name="travel_planner/users")
@@ -274,8 +274,8 @@ async def upload_avatar(file: UploadFile = File(...), user=Depends(verify_user))
 @router.delete("/avatar")
 def remove_avatar(user=Depends(verify_user)):
     """
-    Input: None
-    Output: JSON with success/error message
+    Input: None.
+    Output: JSON with success/error message.
     """
     # Remove avatar URL from MongoDB
     config.db.users.update_one(
