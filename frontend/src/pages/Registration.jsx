@@ -33,6 +33,15 @@ export const Registration = () => {
     confirmPassword:"",
   });
 
+  // Values for preview
+  const [submitPayload, setSubmitPayload] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+  });
+
+
   // Handle change function
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,6 +77,12 @@ export const Registration = () => {
         type: "success",
         message: data.message || "User Registered successfully!",
       });
+      setSubmitPayload({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        username: formData.username
+      });
       clearForm();
       setErrors({});
       setIsFormSubmitted(true);
@@ -84,12 +99,14 @@ export const Registration = () => {
   };
 
   const clearForm = () => {
-    formData.firstName = "";
-    formData.lastName = "";
-    formData.username = "";
-    formData.email = "";
-    formData.password = "";
-    formData.confirmPassword = "";
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+    });
   }
 
   const validateForm = () => {
@@ -272,10 +289,10 @@ export const Registration = () => {
         {isFormSubmitted && serverResponse.type === "success" && (
           <div className="preview-container">
             <h3 className="preview-title">Form Preview</h3>
-            <h4 className="preview-text">First Name: {formData.firstName}</h4>
-            <h4 className="preview-text">Last Name: {formData.lastName}</h4>
-            <h4 className="preview-text">Email: {formData.email}</h4>
-            <h4 className="preview-text">Username: {formData.username}</h4>
+            <h4 className="preview-text">First Name: {submitPayload.firstName}</h4>
+            <h4 className="preview-text">Last Name: {submitPayload.lastName}</h4>
+            <h4 className="preview-text">Email: {submitPayload.email}</h4>
+            <h4 className="preview-text">Username: {submitPayload.username}</h4>
           </div>
         )}
 
