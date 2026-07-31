@@ -1,5 +1,11 @@
-// citation: https://youtu.be/YHiKHJbaTaY?si=Q_gdAE5wCmLruB-s
-// citation: AI enhanced
+// Citations:
+// Rana, U. [Programming Fields]. (2025, December 18). How to Handle Form Validation in React
+// | Errors + Tailwind Styling | React 19 - Ep 09 [Video]. YouTube.
+// https://youtu.be/k1xMMHea2Ms?si=5G2hWvodOcR5SpI-
+//
+// Rana, U. [Programming Fields]. (2026, January 12). How to Build Login Flow in React
+// | Switch Login & Register Screens | React 19 - Ep 13 [Video]. YouTube.
+// https://youtu.be/137uPoV_3xE?si=nLyIKUzqNak-IFK6
 
 import "../styles/Forms.css"
 

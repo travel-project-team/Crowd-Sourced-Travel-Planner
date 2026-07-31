@@ -1,4 +1,8 @@
-// citation: https://youtu.be/JVCU2qsGvOs?si=iVz1N7_lr78bsDkh
+// Citations:
+// Rana, U. [Programming Fields]. (2026, February 6). Build Dashboard Layout in React
+// | Sidebar + Header UI Using Tailwind CSS | React 19 - Ep 21 [Video]. YouTube.
+// https://youtu.be/JVCU2qsGvOs?si=o27keYL5cTGeeNSu
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Header.css";

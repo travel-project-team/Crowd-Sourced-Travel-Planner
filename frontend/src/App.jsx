@@ -1,4 +1,12 @@
-// Citation: https://youtu.be/137uPoV_3xE?si=vYzo8cboZbOsgogC
+// Citations:
+// Rana, U. [Programming Fields]. (2026, January 23). React Auth Redirect Tutorial
+// | Protected Dashboard After Login | React 19 - Ep 15 [Video]. YouTube.
+// https://youtu.be/VeUz9i6MtFg?si=xar0_svc5HD_UF2Q
+//
+// Rana, U. [Programming Fields]. (2026, January 31). How to Use React Router
+// | Complete Routing & Navigation Tutorial for Beginners | React 19 - Ep 18 [Video]. YouTube.
+// https://youtu.be/l6i3LpwwsFE?si=tST31ELUneaKDjUl
+
 
 // React libraries
 import { useState, useEffect } from 'react'

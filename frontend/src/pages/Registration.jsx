@@ -1,5 +1,11 @@
-// citation: https://youtu.be/k1xMMHea2Ms?si=qiSzGC1DGfF6tMR9
-// citation: AI enhanced
+// Citations:
+// Rana, U. [Programming Fields]. (2025, December 18). How to Handle Form Validation in React
+// | Errors + Tailwind Styling | React 19 - Ep 09 [Video]. YouTube.
+// https://youtu.be/k1xMMHea2Ms?si=5G2hWvodOcR5SpI-
+//
+// Rana, U. [Programming Fields]. (2025, December 27). How to Submit Form Data in React |
+// Send POST Request with Fetch API | React 19 - Ep 10 [Video]. YouTube.
+// https://youtu.be/e3JgOVLLcAs?si=zq25X8sezicEr1CJ
 
 import "../styles/Forms.css"
 
