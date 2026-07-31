@@ -68,6 +68,7 @@ export const Registration = () => {
         type: "success",
         message: data.message || "User Registered successfully!",
       });
+      clearForm();
       setErrors({});
       setIsFormSubmitted(true);
     } catch (error) {
@@ -81,6 +82,15 @@ export const Registration = () => {
       setIsLoading(false);
     }
   };
+
+  const clearForm = () => {
+    formData.firstName = "";
+    formData.lastName = "";
+    formData.username = "";
+    formData.email = "";
+    formData.password = "";
+    formData.confirmPassword = "";
+  }
 
   const validateForm = () => {
     let newErrors = {};
