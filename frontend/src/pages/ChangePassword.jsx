@@ -190,7 +190,7 @@ export const ChangePassword = () => {
             <div className="password-wrapper">
               <input
                 id="confirm-password"
-                type={confirmPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 onChange={handleChange}
                 value={formData.confirmPassword}
@@ -201,9 +201,9 @@ export const ChangePassword = () => {
                 type="button"
                 className="password-toggle-btn"
                 onClick={toggleConfirmPasswordVisibility}
-                aria-label={confirmPassword ? 'Hide password' : 'Show password'}
+                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
               >
-                {confirmPassword ? (
+                {showConfirmPassword ? (
                   <svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
                     <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
