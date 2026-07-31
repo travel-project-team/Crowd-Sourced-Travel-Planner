@@ -1,25 +1,22 @@
-import { experiencesApi, usersApi } from "../services/api.js";
+import { experiencesApi } from "../services/api.js";
 import { ExperienceCard } from "../components/ExperienceCard.jsx";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Experiences.css";
 
 export const Experiences = () => {
     const [experiences, setExperiences] = useState([]);
-    const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const { user } = useOutletContext();
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const [experienceData, userData] = await Promise.all([
-                    experiencesApi.getUser(),
-                    usersApi.getProfile()
-                ]);
+                const experienceData = await experiencesApi.getUser();
 
                 setExperiences(experienceData);
-                setCurrentUser(userData);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -48,6 +45,14 @@ export const Experiences = () => {
     return (
         <div className="experiences-container">
             <h2 className="experiences-heading">Your Experiences</h2>
+            <div>
+                <Link to="/add-trip" className="add-button">
+                    Add trip
+                </Link>
+                <Link to="/add-experience" className="add-button">
+                    Add experience
+                </Link>
+            </div>
             <div className="experiences-body">
                 {experiences.length === 0 ? (
                     <p>No experiences found. Time to plan a new one...</p>
@@ -56,19 +61,11 @@ export const Experiences = () => {
                         <ExperienceCard
                             key={experience._id}
                             experience={experience}
-                            currentUser={currentUser}
+                            currentUser={user}
                             onExperienceDeleted={handleDeleteExperience}
                         />
                     ))
                 )}
-            </div>
-            <div>
-                <Link to="/add-trip" className="add-button">
-                    Add trip
-                </Link>
-                <Link to="/add-experience" className="add-button">
-                    Add experience
-                </Link>
             </div>
         </div>
     );

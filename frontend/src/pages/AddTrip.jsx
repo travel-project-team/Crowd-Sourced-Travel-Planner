@@ -30,7 +30,7 @@ export const AddTrip = () => {
                 const [profile, allTrips, allExperiences] = await Promise.all([
                     usersApi.getProfile(),
                     tripsApi.getAll(),
-                    experiencesApi.getAll()
+                    experiencesApi.getUser()
                 ]);
 
                 if (profile?._id) {

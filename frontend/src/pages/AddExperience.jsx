@@ -107,13 +107,17 @@ export const AddExperience = () => {
             };
 
             const response = await experiencesApi.create(experiencePayload);
-            const newExperienceId = response.id;
+            const newExperienceId = response.id || response._id;
 
             if (selectedTripId && selectedTripId !== "no-trip" && newExperienceId) {
                 await tripsApi.addExperienceToTrip(selectedTripId, newExperienceId);
             }
 
-            alert("Experience added successfully!");
+            if (!locationGeoJson) {
+                alert("Experience saved! However, we couldn't automatically locate coordinates for that location name. Will display as N/A unless updated.");
+            } else {
+                alert("Experience added successfully!");
+            }
             navigate(-1);
         } catch (err) {
             console.error("Failed to save experience: ", err);

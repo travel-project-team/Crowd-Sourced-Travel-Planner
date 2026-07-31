@@ -2,7 +2,7 @@
 
 import "../styles/EditForms.css";
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { tripsApi, experiencesApi, usersApi } from "../services/api.js";
 
 export const EditTrip = () => {
@@ -12,6 +12,8 @@ export const EditTrip = () => {
 
     const { trip } = location.state || {};
     const tripId = trip._id;
+
+    const { user } = useOutletContext();
 
     const [formData, setFormData] = useState({
         trip_name: trip?.trip_name || "",
@@ -59,7 +61,7 @@ export const EditTrip = () => {
             try {
                 const [allTrips, allExperiences] = await Promise.all([
                     tripsApi.getAll(),
-                    experiencesApi.getAll()
+                    experiencesApi.getUser()
                 ]);
 
                 const tripsData = allTrips.data || allTrips || [];
@@ -103,6 +105,11 @@ export const EditTrip = () => {
 
         if (!email) return;
 
+        if (user?.email && user.email.toLowerCase() === email) {
+            setError("You can't collaborate with yourself!");
+            return;
+        }
+
         setIsLookingUpUser(true);
         setError(null);
 
@@ -135,7 +142,7 @@ export const EditTrip = () => {
 
             setCollaboratorInput("");
         } catch (err) {
-            setError(err.message || "Failed to find user with that email.")
+            setError("No user found with that email address.");
         } finally {
             setIsLookingUpUser(false);
         }
