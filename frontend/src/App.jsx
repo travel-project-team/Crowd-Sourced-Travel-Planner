@@ -32,7 +32,7 @@ import { EditProfile } from './pages/EditProfile';
 import { HomePage} from './pages/HomePage';
 import { ChangePassword } from './pages/ChangePassword';
 import { ProtectedRoutes } from "./helpers/ProtectedRoutes";
-import { ScrollToTop } from "./components/ScrollToTop";
+import { ScrollToTop } from "./helpers/ScrollToTop";
 
 
 function App() {
