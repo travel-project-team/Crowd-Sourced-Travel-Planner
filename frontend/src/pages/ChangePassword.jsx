@@ -1,4 +1,9 @@
 // Citation: AI enhanced with Google AI
+
+// The password eye buttons were generated with the help of Google Gemini. This transcript
+// https://share.google/aimode/6RWI7S3UkBJRKQ9TZ documents the GenAI interaction that lead
+// to the generation of this code
+
 import { useState, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 
