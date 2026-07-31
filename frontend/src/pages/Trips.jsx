@@ -1,25 +1,22 @@
-import { tripsApi, usersApi } from "../services/api.js";
+import { tripsApi } from "../services/api.js";
 import { TripCard } from "../components/TripCard.jsx";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Trips.css";
 
 export const Trips = () => {
     const [trips, setTrips] = useState([]);
-    const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const { user } = useOutletContext();
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const [tripData, userData] = await Promise.all([
-                    tripsApi.getAll(), // Refactor to All Trips by Owner
-                    usersApi.getProfile() // Gets currentUser
-                ]);
+                const tripData = await tripsApi.getAll();
 
                 setTrips(tripData);
-                setCurrentUser(userData);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -48,6 +45,14 @@ export const Trips = () => {
     return (
         <div className="trips-container">
             <h2 className="trips-heading">Your Trips</h2>
+            <div>
+                <Link to="/add-trip" className="add-button">
+                    Add trip
+                </Link>
+                <Link to="/add-experience" className="add-button">
+                    Add experience
+                </Link>
+            </div>
             <div className="trips-body">
                 {trips.length === 0 ? (
                     <p>No trips found. Time to plan a new one...</p>
@@ -56,19 +61,11 @@ export const Trips = () => {
                         <TripCard
                             key={trip._id}
                             trip={trip}
-                            currentUser={currentUser}
+                            currentUser={user}
                             onTripDeleted={handleDeleteTrip}
                         />
                     ))
                 )}
-            </div>
-            <div>
-                <Link to="/add-trip" className="add-button">
-                    Add trip
-                </Link>
-                <Link to="/add-experience" className="add-button">
-                    Add experience
-                </Link>
             </div>
         </div>
     );

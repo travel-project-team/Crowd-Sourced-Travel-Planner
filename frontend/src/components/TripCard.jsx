@@ -114,7 +114,7 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     aria-expanded={isDropdownOpen}
                 >
-                    Experiences
+                    Show Experiences
                     <span className={`arrow ${isDropdownOpen ? "open": ""}`}>▶</span>
                 </button>
 
