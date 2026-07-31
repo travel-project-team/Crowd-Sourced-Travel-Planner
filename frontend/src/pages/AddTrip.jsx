@@ -138,6 +138,7 @@ export const AddTrip = () => {
 
                 <div className="form-group">
                     <label htmlFor="trip-collaborators">Collaborators</label>
+                    <p class="form-helper">Collaborate with other Journey users!</p>
                     <div className="input-with-button-row">
                         <input
                             type="email"
@@ -168,7 +169,7 @@ export const AddTrip = () => {
                     <label htmlFor="trip-experiences">Experiences: </label>
                     <div className="input-with-button-row">
                         <select id="trip-experiences" value={selectedExperience} onChange={(e) => setSelectedExperience(e.target.value)}>
-                            <option value="" disabled>Select from your unaffiliated experiences to add to this trip...</option>
+                            <option value="" disabled>Select an experience to add</option>
                             {availableExperiences
                                 .filter(ae => !experiences.some(e => e._id === ae._id))
                                 .map(exp => (

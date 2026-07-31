@@ -35,7 +35,7 @@
     width: 100%;
 }
 
-.input-with-button-row input, 
+.input-with-button-row input,
 .input-with-button-row select {
     flex: 1;
     width: 100%;
@@ -55,7 +55,7 @@
 }
 
 input[type="text"],
-input[type="email"], 
+input[type="email"],
 select,
 textarea {
     padding: 8px;
@@ -154,4 +154,12 @@ input[type="file"].file-input {
     background-color: #f8f9fa;
     border: 1px dashed #bbb;
     border-radius: 4px;
+}
+
+.form-helper {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: -2px;
+  margin-bottom: 6px;
+  line-height: 1.4;
 }
