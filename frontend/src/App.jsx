@@ -32,7 +32,7 @@ import { EditProfile } from './pages/EditProfile';
 import { HomePage} from './pages/HomePage';
 import { ChangePassword } from './pages/ChangePassword';
 import { ProtectedRoutes } from "./helpers/ProtectedRoutes";
-
+import { ScrollToTop } from "./components/ScrollToTop";
 
 
 function App() {
@@ -40,6 +40,7 @@ function App() {
   return (
     <>
       <Router>
+        <ScrollToTop />
         <Routes>
           {/* Public Routes */}
           <Route element={<HomePageLayout />}>
