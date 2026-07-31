@@ -53,7 +53,7 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
         e.stopPropagation();
         if (!associatedTrip) return;
 
-        if (window.confirm(`Remove this experience from "${associatedTrip.title}"?`)) {
+        if (window.confirm(`Remove this experience from "${associatedTrip.trip_name}"?`)) {
             setLoading(true);
             try {
                 await tripsApi.removeExperienceFromTrip(associatedTrip._id, experience._id);
