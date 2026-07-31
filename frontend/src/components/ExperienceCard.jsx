@@ -110,7 +110,7 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
                             onClick={handleRemoveFromTrip}
                             disabled={loading}
                         >
-                            {loading ? "Removing..." : "Remove experience from this trip?"}
+                            {loading ? "Removing..." : "Remove from trip"}
                         </button>
                     </div>
                 ) : (
@@ -135,7 +135,7 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
                                 onClick={handleAddToTrip}
                                 disabled={loading}
                             >
-                                {loading ? "adding..." : "Add experience to this trip?"}
+                                {loading ? "adding..." : "Add to trip"}
                             </button>
                         )}
                     </div>
