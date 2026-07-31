@@ -202,3 +202,33 @@
   outline-offset: 2px;
   border-radius: 0.125rem;
 }
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+
+.password-wrapper .form-input {
+  padding-right: 2.5rem;
+}
+
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.625rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: color 0.15s ease;
+}
+
+.password-toggle-btn:hover {
+  color: #374151;
+}
