@@ -9,7 +9,7 @@ import { useEffect, useState, useCallback} from "react";
 import { usersApi } from "../services/api";
 import { Header } from "../components/Header"
 import { Sidebar } from "../components/Sidebar"
-import "../styles/DashboardLayout.css"
+import "../styles/HomePageLayout.css"
 export const HomePageLayout = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -74,7 +74,7 @@ export const HomePageLayout = () => {
 
 
   return (
-    <div className="dashboard-layout">
+    <div className="homepage-layout">
       <Sidebar user={user} />
       <div className="main-content-area">
         {user && <Header user={user} logout={logout} />}

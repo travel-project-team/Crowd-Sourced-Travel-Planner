@@ -1,4 +1,9 @@
-// Citation: AI enhanced with Google AI
+// Citations:
+//  This code was generated with the help of Chatgpt.
+//  This transcript https://chatgpt.com/share/6a6d5f2c-a110-83ea-8672-109fcfeeae61
+//  documents the GenAI interaction that led to the generation of this code.
+//
+
 import { useState, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 

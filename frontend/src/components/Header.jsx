@@ -13,7 +13,6 @@ export const Header = ({ user, logout }) => {
 
   return (
     <header className="header-container">
-      <h1 className="header-title">Dashboard</h1>
       <div className="header-actions">
         {user ? (
           <div className="profile-wrapper">

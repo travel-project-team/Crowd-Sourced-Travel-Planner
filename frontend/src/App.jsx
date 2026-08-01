@@ -13,9 +13,6 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-router-dom';
 import { SearchPage } from './pages/SearchPage';
 
-// Styling
-import "./styles/App.css"
-
 // Custom
 import { Login } from './pages/Login';
 import { Registration } from './pages/Registration';
