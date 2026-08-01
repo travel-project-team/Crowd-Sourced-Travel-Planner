@@ -1,5 +1,15 @@
-// citation: https://youtu.be/YHiKHJbaTaY?si=Q_gdAE5wCmLruB-s
-// citation: AI enhanced
+// Citations:
+// Rana, U. [Programming Fields]. (2025, December 18). How to Handle Form Validation in React
+// | Errors + Tailwind Styling | React 19 - Ep 09 [Video]. YouTube.
+// https://youtu.be/k1xMMHea2Ms?si=5G2hWvodOcR5SpI-
+//
+// Rana, U. [Programming Fields]. (2026, January 12). How to Build Login Flow in React
+// | Switch Login & Register Screens | React 19 - Ep 13 [Video]. YouTube.
+// https://youtu.be/137uPoV_3xE?si=nLyIKUzqNak-IFK6
+
+// The password eye buttons were generated with the help of Google Gemini. This transcript
+// https://share.google/aimode/6RWI7S3UkBJRKQ9TZ documents the GenAI interaction that lead
+// to the generation of this code
 
 import "../styles/Forms.css"
 
@@ -17,6 +27,13 @@ export const Login = () => {
     message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState('');
+
+  // To show the password
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   // Values for form inputs
   const [formData, setFormData] = useState({
@@ -116,15 +133,37 @@ export const Login = () => {
             <label htmlFor="password" className="form-label">
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              onChange={handleChange}
-              value={formData.password}
-              placeholder="Enter password"
-              className="form-input"
-            />
+            <div className="password-wrapper">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                onChange={handleChange}
+                value={formData.password}
+                placeholder="Enter password"
+                className="form-input"
+              />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={togglePasswordVisibility}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                    <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                    <line x1="2" y1="2" x2="22" y2="22"/>
+                  </svg>
+                ) : (
+                  <svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                )}
+              </button>
+            </div>
             {errors.password && (
               <p className="error-message">{errors.password}</p>
             )}

@@ -1,12 +1,27 @@
+/*  Citation:
+    This code was generated with the help of Chatgpt.
+    This transcript https://chatgpt.com/share/6a6d5abe-ff44-83ea-8e8d-9fa3c549f4c8
+    documents the GenAI interaction that led to the generation of this code.
+
+    This code was generated with the help of Chatgpt.
+    This transcript https://chatgpt.com/share/6a6d5abe-ff44-83ea-8e8d-9fa3c549f4c8
+    documents the GenAI interaction that led to the generation of this code.
+
+    This code was generated with the help of Gemini
+    This transcript https://share.google/aimode/nmI7MWUGXUp5Y6oQP
+    documents the GenAI interaction that led to the generation of this code.
+*/
+
 header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: #ffffff;
   padding: 0.4rem 3rem;
   box-sizing: border-box;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   width: 100%;
+  position: relative;
+  min-height: 6.5rem;
 }
 
 header h1 {
@@ -16,12 +31,42 @@ header h1 {
   margin: 0;
 }
 
+
+.profile-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -65%);
+  padding: 20px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.welcome-message {
+  font-size: 1.25rem;
+  color: #334155;
+  margin: 0;
+}
+
+.welcome-name {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+
 header > .header-actions {
   display: flex;
   align-items: center;
   gap: 4rem;
   min-width: 320px;
   justify-content: flex-end;
+  margin-left: auto;
+  z-index: 2;
 }
 
 header div p {

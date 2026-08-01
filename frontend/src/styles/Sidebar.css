@@ -1,9 +1,22 @@
+/*  Citation:
+    This code was generated with the help of Chatgpt.
+    This transcript https://chatgpt.com/share/6a6d5c44-ca50-83ea-ba6f-7f68d6f1664f
+    documents the GenAI interaction that led to the generation of this code.
+
+    This code was generated with the help of Gemini.
+    This transcript https://share.google/aimode/J5PgSsOwivthP3Qau
+    documents the GenAI interaction that led to the generation of this code.
+*/
 .sidebar-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   width: 15rem;
   background-color: #111827;
   color: #ffffff;
-  min-height: 100vh;
   padding: 1rem;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 

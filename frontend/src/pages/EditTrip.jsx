@@ -244,6 +244,7 @@ export const EditTrip = () => {
 
                 <div className="form-group">
                     <label htmlFor="trip-collaborators">Collaborators</label>
+                    <p class="form-helper">Collaborate with other Journey users!</p>
                     <div className="input-with-button-row">
                         <input
                             type="email"
@@ -278,7 +279,7 @@ export const EditTrip = () => {
                             <option value="" disabled>
                                 {isLoadingExperiences
                                     ? "Loading experiences..."
-                                    : "Select an unaffiliated experience to add..."
+                                    : "Select an experience to add"
                                 }
                             </option>
                             {dropdownOptions.map(exp => (

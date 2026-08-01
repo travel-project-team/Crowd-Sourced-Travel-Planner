@@ -1,3 +1,9 @@
+/*  Citations:
+    This code was generated with the help of Claude.
+    This transcript https://claude.ai/share/b0daaefc-d0d5-40df-8fac-1ced52af4e53
+    documents the GenAI interaction that led to the generation of this code.
+*/
+
 .login-container {
   min-height: 100vh;
   width: 100%;
@@ -201,4 +207,34 @@
   outline: 2px solid #93c5fd;
   outline-offset: 2px;
   border-radius: 0.125rem;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+
+.password-wrapper .form-input {
+  padding-right: 2.5rem;
+}
+
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.625rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: color 0.15s ease;
+}
+
+.password-toggle-btn:hover {
+  color: #374151;
 }

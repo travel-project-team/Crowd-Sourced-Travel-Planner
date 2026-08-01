@@ -1,0 +1,23 @@
+/*  Citation:
+    This code was generated with the help of Claude.
+    This transcript https://claude.ai/share/ebaadd84-1ee7-42d8-9773-e2921376034f
+    documents the GenAI interaction that led to the generation of this code.
+*/
+.homepage-layout {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f4f6;
+}
+
+.page-body {
+  padding: 24px;
+  flex-grow: 1;
+}
