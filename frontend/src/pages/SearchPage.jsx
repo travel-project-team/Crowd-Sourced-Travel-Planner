@@ -73,13 +73,13 @@ export const SearchPage = () => {
     return (
         <div className="experiences-container">
             <h2 className="experiences-heading">Search Experiences</h2>
+            <p class="form-helper">Collaborate with other Journey users!</p>
 
             <form className="search-bar" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
-                    placeholder="Search by title, description, or keyword..."
                     aria-label="Search experiences"
                 />
                 <button type="submit">Search</button>
@@ -108,6 +108,7 @@ export const SearchPage = () => {
                                 experience={experience}
                                 currentUser={currentUser}
                                 onExperienceDeleted={handleDeleteExperience}
+                                isSearchPage={true}
                             />
                         ))
                     )}

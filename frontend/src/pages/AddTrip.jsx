@@ -1,7 +1,10 @@
-// Citation: AI enhanced formatting with Gemini.
+// Citations:
+// Some bug fixes were implemented with the assistance of Gemini.
+// This transcript https://gemini.google.com/app/55e5a07551a20ac1
+// documents the Gen AI interaction that led to the generation of this code. 
 
 import "../styles/AddForms.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { tripsApi, usersApi, experiencesApi } from "../services/api";
 
@@ -12,32 +15,28 @@ export const AddTrip = () => {
 
     const [tripName, setTripName] = useState("");
     const [description, setDescription] = useState("");
-    const [ownerId, setOwnerId] = useState(null);
 
-    // These will be updated as new endpoints come in
     const [collaborators, setCollaborators] = useState([]);
     const [experiences, setExperiences] = useState([]);
     const [emailInput, setEmailInput] = useState("");
     const [selectedExperience, setSelectedExperience] = useState("");
 
     const [availableExperiences, setAvailableExperiences] = useState([]);
+    const [isLookingUpUser, setIsLookingUpUser] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
+
+    const { user } = useOutletContext();
+    const currentUserEmail = user?.email || null;
+    const ownerId = user?._id || null;
 
     useEffect(() => {
         const initialize = async () => {
             try {
-                const [profile, allTrips, allExperiences] = await Promise.all([
-                    usersApi.getProfile(),
+                const [allTrips, allExperiences] = await Promise.all([
                     tripsApi.getAll(),
                     experiencesApi.getUser()
                 ]);
-
-                if (profile?._id) {
-                    setOwnerId(profile._id);
-                } else {
-                    throw new Error("Could not extract User ID from profile.");
-                }
 
                 const tripsData = allTrips.data || allTrips || [];
                 const experiencesData = allExperiences.data || allExperiences || [];
@@ -61,11 +60,44 @@ export const AddTrip = () => {
         initialize();
     }, []);
 
-    const handleAddCollaborator = () => {
-        const email = emailInput.trim();
-        if (email && !collaborators.includes(email)) {
-            setCollaborators([...collaborators, email]);
+    const handleAddCollaborator = async () => {
+        const email = emailInput.trim().toLowerCase();
+        setError(null);
+
+        if (!email) return;
+
+        if (currentUserEmail && currentUserEmail.toLowerCase() === email) {
+            setError("You cannot add yourself as a collaborator!");
+            return;
+        }
+
+        if (collaborators.some(c => c.email.toLowerCase() === email)) {
+            setError("This user has already been added as a collaborator.");
+            return;
+        }
+
+        setIsLookingUpUser(true);
+
+        try {
+            const usersResult = await usersApi.getBatchByEmail({ emails: [email] });
+            const usersData = usersResult.data || usersResult || [];
+            const foundUser = usersData[0];
+
+            if (!foundUser || !foundUser._id) {
+                setError(`No user found with the email "${email}".`);
+                return;
+            }
+
+            setCollaborators(prev => [
+                ...prev, 
+                { id: String(foundUser._id), email: foundUser.email || email }
+            ]);
+
             setEmailInput("");
+        } catch (err) {
+            setError("Failed to find collaborator email.")
+        } finally {
+            setIsLookingUpUser(false);
         }
     };
 
@@ -84,21 +116,14 @@ export const AddTrip = () => {
         setError(null);
 
         try {
-            let collaboratorIds = [];
+            let collaboratorIds = collaborators.map(c => c.id);
 
-            const finalCollaborators = [...collaborators];
-            const remainingEmail = emailInput.trim();
-            if (remainingEmail && !finalCollaborators.includes(remainingEmail)) {
-                finalCollaborators.push(remainingEmail);
-            }
-
-            if (finalCollaborators.length > 0) {
-                const usersResult = await usersApi.getBatchByEmail({ emails: finalCollaborators });
+            const remainingEmail = emailInput.trim().toLowerCase();
+            if (remainingEmail && !collaborators.some(c => c.email.toLowerCase() === remainingEmail)) {
+                const userResult = await usersApi.getBatchByEmail({ emails: [remainingEmail] });
                 const usersData = usersResult.data || usersResult || [];
-                collaboratorIds = usersData.map(user => user._id);
-
-                if (collaboratorIds.length !== finalCollaborators.length) {
-                    console.warn("Some collaborator emails could not be resolved to registered accounts.");
+                if (usersData[0]?._id) {
+                    collaboratorIds.push(usersData[0]._id);
                 }
             }
 
@@ -113,7 +138,7 @@ export const AddTrip = () => {
             await tripsApi.create(payload);
             navigate("/trips");
         } catch (err) {
-            setError(err.message || "Failed to create trip.");
+            setError("Failed to create trip.");
         } finally {
             setIsSubmitting(false);
         }
@@ -138,7 +163,7 @@ export const AddTrip = () => {
 
                 <div className="form-group">
                     <label htmlFor="trip-collaborators">Collaborators</label>
-                    <p class="form-helper">Collaborate with other Journey users!</p>
+                    <p className="form-helper">Collaborate with other Journey users!</p>
                     <div className="input-with-button-row">
                         <input
                             type="email"
@@ -156,12 +181,24 @@ export const AddTrip = () => {
                         <button type="button" className="inline-add-btn" onClick={handleAddCollaborator}>Add</button>
                     </div>
                     <div className="tags-container">
-                        {collaborators.map(email => (
-                            <span key={email} className="tag-chip">
-                                {email}
-                                <button type="button" className="remove-tag" onClick={() => setCollaborators(collaborators.filter(e => e !== email))}>&times;</button>
+                        {collaborators.length > 0 ? (
+                            collaborators.map(c => (
+                                <span key={c.id} className="tag-chip">
+                                    {c.email}
+                                    <button 
+                                        type="button" 
+                                        className="remove-tag" 
+                                        onClick={() => handleRemoveCollaborator(c.id)}
+                                    >
+                                        &times;
+                                    </button>
+                                </span>
+                            ))
+                        ) : (
+                            <span className="tag-chip" style={{ background: "#eee", color: "#666" }}>
+                                No collaborators added yet
                             </span>
-                        ))}
+                        )}
                     </div>
                 </div>
 

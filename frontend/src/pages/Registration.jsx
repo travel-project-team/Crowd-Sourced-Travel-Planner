@@ -107,7 +107,7 @@ export const Registration = () => {
     } catch (error) {
       setServerResponse({
         type: "error",
-        message: error.message || "Unable to create user.",
+        message: "Unable to create user." || error.message,
       });
       setIsFormSubmitted(false);
 

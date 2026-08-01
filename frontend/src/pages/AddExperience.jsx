@@ -1,4 +1,7 @@
-// Citation: AI enhanced formatting with Gemini.
+// Citations:
+// Some bug fixes were implemented with the assistance of Gemini.
+// This transcript https://gemini.google.com/app/55e5a07551a20ac1
+// documents the Gen AI interaction that led to the generation of this code. 
 
 import "../styles/AddForms.css";
 import { useLocation, useNavigate } from "react-router-dom";

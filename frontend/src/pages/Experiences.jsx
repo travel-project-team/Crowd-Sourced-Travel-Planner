@@ -1,3 +1,8 @@
+// Citations:
+// Some bug fixes were implemented with the assistance of Gemini.
+// This transcript https://gemini.google.com/app/c4ffb4e81781dabe
+// documents the Gen AI interaction that led to the generation of this code. 
+
 import { experiencesApi } from "../services/api.js";
 import { ExperienceCard } from "../components/ExperienceCard.jsx";
 import { Link, useOutletContext } from "react-router-dom";

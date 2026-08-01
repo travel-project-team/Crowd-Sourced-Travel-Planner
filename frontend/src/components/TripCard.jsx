@@ -4,7 +4,6 @@ import { experiencesApi, usersApi } from "../services/api";
 import "../styles/Trips.css";
 
 export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
-    // Get actual collaborators when you have a get users by ID route.
     const navigate = useNavigate();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -67,7 +66,6 @@ export const TripCard = ( { trip, currentUser, onTripDeleted } ) => {
     useEffect(() => {
         if (!isDropdownOpen) return;
 
-        // Refactor this to the batch of Ids endpoint eventually.
         const fetchAndFilterExperiences = async () => {
             try {
                 const allExperiences = await experiencesApi.getAll();
