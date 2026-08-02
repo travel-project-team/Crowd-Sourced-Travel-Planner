@@ -1,25 +1,28 @@
 import { experiencesApi, usersApi } from "../services/api.js";
 import { ExperienceCard } from "../components/ExperienceCard.jsx";
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import "../styles/Experiences.css";
 
 export const SearchPage = () => {
     const [experiences, setExperiences] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
-    const [keyword, setKeyword] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchType, setSearchType] = useState("keyword");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [hasSearched, setHasSearched] = useState(false);
 
+    const { user } = useOutletContext();
+
     // Fetch experiences from backend
-    const fetchExperiences = async (searchTerm) => {
+    const fetchExperiences = async (term, type=searchType) => {
         setLoading(true);
         setError(null);
 
         try {
-            const results = await experiencesApi.search(
-                searchTerm ? { keyword: searchTerm } : {}
-            );
+            const queryParam = term ? { [type]: term } : {};
+            const results = await experiencesApi.search(queryParam);
             setExperiences(results);
         } catch (err) {
             setError(err.message);
@@ -30,32 +33,21 @@ export const SearchPage = () => {
 
     // Show all experiences by default on page load
     useEffect(() => {
-        const loadData = async () => {
-            try {
-                const userData = await usersApi.getProfile();
-                setCurrentUser(userData);
-            } catch (err) {
-                console.error("Failed to load user profile: ", err);
-            }
-
-            fetchExperiences("");
-        };
-
-        loadData();
+        fetchExperiences("", searchType);
     }, []);
 
     // Submit button calls backend and refreshes results
     const handleSubmit = (e) => {
         e.preventDefault();
         setHasSearched(true);
-        fetchExperiences(keyword.trim());
+        fetchExperiences(searchTerm.trim(), searchType);
     };
 
     // Reset to the default view (all experiences)
     const handleClear = () => {
-        setKeyword("");
+        setSearchTerm("");
         setHasSearched(false);
-        fetchExperiences("");
+        fetchExperiences("", searchType);
     };
 
     // Delete: calls the API and updates state 
@@ -73,13 +65,21 @@ export const SearchPage = () => {
     return (
         <div className="experiences-container">
             <h2 className="experiences-heading">Search Experiences</h2>
-            <p class="form-helper">Collaborate with other Journey users!</p>
+            <p className="form-helper">Search for experiences by keyword or location!</p>
 
             <form className="search-bar" onSubmit={handleSubmit}>
+                <select
+                    value={searchType}
+                    onChange={(e) => setSearchType(e.target.value)}
+                    aria-label="Select search type"
+                >
+                    <option value="keyword">Keyword</option>
+                    <option value="location">Location</option>
+                </select>
                 <input
                     type="text"
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     aria-label="Search experiences"
                 />
                 <button type="submit">Search</button>
@@ -106,7 +106,7 @@ export const SearchPage = () => {
                             <ExperienceCard
                                 key={experience._id}
                                 experience={experience}
-                                currentUser={currentUser}
+                                currentUser={user}
                                 onExperienceDeleted={handleDeleteExperience}
                                 isSearchPage={true}
                             />
