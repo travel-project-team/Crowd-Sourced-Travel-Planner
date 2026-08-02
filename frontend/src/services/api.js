@@ -168,4 +168,6 @@ export const experiencesApi = {
   uploadImage: (formData) => request("/experiences/image", { method: "POST", body: formData }),
 
   getUser: () => api.get("/experiences/user"),
+
+  rate: (id, rating) => api.post(`/experiences/${id}/ratings`, { rating }),
 };

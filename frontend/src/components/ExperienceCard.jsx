@@ -1,15 +1,32 @@
+// Citations:
+// Got some help from Gemini regarding star ratings for experiences of non-owners. 
+// This transcript https://gemini.google.com/app/2d919459a5d07775
+// documents the Gen AI interaction that led to the generation of this code. 
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { tripsApi, experiencesApi, usersApi } from "../services/api";
 import "../styles/Experiences.css";
 
-export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted } ) => {
+export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted, isSearchPage=false } ) => {
     const navigate = useNavigate();
 
     const [userTrips, setUserTrips] = useState([]);
     const [associatedTrip, setAssociatedTrip] = useState(null);
     const [selectedTripId, setSelectedTripId] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const [rating, setRating] = useState(0);
+    const [hoveredRating, setHoveredRating] = useState(0);
+    const [ratings, setRatings] = useState(experience.ratings || []);
+    const [isSubmittingRating, setIsSubmittingRating] = useState(false);
+
+    const experienceUserId = experience.user_id;
+    const isOwner = currentUser && currentUser._id === experienceUserId;
+
+    useEffect(() => {
+        setRatings(experience.ratings || []);
+    }, [experience.ratings]);
 
     useEffect(() => {
         const fetchAndCheckUserTrips = async () => {
@@ -30,6 +47,27 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
 
         fetchAndCheckUserTrips();
     }, [experience._id, currentUser]);
+
+    const handleRate = async (stars) => {
+        if (!currentUser) return alert("Please log in to rate experiences.");
+        if (isOwner) return alert("Please rate your own experiences via the edit form.");
+
+        setIsSubmittingRating(true);
+        try {
+            const res = await experiencesApi.rate(experience._id, stars);
+            setRating(stars);
+
+            if (res && Array.isArray(res.ratings)) {
+                setRatings(res.ratings);
+            } else {
+                setRatings(prevRatings => [...prevRatings, stars]);
+            }
+        } catch (err) {
+            alert(`Failed to submit rating: ${err.message}`);
+        } finally {
+            setIsSubmittingRating(false);
+        }
+    }
 
     const handleAddToTrip = async (e) => {
         e.stopPropagation();
@@ -80,6 +118,14 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
         navigate(`/single-experience/${experience._id}`);
     };
 
+    const displayAverageRating = ratings.length > 0
+        ? parseFloat((ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length).toFixed(2))
+        : "N/A";
+    
+    const formattedKeywords = experience.keywords && experience.keywords.length > 0
+        ? experience.keywords.join(", ")
+        : "N/A";
+
     return(
         <div className="experience-card">
             <div className="experience-actions">
@@ -91,13 +137,30 @@ export const ExperienceCard = ( { experience, currentUser, onExperienceDeleted }
                 </button>
             </div>
             <p className="experience-title">{experience.title}</p>
-            <p className="experience-attr">{experience.description}</p>
+            <p className="experience-attr">Description: {experience.description === null ? "N/A" : experience.description}</p>
             <p className="experience-attr">Location: {experience.location_name} </p>
-            <p className="experience-attr">Keywords: {experience.keywords}</p>
-            <p className="experience-attr">Average rating:
-                {experience.ratings.length === 0 ? "N/A"
-                   : (experience.ratings.reduce((acc, currVal) => acc + currVal, 0)) / experience.ratings.length}
-                </p>
+            <p className="experience-attr">Keywords: {formattedKeywords}</p>
+            <p className="experience-attr">Average rating: {displayAverageRating}</p>
+
+            {isSearchPage && currentUser && !isOwner && (
+                <div className="card-rating-group" onClick={(e) => e.stopPropagation()}>
+                    <label className="card-rating-label">Rate this experience:</label>
+                    <div className="star-rating card-star-rating">
+                        {[1, 2, 3, 4, 5].map((starValue) => (
+                            <span
+                                key={starValue}
+                                className={`star ${(hoveredRating || rating) >= starValue ? "active" : ""} ${isSubmittingRating ? "disabled" : ""}`}
+                                onClick={() => !isSubmittingRating && handleRate(starValue)}
+                                onMouseEnter={() => !isSubmittingRating && setHoveredRating(starValue)}
+                                onMouseLeave={() => !isSubmittingRating && setHoveredRating(0)}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <button className="full-details-button-link" onClick={handleViewSingleExperience}>
                 View Full Details
             </button>

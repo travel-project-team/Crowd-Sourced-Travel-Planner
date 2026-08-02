@@ -1,4 +1,7 @@
-// Citation: AI enhanced formatting with Gemini.
+// Citations:
+// Some bug fixes were implemented with the assistance of Gemini.
+// This transcript https://gemini.google.com/app/55e5a07551a20ac1
+// documents the Gen AI interaction that led to the generation of this code. 
 
 import "../styles/EditForms.css";
 import { useState, useEffect } from "react";
@@ -296,14 +299,26 @@ export const EditTrip = () => {
                         </button>
                     </div>
                     <div className="tags-container">
-                        {formData.experience_ids.length > 0 ? (
-                            formData.experience_ids.map(id => {
-                                const match = allExperiences.find(e => String(e._id) === String(id));
-                                return (
-                                    <span key={id} className="tag-chip">{match ? match.title : id}<button type="button" className="remove-tag" onClick={() => handleRemoveExperience(id)}>&times;</button></span>
-                                );
-                            })
-                        ) : (
+                        {formData.experience_ids.filter(id => allExperiences.some(e => e._id === id)).length > 0 ? (
+                            formData.experience_ids
+                                .filter(id => allExperiences.some(e => e._id === id))
+                                .map(id => {
+                                    const match = allExperiences.find(e => e._id === id);
+                                    return (
+                                        <span key={id} className="tag-chip">
+                                            {match.title}
+                                            <button 
+                                                type="button" 
+                                                className="remove-tag" 
+                                                onClick={() => handleRemoveExperience(id)}
+                                            >
+                                                &times;
+                                            </button>
+                                        </span>
+                                    )
+                                })
+                        )
+                         : (
                             <span className="tag-chip" style={{ background: "#eee", color: "#666" }}>No experiences added yet</span>
                         )}
                     </div>

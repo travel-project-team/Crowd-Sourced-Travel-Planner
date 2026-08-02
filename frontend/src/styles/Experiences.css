@@ -1,3 +1,9 @@
+/* Citations:
+Styling assistance was derived from the Gen AI interaction with Gemini.
+This transcript https://gemini.google.com/app/a52d330c8e9e0713
+documents the Gen AI interaction that led to the generation of this code. 
+*/
+
 .experiences-container {
     min-height: 100vh;
     display: flex;
@@ -233,4 +239,20 @@
 .search-bar button {
     padding: 0.5rem 1rem;
     cursor: pointer;
+}
+
+.card-rating-group {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-star-rating {
+    font-size: 1.3rem; /* Sized down slightly for cards */
+}
+
+.star.disabled {
+    pointer-events: none;
+    opacity: 0.6;
 }

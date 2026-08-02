@@ -1,3 +1,8 @@
+// Citations:
+// Some bug fixes were implemented with the assistance of Gemini.
+// This transcript https://gemini.google.com/app/55e5a07551a20ac1
+// documents the Gen AI interaction that led to the generation of this code. 
+
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { experiencesApi } from "../services/api.js";
