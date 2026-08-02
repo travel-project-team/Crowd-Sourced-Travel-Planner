@@ -4,7 +4,7 @@ A platform where travelers create, discover, and rate experiences (events, resta
 
 **Live Application:** https://travelplanner-129337949325.us-central1.run.app/home
 
-**API Documentation (Swagger UI):** `https://travelplanner-129337949325.us-central1.run.app/docs`
+**API Documentation (Swagger UI):** https://travelplanner-129337949325.us-central1.run.app/docs
 
 > CS 467 Capstone: Oregon State University, Summer 2026
 > Allison Langlois, Kevin Lin, Michael Valderrama, and Sean Miller
