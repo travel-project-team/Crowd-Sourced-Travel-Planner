@@ -2,7 +2,7 @@
 
 A platform where travelers create, discover, and rate experiences (events, restaurants, festivals, sightseeing) and group them into personalized trip itineraries.
 
-**Live Application:** `https://travelplanner-129337949325.us-central1.run.app/home`
+**Live Application:** https://travelplanner-129337949325.us-central1.run.app/home
 
 **API Documentation (Swagger UI):** `https://travelplanner-129337949325.us-central1.run.app/docs`
 
