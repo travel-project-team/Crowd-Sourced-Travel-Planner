@@ -107,7 +107,7 @@ export const Login = () => {
     <div className="login-container">
       <div className="login-card">
         <h2 className="login-heading">
-          Login Form
+          Login
         </h2>
 
         <form onSubmit={handleSubmit} className="login-form">

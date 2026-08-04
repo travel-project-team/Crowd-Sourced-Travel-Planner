@@ -16,7 +16,7 @@ import { SearchPage } from './pages/SearchPage';
 // Custom
 import { Login } from './pages/Login';
 import { Registration } from './pages/Registration';
-import { HomePageLayout } from './layouts/HomePageLayout';
+import { CommonPageLayout } from './layouts/CommonPageLayout';
 import { Trips } from './pages/Trips';
 import { Experiences } from './pages/Experiences';
 import { SingleExperience } from './pages/SingleExperience';
@@ -40,8 +40,8 @@ function App() {
         <ScrollToTop />
         <Routes>
           {/* Public Routes */}
-          <Route element={<HomePageLayout />}>
-            <Route path="/home" element={<HomePage/>}/>
+          <Route element={<CommonPageLayout />}>
+            <Route path="/home" element={<HomePage />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
             {/* Protected Routes */}

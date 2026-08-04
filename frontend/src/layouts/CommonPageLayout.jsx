@@ -9,8 +9,8 @@ import { useEffect, useState, useCallback} from "react";
 import { usersApi } from "../services/api";
 import { Header } from "../components/Header"
 import { Sidebar } from "../components/Sidebar"
-import "../styles/HomePageLayout.css"
-export const HomePageLayout = () => {
+import "../styles/CommonPageLayout.css"
+export const CommonPageLayout = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
