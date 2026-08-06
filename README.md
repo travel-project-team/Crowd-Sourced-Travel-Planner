@@ -228,14 +228,14 @@ This runs both servers concurrently:
 
 Open **http://localhost:9000**. Requests to `/api/*` are proxied to the backend automatically.
 
-**Running services individually**
+**To run services individually**
 
 ```bash
-# Backend only (from backend/, venv active)
-uvicorn src.main:app --reload
+# Backend only 
+npm run dev:backend
 
 # Frontend only
-cd frontend && npm run dev
+npm run dev:frontend
 ```
 
 ---
